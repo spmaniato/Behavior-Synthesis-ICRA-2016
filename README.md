@@ -1,13 +1,16 @@
-# Behavior Synthesis paper
+# Behavior Synthesis paper (ICRA 2016)
 
-ICRA 2016 submission on the Synthesis of Executable State Machines for an ATLAS Humanoid Robot
+### Tentative Outline
 
-Rough outline:
 - Introduction
-- Preliminaries (mostly LTL and synthesis)
-- LTL formulas for ATLAS in the *activation-outcomes* and *activation-deactivation* paradigms
+- Preliminaries
+- Problem Statement
+- LTL Specification Compilation
+  - Partial-to-full specification compilation
+  - LTL formulas for ATLAS in the *activation-outcomes* and *activation-deactivation* paradigms
   - Also, preconditions, infinite-to-finite execution, and other DRC/ViGIR-inspired formulas
-- Partial-to-full specification compilation
-- Mapping between atomic propositions and behavior states (atomic controllers)
-- Short description of ROS implementation (referencing behavior engine, FlexBE app, etc.)
+- ROS implementation
+  - Reference behavior engine, FlexBE app, etc.
+  - - Mapping between atomic propositions and behavior states
 - Post-DRC Experiments
+- Conclusions and Future Work

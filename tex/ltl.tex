@@ -1,1 +1,189 @@
 % !TEX root = ../main.tex
+
+\subsection{Multi-Paradigm Specification}
+
+\ldots
+
+\subsection{Discrete Abstraction \& Proposition Grounding}
+
+\ldots
+
+\subsection{LTL Specification for ATLAS}
+
+\subsubsection{Generic Formulas}
+
+The system safety requirements \eqref{PropositionDeactivationFormula} dictate that an activation proposition should turn \texttt{False} once an outcome has been returned.
+
+\begin{equation}\label{PropositionDeactivationFormula}
+	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a \wedge \LTLX \pi_a^o \Rightarrow \LTLX \lnot \pi_a \Big)
+\end{equation}
+
+The environment safety assumptions \eqref{OutcomeMutexFormula} dictate that the outcomes of an action are mutually exclusive. 
+For example, an action cannot both succeed and fail.
+
+\begin{equation}\label{OutcomeMutexFormula}
+	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \LTLX \pi_a^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_a^{o^\prime} \Big)
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Action-specific Formulas}
+
+The environment safety assumptions \eqref{ActionOutcomeConstraintsFormula} govern the value of outcomes in the next time step. 
+Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become \texttt{True}. 
+Formula \eqref{ActionOutcomeConstraintsFormula4} dictates that, if an outcome is \texttt{False} and the corresponding action is not activated, then that outcome should remain \texttt{False}.
+This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
+\todo[inline, caption = {Fix Action Outcome Constraints Formula \eqref{ActionOutcomeConstraintsFormula3}}]{Formula \eqref{ActionOutcomeConstraintsFormula3} is outdated. It doesn't account for the activation--outcomes paradigm!}
+
+\begin{subequations}
+	\label{ActionOutcomeConstraintsFormula}
+	\begin{align}
+		\LTLG& \Big( \bigvee \pi_a^o \wedge \pi_a \Rightarrow \bigvee \LTLX \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula3}\\
+		\bigwedge \limits_{o \in Out(a)} \LTLG& \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula4}
+	\end{align}
+\end{subequations}
+
+The environment safety assumptions \eqref{ActionOutcomePersistenceFormula} dictate that the value of an outcome should not change if the corresponding action has not been activated again. 
+In other words, the outcome persists.
+
+\begin{equation}\label{ActionOutcomePersistenceFormula}
+	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \pi_a^o \Big)
+\end{equation}
+
+The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a fairness condition.
+It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
+Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
+
+\begin{subequations}
+	\begin{align}
+		\varphi_a^{return} = \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) &\vee \Big( \lnot \pi_a \wedge \bigwedge \LTLX \lnot \pi_a^o \Big)\label{ActionFairnessConditionsFormula1}\\
+		\varphi_a^{change} = \big( \pi_a \wedge \LTLX \lnot \pi_a \big) &\vee \big( \lnot \pi_a \wedge \LTLX \pi_a \big)\label{ActionFairnessConditionsFormula2}\\
+		\LTLG \LTLF \big( \varphi_a^{return} &\vee \varphi_a^{change} \big)\label{ActionFairnessConditionsFormula}
+	\end{align}
+\end{subequations}
+
+The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Pre(a)$, looks like in the activation--outcomes paradigm.
+
+\begin{equation}\label{PreconditionsFormula}
+	\LTLG \big( \bigvee \limits_{p \in Pre(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \big)
+\end{equation}
+where the superscript $c \in Out(p)$ stands for ``completion".
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Control Mode Formulas}
+
+The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, e.g., the valid transitions (motion) in the robot's workspace. 
+Similar to \cite{Vasu2013ICRA}, but with the addition of $\varphi_\mathcal{R}^{none}$.
+
+
+\begin{equation}\label{TransitionRelationFormula}
+	\bigwedge \limits_{r \in \mathcal{R}} \LTLG \Big( \LTLX \pi_r^c \Rightarrow \bigvee \limits_{r^\prime \in Adj(r)} \LTLX \varphi_{r^\prime} \vee \LTLX \varphi_\mathcal{R}^{none} \Big)
+\end{equation}
+where $\varphi_\mathcal{R}^{none} = \bigwedge \limits_{r \in \mathcal{R}} \lnot \pi_r$ being \texttt{True} stands for not activating any topological transitions.
+
+The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the topology (e.g. region) propositions, just like formula (1) in \cite{Vasu2013ICRA}.
+\todo[inline, caption = {Fix control mode MutEx formula}]{Can't remember why this is written in the future tense. Try getting rid of the $\LTLX$ operators.}
+
+\begin{equation}\label{TopologyMutexFormula}
+	\bigwedge \limits_{r \in \mathcal{R}} \LTLG \Big( \LTLX \pi_r^c \Leftrightarrow \bigwedge \limits_{r^\prime \neq r} \LTLX \lnot \pi_{r^\prime}^c \Big)
+\end{equation}
+
+The environment safety assumptions \eqref{SingleStepChangeFormula} govern how the robot's ``state" in the transition system (e.g. location in the workspace) can change in a single time step in response to the activation of a transition.
+If the only outcome of topological transitions is ``completion", i.e., $Out(r) = \{ c \}, \; \forall r \in R$, then formula \eqref{SingleStepChangeFormula} collapses to formula (2) in \cite{Vasu2013ICRA}.
+
+\begin{equation}\label{SingleStepChangeFormula}
+	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{r^\prime \in Adj(r)} \LTLG \Big( \pi_r^c \wedge  \varphi_{r^\prime} \Rightarrow \big( \LTLX \pi_{r}^c \vee \bigvee \limits_{o \in Out(r^\prime)} \LTLX \pi_{r^\prime}^o \big) \Big)
+\end{equation}
+
+The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes of topological transitions.
+Their addition is necessitated by $\varphi_\mathcal{R}^{none}$ being an option in the transition relation \eqref{TransitionRelationFormula}.
+
+\begin{equation}\label{TopologyOutcomeConstraintFormula}
+	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{o \in Out(r)} \LTLG \Big( \lnot \pi_r^o \wedge \lnot \pi_r \Rightarrow \LTLX \lnot \pi_r^o \Big)
+\end{equation}
+
+The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dictate that the value of the outcomes of topological transitions must not change if no transition is being activated, i.e., they must persist.
+
+\begin{equation}\label{TopologyOutcomePersistenceFormula}
+	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{o \in Out(r)} \LTLG \Big( \pi_r^o \wedge \varphi_\mathcal{R}^{none} \Rightarrow \LTLX \pi_r^o \Big)
+\end{equation}
+
+The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for topology propositions.
+Formulas \eqref{TopologyFairnessConditionsFormula1} and \eqref{TopologyFairnessConditionsFormula2} are equivalent to $\varphi_{loc}^{completion}$ and $\varphi_{loc}^{change}$ in \cite{Vasu2013ICRA}.
+
+\begin{subequations}
+	\begin{align}
+		\varphi_\mathcal{R}^{return} = &\bigvee \limits_{r \in \mathcal{R}} \Big( \varphi_r \wedge \bigvee \limits_{o \in Out(r)} \LTLX \pi_r^o \Big)\label{TopologyFairnessConditionsFormula1}\\
+		\varphi_\mathcal{R}^{change} = &\bigvee \limits_{r \in \mathcal{R}} \Big( \varphi_r \wedge \LTLX \lnot \varphi_r \Big)\label{TopologyFairnessConditionsFormula2}\\
+		\LTLG \LTLF \big( \varphi_\mathcal{R}^{return} &\vee \varphi_\mathcal{R}^{change} \vee \varphi_\mathcal{R}^{none} \big)\label{TopologyFairnessConditionsFormula}
+	\end{align}
+\end{subequations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Initial Conditions}
+
+Last but not least, this is how initial conditions look like in the ``activation--outcomes" paradigm.
+\textbf{Note}: The choice of semantics has been influenced by ATLAS and the integration with FlexBE. There are definitely other choices that also make sense.
+
+For each action (or topology proposition) in the initial conditions, the completion proposition should be \texttt{True} in the environment initial conditions \eqref{EnvironmentInitialConditions1}.
+All other outcomes of those actions \eqref{EnvironmentInitialConditions2}, as well as all outcomes of any other actions \eqref{EnvironmentInitialConditions3}, should be \texttt{False}.
+
+\begin{subequations}
+	\label{EnvironmentInitialConditions}
+	\begin{align}
+		&\bigwedge \limits_{i \in \mathcal{I}} \pi_i^c \label{EnvironmentInitialConditions1}\\
+		&\bigwedge \limits_{i \in \mathcal{I}} \bigwedge \limits_{o \in Out(i), o \neq c} \lnot \pi_i^o \label{EnvironmentInitialConditions2}\\
+		&\bigwedge \limits_{i \not\in \mathcal{I}} \bigwedge \limits_{o \in Out(i)} \lnot \pi_i^o\label{EnvironmentInitialConditions3}
+	\end{align}
+\end{subequations}
+
+The semantics for activation are \textit{chosen} such that the activation propositions are \texttt{False} regardless of whether that action (or topology proposition) is in the initial conditions or not \eqref{SystemInitialConditions}.
+The reason being that, intuitively, if we want something to be an initial condition, then we shouldn't have the resulting controller re-activate it at the beginning of execution.
+
+\begin{subequations}
+	\label{SystemInitialConditions}
+	\begin{align}
+		&\bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \label{SystemInitialConditions1}\\
+		&\bigwedge \limits_{i \not \in \mathcal{I}} \lnot \pi_i \label{SystemInitialConditions2}
+	\end{align}
+\end{subequations}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Success and Failure}
+
+The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{SuccessfulOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals in a finite run (as opposed to infinite execution, which is what LTL is defined over).
+Informally, the system propositions in $Out(SM)$ being \texttt{True} is equivalent to that state being an ``accepting" / ``final" state of a traditional automaton.\footnote{In FlexBE terms, this is where execution would exit the current state machine.}
+The proposition $\pi_{success} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeFormula} is one of those ``special" propositions.
+\todo[inline, caption = {Make SM outcomes persistent}]{Technically, all $\pi_o,\; \forall o \in Out(SM)$ should also be persistent, like memory props \eqref{SuccessfulOutcomeFormula2}.}
+
+\begin{equation}\label{MemoryInitialCondition}
+	\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g 
+\end{equation}
+
+\begin{subequations}
+	\label{SuccessfulOutcomeFormulas}
+	\begin{align}
+		\bigwedge \limits_{g \in \mathcal{G}} \LTLX \pi_g^c &\Rightarrow \LTLX m_g \label{SuccessfulOutcomeFormula1}\\
+		\bigwedge \limits_{g \in \mathcal{G}} m_g &\Rightarrow \LTLX m_g\label{SuccessfulOutcomeFormula2}\\
+		\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g \wedge \LTLX \lnot \pi_g^c &\Rightarrow \LTLX \lnot m_g\label{SuccessfulOutcomeFormula3}\\
+		\pi_{success} &\Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} m_g\label{SuccessfulOutcomeFormula}
+	\end{align}
+\end{subequations}
+
+\begin{equation}\label{SuccessLivenessFormula}
+	\LTLG \LTLF \bigvee \limits_{o \in Out(SM)} \pi_{o}
+\end{equation}
+
+\todo[inline, caption = {Strict liveness (goal) ordering}]{Come up with alternative formulation of \eqref{SuccessfulOutcomeFormulas} that enforces strict ordering on the liveness requirements.
+It will be optional from the user's point-of-view.}
+
+
+\subsection{Other subsection}
+
+\ldots
+
+%END
