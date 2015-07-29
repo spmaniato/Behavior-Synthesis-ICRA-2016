@@ -1,2 +1,3 @@
-# behavior-synthesis-paper
-ICRA 2016 paper submission on Behavior Synthesis for ATLAS
+# Behavior Synthesis paper
+
+ICRA 2016 paper submission on the Synthesis of Executable State Machines for an ATLAS Humanoid Robot
