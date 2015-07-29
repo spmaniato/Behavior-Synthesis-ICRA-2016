@@ -6,7 +6,14 @@
 
 \subsection{Discrete Abstraction \& Proposition Grounding}
 
-\ldots
+\todo[inline, caption = {Activation--Outcomes or just Completion-Failure ?}]{Write LTL formulas in terms of any possible outcome, $o \in Out(a)$, or only of completion and failure, $\{c, f\}$?}
+
+\begin{subequations}
+	\begin{align}
+		\mathcal{Y} &= \mathcal{A} \cup \mathcal{M}\\
+		\mathcal{X}^\prime &= \mathcal{X} \cup \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o
+	\end{align}
+\end{subequations}
 
 \subsection{LTL Specification for ATLAS}
 
@@ -33,7 +40,7 @@ The environment safety assumptions \eqref{ActionOutcomeConstraintsFormula} gover
 Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become \texttt{True}. 
 Formula \eqref{ActionOutcomeConstraintsFormula4} dictates that, if an outcome is \texttt{False} and the corresponding action is not activated, then that outcome should remain \texttt{False}.
 This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
-\todo[inline, caption = {Fix Action Outcome Constraints Formula \eqref{ActionOutcomeConstraintsFormula3}}]{Formula \eqref{ActionOutcomeConstraintsFormula3} is outdated. It doesn't account for the activation--outcomes paradigm!}
+\todo[inline, caption = {Fix Action Outcome Constraints Formula \eqref{ActionOutcomeConstraintsFormula3}}]{Formula \eqref{ActionOutcomeConstraintsFormula3} is outdated. It doesn't account for the activation--deactivation paradigm!}
 
 \begin{subequations}
 	\label{ActionOutcomeConstraintsFormula}
@@ -63,6 +70,7 @@ Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi
 \end{subequations}
 
 The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Pre(a)$, looks like in the activation--outcomes paradigm.
+\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions and modes that are necessary.}
 
 \begin{equation}\label{PreconditionsFormula}
 	\LTLG \big( \bigvee \limits_{p \in Pre(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \big)
@@ -73,50 +81,46 @@ where the superscript $c \in Out(p)$ stands for ``completion".
 
 \subsubsection{Control Mode Formulas}
 
-The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, e.g., the valid transitions (motion) in the robot's workspace. 
-Similar to \cite{Vasu2013ICRA}, but with the addition of $\varphi_\mathcal{R}^{none}$.
+The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, such the BDI control mode transition system.
 
 
 \begin{equation}\label{TransitionRelationFormula}
-	\bigwedge \limits_{r \in \mathcal{R}} \LTLG \Big( \LTLX \pi_r^c \Rightarrow \bigvee \limits_{r^\prime \in Adj(r)} \LTLX \varphi_{r^\prime} \vee \LTLX \varphi_\mathcal{R}^{none} \Big)
+	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
-where $\varphi_\mathcal{R}^{none} = \bigwedge \limits_{r \in \mathcal{R}} \lnot \pi_r$ being \texttt{True} stands for not activating any topological transitions.
+where $\varphi_\mathcal{M}^{none} = \bigwedge \limits_{m \in \mathcal{M}} \lnot \pi_m$ being \texttt{True} stands for not activating any control mode transitions.
 
-The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the topology (e.g. region) propositions, just like formula (1) in \cite{Vasu2013ICRA}.
-\todo[inline, caption = {Fix control mode MutEx formula}]{Can't remember why this is written in the future tense. Try getting rid of the $\LTLX$ operators.}
+The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the BDI control modes.
+\todo[inline, caption = {How to write control mode MutEx formula}]{This formula requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{TopologyMutexFormula}
-	\bigwedge \limits_{r \in \mathcal{R}} \LTLG \Big( \LTLX \pi_r^c \Leftrightarrow \bigwedge \limits_{r^\prime \neq r} \LTLX \lnot \pi_{r^\prime}^c \Big)
+	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Leftrightarrow \bigwedge \limits_{m^\prime \neq m} \LTLX \lnot \pi_{m^\prime}^c \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{SingleStepChangeFormula} govern how the robot's ``state" in the transition system (e.g. location in the workspace) can change in a single time step in response to the activation of a transition.
-If the only outcome of topological transitions is ``completion", i.e., $Out(r) = \{ c \}, \; \forall r \in R$, then formula \eqref{SingleStepChangeFormula} collapses to formula (2) in \cite{Vasu2013ICRA}.
+The environment safety assumptions \eqref{SingleStepChangeFormula} govern how the active control mode can change in a single time step in response to the activation of a control mode transition.
 
 \begin{equation}\label{SingleStepChangeFormula}
-	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{r^\prime \in Adj(r)} \LTLG \Big( \pi_r^c \wedge  \varphi_{r^\prime} \Rightarrow \big( \LTLX \pi_{r}^c \vee \bigvee \limits_{o \in Out(r^\prime)} \LTLX \pi_{r^\prime}^o \big) \Big)
+	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{m^\prime \in Adj(m)} \LTLG \Big( \pi_m^c \wedge  \varphi_{m^\prime} \Rightarrow \big( \LTLX \pi_{m}^c \bigvee \limits_{o \in Out(m^\prime)} \LTLX \pi_{m^\prime}^o \big) \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes of topological transitions.
-Their addition is necessitated by $\varphi_\mathcal{R}^{none}$ being an option in the transition relation \eqref{TransitionRelationFormula}.
+The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes control mode transitions.
 
 \begin{equation}\label{TopologyOutcomeConstraintFormula}
-	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{o \in Out(r)} \LTLG \Big( \lnot \pi_r^o \wedge \lnot \pi_r \Rightarrow \LTLX \lnot \pi_r^o \Big)
+	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \lnot \pi_m^o \wedge \lnot \pi_m \Rightarrow \LTLX \lnot \pi_m^o \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dictate that the value of the outcomes of topological transitions must not change if no transition is being activated, i.e., they must persist.
+The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dictate that the value of the outcomes of control mode transitions must not change if no transition is being activated, i.e., they must persist.
 
 \begin{equation}\label{TopologyOutcomePersistenceFormula}
-	\bigwedge \limits_{r \in \mathcal{R}} \bigwedge \limits_{o \in Out(r)} \LTLG \Big( \pi_r^o \wedge \varphi_\mathcal{R}^{none} \Rightarrow \LTLX \pi_r^o \Big)
+	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \pi_m^o \wedge \varphi_\mathcal{M}^{none} \Rightarrow \LTLX \pi_m^o \Big)
 \end{equation}
 
-The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for topology propositions.
-Formulas \eqref{TopologyFairnessConditionsFormula1} and \eqref{TopologyFairnessConditionsFormula2} are equivalent to $\varphi_{loc}^{completion}$ and $\varphi_{loc}^{change}$ in \cite{Vasu2013ICRA}.
+The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control mode propositions.
 
 \begin{subequations}
 	\begin{align}
-		\varphi_\mathcal{R}^{return} = &\bigvee \limits_{r \in \mathcal{R}} \Big( \varphi_r \wedge \bigvee \limits_{o \in Out(r)} \LTLX \pi_r^o \Big)\label{TopologyFairnessConditionsFormula1}\\
-		\varphi_\mathcal{R}^{change} = &\bigvee \limits_{r \in \mathcal{R}} \Big( \varphi_r \wedge \LTLX \lnot \varphi_r \Big)\label{TopologyFairnessConditionsFormula2}\\
-		\LTLG \LTLF \big( \varphi_\mathcal{R}^{return} &\vee \varphi_\mathcal{R}^{change} \vee \varphi_\mathcal{R}^{none} \big)\label{TopologyFairnessConditionsFormula}
+		\varphi_\mathcal{M}^{return} = &\bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big)\label{TopologyFairnessConditionsFormula1}\\
+		\varphi_\mathcal{M}^{change} = &\bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \LTLX \lnot \varphi_m \Big)\label{TopologyFairnessConditionsFormula2}\\
+		\LTLG \LTLF \big( \varphi_\mathcal{M}^{return} &\vee \varphi_\mathcal{M}^{change} \vee \varphi_\mathcal{M}^{none} \big)\label{TopologyFairnessConditionsFormula}
 	\end{align}
 \end{subequations}
 
@@ -124,41 +128,29 @@ Formulas \eqref{TopologyFairnessConditionsFormula1} and \eqref{TopologyFairnessC
 
 \subsubsection{Initial Conditions}
 
-Last but not least, this is how initial conditions look like in the ``activation--outcomes" paradigm.
-\textbf{Note}: The choice of semantics has been influenced by ATLAS and the integration with FlexBE. There are definitely other choices that also make sense.
+For each action, $a$, and control mode, $m$, in the initial conditions, $\mathcal{I}$, the completion proposition should be \texttt{True} in the environment initial conditions \eqref{EnvironmentInitialConditions}.
+All other outcome propositions corresponding to those actions and control modes, as well as all outcome propositions corresponding to any other actions and control modes, should be \texttt{False}.
 
-For each action (or topology proposition) in the initial conditions, the completion proposition should be \texttt{True} in the environment initial conditions \eqref{EnvironmentInitialConditions1}.
-All other outcomes of those actions \eqref{EnvironmentInitialConditions2}, as well as all outcomes of any other actions \eqref{EnvironmentInitialConditions3}, should be \texttt{False}.
+\begin{equation}\label{EnvironmentInitialConditions}
+	\varphi_i^e = \bigwedge \limits_{i \in \mathcal{I}} \Big( \pi_i^c \bigwedge \limits_{o \in Out(i)\backslash \{c\}} \lnot \pi_i^o \Big) \wedge \bigwedge \limits_{j \not\in \mathcal{I}} \bigwedge \limits_{o \in Out(j)} \lnot \pi_j^o
+\end{equation}
 
-\begin{subequations}
-	\label{EnvironmentInitialConditions}
-	\begin{align}
-		&\bigwedge \limits_{i \in \mathcal{I}} \pi_i^c \label{EnvironmentInitialConditions1}\\
-		&\bigwedge \limits_{i \in \mathcal{I}} \bigwedge \limits_{o \in Out(i), o \neq c} \lnot \pi_i^o \label{EnvironmentInitialConditions2}\\
-		&\bigwedge \limits_{i \not\in \mathcal{I}} \bigwedge \limits_{o \in Out(i)} \lnot \pi_i^o\label{EnvironmentInitialConditions3}
-	\end{align}
-\end{subequations}
-
-The semantics for activation are \textit{chosen} such that the activation propositions are \texttt{False} regardless of whether that action (or topology proposition) is in the initial conditions or not \eqref{SystemInitialConditions}.
+Activation propositions are \texttt{False} regardless of whether that action or control mode is in the initial conditions or not \eqref{SystemInitialConditions}.
 The reason being that, intuitively, if we want something to be an initial condition, then we shouldn't have the resulting controller re-activate it at the beginning of execution.
 
-\begin{subequations}
-	\label{SystemInitialConditions}
-	\begin{align}
-		&\bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \label{SystemInitialConditions1}\\
-		&\bigwedge \limits_{i \not \in \mathcal{I}} \lnot \pi_i \label{SystemInitialConditions2}
-	\end{align}
-\end{subequations}
+\begin{equation}\label{SystemInitialConditions}
+	\varphi_i^s = \bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \wedge \bigwedge \limits_{j \not \in \mathcal{I}} \lnot \pi_j
+\end{equation}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Success and Failure}
 
-The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{SuccessfulOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals in a finite run (as opposed to infinite execution, which is what LTL is defined over).
-Informally, the system propositions in $Out(SM)$ being \texttt{True} is equivalent to that state being an ``accepting" / ``final" state of a traditional automaton.\footnote{In FlexBE terms, this is where execution would exit the current state machine.}
-The proposition $\pi_{success} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeFormula} is one of those ``special" propositions.
+The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{SuccessfulOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $\mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
+The proposition $\pi_{finished} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeFormula} is one of those ``special" propositions.
 \todo[inline, caption = {Make SM outcomes persistent}]{Technically, all $\pi_o,\; \forall o \in Out(SM)$ should also be persistent, like memory props \eqref{SuccessfulOutcomeFormula2}.}
+\todo[inline, caption = {Differentiate between control modes and memory}]{I've been using $m$ to stand both for control modes $m \in \mathcal{M}$ and for memory propositions $m_g$. Fix.}
 
 \begin{equation}\label{MemoryInitialCondition}
 	\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g 
@@ -167,10 +159,10 @@ The proposition $\pi_{success} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeF
 \begin{subequations}
 	\label{SuccessfulOutcomeFormulas}
 	\begin{align}
-		\bigwedge \limits_{g \in \mathcal{G}} \LTLX \pi_g^c &\Rightarrow \LTLX m_g \label{SuccessfulOutcomeFormula1}\\
-		\bigwedge \limits_{g \in \mathcal{G}} m_g &\Rightarrow \LTLX m_g\label{SuccessfulOutcomeFormula2}\\
-		\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g \wedge \LTLX \lnot \pi_g^c &\Rightarrow \LTLX \lnot m_g\label{SuccessfulOutcomeFormula3}\\
-		\pi_{success} &\Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} m_g\label{SuccessfulOutcomeFormula}
+		\bigwedge \limits_{g \in \mathcal{G}} \LTLG \Big( \LTLX \pi_g^c &\Rightarrow \LTLX m_g \Big) \label{SuccessfulOutcomeFormula1}\\
+		\bigwedge \limits_{g \in \mathcal{G}}\LTLG \Big(  m_g &\Rightarrow \LTLX m_g \Big) \label{SuccessfulOutcomeFormula2}\\
+		\bigwedge \limits_{g \in \mathcal{G}}\LTLG \Big(  \lnot m_g \wedge \LTLX \lnot \pi_g^c &\Rightarrow \LTLX \lnot m_g \Big) \label{SuccessfulOutcomeFormula3}\\
+		\LTLG \Big( \pi_{finished} &\Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} m_g \Big) \label{SuccessfulOutcomeFormula}
 	\end{align}
 \end{subequations}
 
@@ -178,7 +170,7 @@ The proposition $\pi_{success} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeF
 	\LTLG \LTLF \bigvee \limits_{o \in Out(SM)} \pi_{o}
 \end{equation}
 
-\todo[inline, caption = {Strict liveness (goal) ordering}]{Come up with alternative formulation of \eqref{SuccessfulOutcomeFormulas} that enforces strict ordering on the liveness requirements.
+\todo[inline, caption = {Strict liveness requirement (goal) ordering}]{Come up with alternative formulation of \eqref{SuccessfulOutcomeFormulas} that enforces strict ordering on the liveness requirements.
 It will be optional from the user's point-of-view.}
 
 

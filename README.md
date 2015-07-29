@@ -11,6 +11,6 @@
   - Also, preconditions, infinite-to-finite execution, and other DRC/ViGIR-inspired formulas
 - ROS implementation
   - Reference behavior engine, FlexBE app, etc.
-  - - Mapping between atomic propositions and behavior states
+  - Mapping between atomic propositions and behavior states
 - Post-DRC Experiments
 - Conclusions and Future Work
