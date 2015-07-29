@@ -1,0 +1,137 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}	% Comment this line out if you need a4paper
+
+\IEEEoverridecommandlockouts          	% This command is only needed if you want to use the \thanks command
+\overrideIEEEmargins                  	% Needed to meet printer requirements.
+%
+\usepackage{graphics} 	% for pdf, bitmapped graphics files
+\usepackage{epsfig} 	% for postscript graphics files
+\usepackage{times} 		% assumes new font selection scheme installed
+\usepackage{amsmath} 	% assumes amsmath package installed
+\usepackage{amssymb}  	% assumes amsmath package installed
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+\usepackage{acronym}
+\usepackage{bm}
+\usepackage{cite}
+\usepackage{enumerate}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\let\chapter\section % Necessary for List of TODOs to work. algorithm2e messes up \chapter for some reason...
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[disable]{todonotes}
+\usepackage{hyperref}
+%\usepackage{color}
+\usepackage{gensymb}
+%\usepackage{mathtools}
+%
+%\setlength{\textfloatsep}{\baselineskip plus 0.2\baselineskip minus 0.2\baselineskip}
+%\setlength{\textfloatsep}{5pt}		% Reduces white space between floating figures and the text below them.
+%
+\DeclareMathOperator{\D}{\rotatebox[origin=c]{45}{$\Box$}}
+\DeclareMathOperator{\X}{\bigcirc}
+\DeclareMathOperator{\G}{\Box}
+\newcommand{\LTLG}{\G}
+\newcommand{\LTLF}{\F}
+\newcommand{\LTLX}{\X}
+%
+\acrodef{wrt}[w.r.t.]{with respect to}
+%
+% Define an "Example" environment with its own counter    
+\newcounter{examplecounter}		% Example counter. Independent of theorem and other counters.
+\newenvironment{myExample}
+{
+	\refstepcounter{examplecounter}%
+	\textbf{Example \arabic{examplecounter}:}% Example #.
+	\,							% Let's give our text some space.
+}
+
+% Define a "Definition" environment with its own counter    
+\newcounter{definitioncounter}		% Definition counter. Independent of theorem and other counters.
+\newenvironment{myDefinition}
+{
+	\refstepcounter{definitioncounter}%
+	\textbf{Definition \arabic{definitioncounter}}%
+}
+
+% Define a "Problem" environment with its own counter    
+\newcounter{problemcounter}
+\newenvironment{myProblem}
+{
+	\refstepcounter{problemcounter}%
+	\textbf{Problem \arabic{problemcounter}}% Definition #.
+}
+
+% Define an "Assumption" environment with its own counter    
+\newcounter{assumptioncounter}
+\newenvironment{myAssumption}
+{
+	\refstepcounter{assumptioncounter}%
+	\textbf{Assumption \arabic{assumptioncounter}:}%
+}
+
+%
+\title{\LARGE \bf
+	Behavior Synthesis for an ATLAS Humanoid Robot\\ from High-level User Specifications
+}
+\author{Spyros Maniatopoulos, Philipp Schillinger, Vitchyr H. Pong, David C. Conner, and Hadas Kress-Gazit% 	<-this % stops a space
+%\thanks{...}% <-this % stops a space
+\thanks{This work was supported by \ldots.}
+\thanks{
+Philipp Schillinger is with BOSCH \ldots {\tt philipp.schillinger\nolinkurl{@de.bosch.com}}.
+David C. Conner is with \ldots {\tt davidconner\nolinkurl{@...}}.
+The remaining authors are with the Verifiable Robotics Research Group, Autonomous Systems Lab, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA, {\tt \{sm2296, vhp22, hadaskg\}\nolinkurl{@cornell.edu}}.
+}% end thanks
+}% end authors
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{document}
+%
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\listoftodos[List of TODOs, Fixes, Open Issues]
+%
+%\setcounter{tocdepth}{2}
+%\tableofcontents
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+In this paper we \ldots
+\todo[inline, caption = {Title of a TODO item (hyperlink)}]{Body of the TODO item}
+\end{abstract}
+%
+% --- Main sections ----
+%
+\section{Introduction}\label{S:intro}
+\input{tex/intro.tex}
+%
+\section{Preliminaries}\label{S:prelim}
+\input{tex/prelim.tex}
+%
+\section{LTL Specification Compilation}\label{S:ltl}
+\input{tex/ltl.tex}
+%
+\section{ROS Implementation}\label{S:implementation}
+\input{tex/implementation.tex}
+%
+\section{Experimental Validation}\label{S:experiments}
+\input{tex/experiments.tex}
+%
+\section{Conclusions and Future Work}\label{S:conclusion}
+\input{tex/conclusion.tex}
+%
+\section*{Acknowledgments}
+The authors would like to thank all other members of Team ViGIR and particularly Alberto Romay and Stefan Kohlbrecher.
+%
+% ---- Bibliography ----
+%
+\bibliographystyle{ieeetran}
+\bibliography{behavior_synthesis}
+%
+\end{document}
