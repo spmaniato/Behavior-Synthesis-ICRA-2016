@@ -8,12 +8,21 @@
 
 \todo[inline, caption = {Activation--Outcomes or just Completion-Failure ?}]{Write LTL formulas in terms of any possible outcome, $o \in Out(a)$, or only of completion and failure, $\{c, f\}$?}
 
+We abstract the discrete actions, $a \in \mathcal{A}$, that ATLAS can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
+Similarly,\footnote{The distinction between action and control mode propositions is purely for the sake of clarity of notation. There is nothing special about either.}
+for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_a$ and a number of outcome propositions $\pi_m^o$.
+For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$
+Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
+
 \begin{subequations}
+	\label{ActOutAP}
 	\begin{align}
-		\mathcal{Y} &= \mathcal{A} \cup \mathcal{M}\\
-		\mathcal{X}^\prime &= \mathcal{X} \cup \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o
+		\mathcal{Y} &= \bigcup \limits_{a \in \mathcal{A}} \pi_a \bigcup \limits_{m \in \mathcal{M}} \pi_m,\\
+		\mathcal{X}^\prime &= \mathcal{X} \cup \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
 	\end{align}
 \end{subequations}
+
+where $\mathcal{X}$ contains environment propositions other than outcome propositions. For example, propositions that abstract sensors, as per \cite{KGFP_TRO09}.
 
 \subsection{LTL Specification for ATLAS}
 
@@ -150,7 +159,7 @@ The reason being that, intuitively, if we want something to be an initial condit
 The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{SuccessfulOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $\mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
 The proposition $\pi_{finished} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeFormula} is one of those ``special" propositions.
 \todo[inline, caption = {Make SM outcomes persistent}]{Technically, all $\pi_o,\; \forall o \in Out(SM)$ should also be persistent, like memory props \eqref{SuccessfulOutcomeFormula2}.}
-\todo[inline, caption = {Differentiate between control modes and memory}]{I've been using $m$ to stand both for control modes $m \in \mathcal{M}$ and for memory propositions $m_g$. Fix.}
+\todo[inline, caption = {Differentiate between control modes and memory}]{Symbol $m$ stands both for control modes $m \in \mathcal{M}$ and for memory propositions $m_g$. Use $\mu$ for memory?}
 
 \begin{equation}\label{MemoryInitialCondition}
 	\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g 
