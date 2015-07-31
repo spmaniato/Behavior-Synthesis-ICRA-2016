@@ -18,7 +18,7 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 	\label{ActOutAP}
 	\begin{align}
 		\mathcal{Y} &= \bigcup \limits_{a \in \mathcal{A}} \pi_a \bigcup \limits_{m \in \mathcal{M}} \pi_m,\\
-		\mathcal{X}^\prime &= \mathcal{X} \cup \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
+		\mathcal{X}^\prime &= \mathcal{X} \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
 	\end{align}
 \end{subequations}
 
@@ -156,35 +156,47 @@ The reason being that, intuitively, if we want something to be an initial condit
 
 \subsubsection{Success and Failure}
 
-The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{SuccessfulOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $\mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
-The proposition $\pi_{finished} \in Out(SM)$ in formula \eqref{SuccessfulOutcomeFormula} is one of those ``special" propositions.
-\todo[inline, caption = {Make SM outcomes persistent}]{Technically, all $\pi_o,\; \forall o \in Out(SM)$ should also be persistent, like memory props \eqref{SuccessfulOutcomeFormula2}.}
-\todo[inline, caption = {Differentiate between control modes and memory}]{Symbol $m$ stands both for control modes $m \in \mathcal{M}$ and for memory propositions $m_g$. Use $\mu$ for memory?}
+The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormulas} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
+In this finite run paradigm, the synthesized state machine (SM) itself has outcomes, $o \in Out(SM)$.
+The propositions corresponding to the SM's outcomes, $\pi_{SM}^o$, are system, not environment, propositions.
+The system propositions, $\mu_g$, serve as memory of having accomplished each goal (c.f. \cite{Vasu2012IROS}).
 
 \begin{equation}\label{MemoryInitialCondition}
-	\bigwedge \limits_{g \in \mathcal{G}} \lnot m_g 
+	\bigwedge \limits_{g \in \mathcal{G}} \lnot \mu_g 
 \end{equation}
 
 \begin{subequations}
-	\label{SuccessfulOutcomeFormulas}
+	\label{MemoryFormulas}
 	\begin{align}
-		\bigwedge \limits_{g \in \mathcal{G}} \LTLG \Big( \LTLX \pi_g^c &\Rightarrow \LTLX m_g \Big) \label{SuccessfulOutcomeFormula1}\\
-		\bigwedge \limits_{g \in \mathcal{G}}\LTLG \Big(  m_g &\Rightarrow \LTLX m_g \Big) \label{SuccessfulOutcomeFormula2}\\
-		\bigwedge \limits_{g \in \mathcal{G}}\LTLG \Big(  \lnot m_g \wedge \LTLX \lnot \pi_g^c &\Rightarrow \LTLX \lnot m_g \Big) \label{SuccessfulOutcomeFormula3}\\
-		\LTLG \Big( \pi_{finished} &\Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} m_g \Big) \label{SuccessfulOutcomeFormula}
+		\bigwedge \limits_{g \in \mathcal{G}} \LTLG& \Big( \LTLX \pi_g^c \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula1}\\
+		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \mu_g \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula2}\\
+		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \lnot \mu_g \wedge \LTLX \lnot \pi_g^c \Rightarrow \LTLX \lnot \mu_g \Big) \label{MemoryFormula3}
+\end{align}
+\end{subequations}
+
+\begin{subequations}
+	\label{SMOutcomeFormulas}
+	\begin{align}
+		\LTLG& \Big( \pi_{SM}^{c} \Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
+		\LTLG& \Big( \pi_{SM}^{f} \Leftrightarrow \bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
+		\bigwedge \limits_{o \in Out(SM)} \LTLG& \Big( \pi_{SM}^{o} \Rightarrow \LTLX \pi_{SM}^{o} \Big) \label{SMOutcomePersistenceFormula}
 	\end{align}
 \end{subequations}
 
 \begin{equation}\label{SuccessLivenessFormula}
-	\LTLG \LTLF \bigvee \limits_{o \in Out(SM)} \pi_{o}
+	\LTLG \LTLF \big( \bigvee \limits_{o \in Out(SM)} \pi_{SM}^{o} \big)
+\end{equation}
+\todo[inline, caption = {Comment on savings of single liveness requirement ?}]{The time complexity of synthesis is cubic in  the number of liveness requirements. We save by only having one. Although that's probably dominated by the complexity being exponential in the number of propositions.}
+
+Formulas \eqref{MemoryFormulas} do not guarantee that the goals will be achieved in a specific order.
+However, that is often desirable. 
+To account for it, we can define the goals as an ordered set $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, where $g_i < g_j$ for $i<j$, and the relation $g_i < g_j$ means that goal $g_i$ has to be achieved before $g_j$.
+With this definition, we can add the optional safety requirement \eqref{GoalOrderFormula}, whenever strict goal order is desired.
+
+\begin{equation}\label{GoalOrderFormula}
+	\bigwedge \limits_{i = 1}^n \LTLG \Big(  \lnot \mu_{g_{i-1}} \Rightarrow \LTLX \lnot \mu_{g_i} \Big), \; \mu_{g_0} \triangleq \texttt{True}
 \end{equation}
 
-\todo[inline, caption = {Strict liveness requirement (goal) ordering}]{Come up with alternative formulation of \eqref{SuccessfulOutcomeFormulas} that enforces strict ordering on the liveness requirements.
-It will be optional from the user's point-of-view.}
-
-
-\subsection{Other subsection}
-
-\ldots
+Finally, these auxiliary (memory and SM outcome) propositions have to be added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
 
 %END
