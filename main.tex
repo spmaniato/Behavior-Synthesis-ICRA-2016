@@ -75,15 +75,15 @@
 %
 \title{\LARGE \bf
 	Behavior Synthesis for an ATLAS Humanoid Robot\\ from High-level User Specifications
+	\todo[inline, caption = {Replace the word ``Behavior" in title ?}]{I'm not sure if ``behavior" is descriptive enough. How about ``Synthesis of Executable State Machines for \ldots" ?}
 }
-\author{Spyros Maniatopoulos, Philipp Schillinger, Vitchyr H. Pong, David C. Conner, and Hadas Kress-Gazit% 	<-this % stops a space
+\author{Spyros Maniatopoulos$^{*}$, Philipp Schillinger$^{\dagger}$, Vitchyr H. Pong$^{*}$, David C. Conner$^{\ddagger}$, and Hadas Kress-Gazit$^{*}$% 	<-this % stops a space
 %\thanks{...}% <-this % stops a space
-\thanks{This work was supported by \ldots.}
-\thanks{
-Philipp Schillinger is with Robert BOSCH GmbH \ldots {\tt philipp.schillinger\nolinkurl{@de.bosch.com}}.
-David C. Conner is with \ldots {\tt conner\nolinkurl{@...}}.
-The remaining authors are with the Verifiable Robotics Research Group, Autonomous Systems Lab, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA, {\tt \{sm2296, vhp22, hadaskg\}\nolinkurl{@cornell.edu}}.
-}% end thanks
+\thanks{This work was supported by DARPA / TORC Robotics \ldots}
+\thanks{$^{*}$Verifiable Robotics Research Group, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA {\tt \{sm2296, vhp22, hadaskg\}\nolinkurl{@cornell.edu}}.}
+\thanks{$^{\dagger}$Robert BOSCH GmbH {\tt philipp.schillinger\nolinkurl{@de.bosch.com}}.}
+\thanks{$^{\ddagger}$Capable Humanitarian Robotics \& Intelligent Systems Lab, Department of Physics, Computer Science and Engineering, Christopher Newport University, Newport News, VA 23606, USA {\tt david.conner\nolinkurl{@cnu.edu}}.
+\todo[inline, caption = {Have co-authors review and fix contact info}]{Each author should review and fix their contact info.}}
 }% end authors
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +118,7 @@ In this paper we \ldots
 \section{Problem Statement}\label{S:problem}
 \input{tex/problem.tex}
 %
-\section{LTL Specification Compilation}\label{S:ltl}
+\section{Formal Task Specification}\label{S:ltl}
 \input{tex/ltl.tex}
 %
 \section{ROS Implementation}\label{S:implementation}
@@ -131,7 +131,7 @@ In this paper we \ldots
 \input{tex/conclusion.tex}
 %
 \section*{Acknowledgments}
-The authors would like to thank all other members of Team ViGIR and particularly Alberto Romay and Stefan Kohlbrecher.
+The authors thank all other members of Team ViGIR, especially Alberto Romay, Stefan Kohlbrecher, and Prof. Oskar von Stryk from Technische Universit\"{a}t Darmstadt.
 %
 % ---- Bibliography ----
 %
