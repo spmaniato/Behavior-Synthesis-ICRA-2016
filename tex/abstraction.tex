@@ -1,17 +1,22 @@
 % !TEX root = ../main.tex
 
-\subsection{Control Modes}
+\subsection{Control Modes \& Actions}
 
 We model ATLAS' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
 In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prime) \in \; \boldsymbol\rightarrow \}$ and also allow self-transitions, i.e., $m \in Adj(m), \; \forall m \in \mathcal{M}$.
 
-\subsection{Proposition Grounding}
+ATLAS can also perform actions. Each action, $a \in \mathcal{A}$, is considered discrete and it corresponds to a software component, e.g., generation of a footstep plan or closing the robot's fingers.
+Actions may also have one or more preconditions.
+Action preconditions can be control modes or other actions, i.e., $Pre(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$, $a \not \in Pre(a)$, $\forall a \in \mathcal{A}$.
+
+\subsection{Atomic Propositions}
 
 \todo[inline, caption = {Activation--Outcomes or just Completion-Failure ?}]{Write LTL formulas in terms of any possible outcome, $o \in Out(a)$, or only of completion and failure, $\{c, f\}$?}
 
+We adopt a paradigm that generalizes the one in \cite{Vasu2013ICRA}.
 We abstract the discrete actions, $a \in \mathcal{A}$, that ATLAS can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
 Similarly,\footnote{The distinction between action and control mode propositions is purely for the sake of clarity of notation. There is nothing special about either.}
-for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_a$ and a number of outcome propositions $\pi_m^o$.
+for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_m$ and a number of outcome propositions $\pi_m^o$.
 For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$
 Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 
@@ -22,7 +27,6 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 		\mathcal{X}^\prime &= \mathcal{X} \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
 	\end{align}
 \end{subequations}
-
-where $\mathcal{X}$ contains environment propositions other than outcome propositions. For example, propositions that abstract sensors, as per \cite{KGFP_TRO09}.
+where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
 
 % END

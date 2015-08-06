@@ -2,13 +2,23 @@
 
 \subsection{Multi-Paradigm Specification}
 
-\ldots
+Specifying a robot task in a formal language can be time consuming and error prone. It also requires an expert user.
+To alleviate these issues, we employ a multi-paradigm specification approach. 
+We first observe that there are portions of the task specification $\mathcal{T}_S$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
+Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
+For ATLAS, we can automatically infer which control modes and actions are pertinent to a task.
+Finally, the initial conditions we either be specified by the user or detected at runtime.
 
-\subsection{LTL Specification for ATLAS}
+Referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
+The discrete abstraction, $\mathcal{D}$, is ATLAS-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
+We can now automatically compile the task specification $\mathcal{T}_S$ in (the GR(1) fragment of) Linear Temporal Logic.
+Since LTL is compositional, we can generate individual LTL formulas and then put them together to get the full LTL specification.
+
+\subsection{Specification of Actions and Control Mode Constraints}
 
 \subsubsection{Generic Formulas}
 
-The system safety requirements \eqref{PropositionDeactivationFormula} dictate that an activation proposition should turn \texttt{False} once an outcome has been returned.
+The system safety requirements \eqref{PropositionDeactivationFormula} dictate that an activation proposition should turn $\False$ once an outcome has been returned.
 
 \begin{equation}\label{PropositionDeactivationFormula}
 	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a \wedge \LTLX \pi_a^o \Rightarrow \LTLX \lnot \pi_a \Big)
@@ -26,8 +36,8 @@ For example, an action cannot both succeed and fail.
 \subsubsection{Action-specific Formulas}
 
 The environment safety assumptions \eqref{ActionOutcomeConstraintsFormula} govern the value of outcomes in the next time step. 
-Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become \texttt{True}. 
-Formula \eqref{ActionOutcomeConstraintsFormula4} dictates that, if an outcome is \texttt{False} and the corresponding action is not activated, then that outcome should remain \texttt{False}.
+Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
+Formula \eqref{ActionOutcomeConstraintsFormula4} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
 This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
 \todo[inline, caption = {Fix Action Outcome Constraints Formula \eqref{ActionOutcomeConstraintsFormula3}}]{Formula \eqref{ActionOutcomeConstraintsFormula3} is outdated. It doesn't account for the activation--deactivation paradigm!}
 
@@ -78,7 +88,7 @@ The system safety requirements \eqref{TransitionRelationFormula} encode a topolo
 \begin{equation}\label{TransitionRelationFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
-where $\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m$ being \texttt{True} stands for not activating any control mode transitions.
+where $\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m$ being $\True$ stands for not activating any control mode transitions.
 
 The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the BDI control modes.
 \todo[inline, caption = {How to write control mode MutEx formula}]{This formula requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
@@ -117,16 +127,16 @@ The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Initial Conditions}
+\subsection{Specification of Initial Conditions}
 
-For each action, $a$, and control mode, $m$, in the initial conditions, $\mathcal{I}$, the completion proposition should be \texttt{True} in the environment initial conditions \eqref{EnvironmentInitialConditions}.
-All other outcome propositions corresponding to those actions and control modes, as well as all outcome propositions corresponding to any other actions and control modes, should be \texttt{False}.
+For each action, $a$, and control mode, $m$, in the initial conditions, $\mathcal{I}$, the completion proposition should be $\True$ in the environment initial conditions \eqref{EnvironmentInitialConditions}.
+All other outcome propositions corresponding to those actions and control modes, as well as all outcome propositions corresponding to any other actions and control modes, should be $\False$.
 
 \begin{equation}\label{EnvironmentInitialConditions}
 	\varphi_i^e = \bigwedge \limits_{i \in \mathcal{I}} \Big( \pi_i^c \bigwedge \limits_{o \in Out(i)\backslash \{c\}} \lnot \pi_i^o \Big) \wedge \bigwedge \limits_{j \not\in \mathcal{I}} \bigwedge \limits_{o \in Out(j)} \lnot \pi_j^o
 \end{equation}
 
-Activation propositions are \texttt{False} regardless of whether that action or control mode is in the initial conditions or not \eqref{SystemInitialConditions}.
+Activation propositions are $\False$ regardless of whether that action or control mode is in the initial conditions or not \eqref{SystemInitialConditions}.
 The reason being that, intuitively, if we want something to be an initial condition, then we shouldn't have the resulting controller re-activate it at the beginning of execution.
 
 \begin{equation}\label{SystemInitialConditions}
@@ -136,7 +146,7 @@ The reason being that, intuitively, if we want something to be an initial condit
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Success and Failure}
+\subsection{Specification of Task Goals}
 
 The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormulas} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
 In this finite run paradigm, the synthesized state machine (SM) itself has outcomes, $o \in Out(SM)$.
@@ -176,7 +186,7 @@ To account for it, we can define the goals as an ordered set $\mathcal{G} = \{ g
 With this definition, we can add the optional safety requirement \eqref{GoalOrderFormula}, whenever strict goal order is desired.
 
 \begin{equation}\label{GoalOrderFormula}
-	\bigwedge \limits_{i = 1}^n \LTLG \Big(  \lnot \mu_{g_{i-1}} \Rightarrow \LTLX \lnot \mu_{g_i} \Big), \; \mu_{g_0} \triangleq \texttt{True}
+	\bigwedge \limits_{i = 1}^n \LTLG \Big(  \lnot \mu_{g_{i-1}} \Rightarrow \LTLX \lnot \mu_{g_i} \Big), \; \mu_{g_0} \triangleq \True
 \end{equation}
 
 Finally, these auxiliary (memory and SM outcome) propositions have to be added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
