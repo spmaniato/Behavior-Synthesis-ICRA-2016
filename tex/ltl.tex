@@ -7,12 +7,12 @@ To alleviate these issues, we employ a multi-paradigm specification approach.
 We first observe that there are portions of the task specification $\mathcal{T}_S$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
 Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
 For ATLAS, we can automatically infer which control modes and actions are pertinent to a task.
-Finally, the initial conditions we either be specified by the user or detected at runtime.
+Finally, the initial conditions are either specified by the user or detected at runtime.
 
 Referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
 The discrete abstraction, $\mathcal{D}$, is ATLAS-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
-We can now automatically compile the task specification $\mathcal{T}_S$ in (the GR(1) fragment of) Linear Temporal Logic.
-Since LTL is compositional, we can generate individual LTL formulas and then put them together to get the full LTL specification.
+We can now automatically compile the task specification $\mathcal{T}_S$ in (the GR(1) fragment \cite{piterman_06} of) Linear Temporal Logic.
+Since LTL is compositional, we can generate individual LTL formulas and then conjunct them to get the full LTL specification.
 
 \subsection{Specification of Actions and Control Mode Constraints}
 
@@ -80,7 +80,7 @@ where the superscript $c \in Out(p)$ stands for ``completion".
 
 \subsubsection{Control Mode Formulas}
 
-For brevity of notation, let $\varphi_m = m \wedge \bigwedge_{m^\prime \neq m} \lnot \pi_{m^\prime}$.
+For brevity of notation, let $\varphi_m = \pi_m \wedge \bigwedge_{m^\prime \neq m} \lnot \pi_{m^\prime}$.
 Activating $\varphi_m$ takes into account the mutual exclusion between the control modes $m \in \mathcal{M}$.
 
 The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, such the BDI control mode transition system.
@@ -88,7 +88,7 @@ The system safety requirements \eqref{TransitionRelationFormula} encode a topolo
 \begin{equation}\label{TransitionRelationFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
-where $\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m$ being $\True$ stands for not activating any control mode transitions.
+where $\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m$ being $\True$ stands for not activating any control mode transitions, i.e., staying in the same control mode.
 
 The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the BDI control modes.
 \todo[inline, caption = {How to write control mode MutEx formula}]{This formula requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
