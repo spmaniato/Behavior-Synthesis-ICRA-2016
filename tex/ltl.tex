@@ -26,6 +26,7 @@ The system safety requirements \eqref{PropositionDeactivationFormula} dictate th
 
 The environment safety assumptions \eqref{OutcomeMutexFormula} dictate that the outcomes of an action are mutually exclusive. 
 For example, an action cannot both succeed and fail.
+\todo[inline, caption = {How to write Outcome MutEx formula (slugs)}]{Formula \eqref{OutcomeMutexFormula} requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{OutcomeMutexFormula}
 	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \LTLX \pi_a^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_a^{o^\prime} \Big)
@@ -35,44 +36,56 @@ For example, an action cannot both succeed and fail.
 
 \subsubsection{Action-specific Formulas}
 
-The environment safety assumptions \eqref{ActionOutcomeConstraintsFormula} govern the value of outcomes in the next time step. 
-Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
-Formula \eqref{ActionOutcomeConstraintsFormula4} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
-This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
-\todo[inline, caption = {Fix Action Outcome Constraints Formula \eqref{ActionOutcomeConstraintsFormula3}}]{Formula \eqref{ActionOutcomeConstraintsFormula3} is outdated. It doesn't account for the activation--deactivation paradigm!}
+The following formulas encode the connection between the activation and the possible outcomes of the robot's actions, $a \in \mathcal{A}$.
 
-\begin{subequations}
-	\label{ActionOutcomeConstraintsFormula}
-	\begin{align}
-		\LTLG& \Big( \bigvee \pi_a^o \wedge \pi_a \Rightarrow \bigvee \LTLX \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula3}\\
-		\bigwedge \limits_{o \in Out(a)} \LTLG& \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula4}
-	\end{align}
-\end{subequations}
+The environment safety assumptions \eqref{ActionOutcomeConstraintFormula} govern the value of outcomes in the next time step. 
+%Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
+Specifically, formula \eqref{ActionOutcomeConstraintFormula} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
+%This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
+It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
+
+%\begin{subequations}
+%	\label{ActionOutcomeConstraintsFormula}
+%	\begin{align}
+%		\LTLG& \Big( \bigvee \pi_a^o \wedge \pi_a \Rightarrow \bigvee \LTLX \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula3}\\
+%		\bigwedge \limits_{o \in Out(a)} \LTLG& \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula4}
+%	\end{align}
+%\end{subequations}
+
+\begin{equation}\label{ActionOutcomeConstraintFormula}
+	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)
+\end{equation}
 
 The environment safety assumptions \eqref{ActionOutcomePersistenceFormula} dictate that the value of an outcome should not change if the corresponding action has not been activated again. 
-In other words, the outcome persists.
+In other words, outcomes persist.
 
 \begin{equation}\label{ActionOutcomePersistenceFormula}
 	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \pi_a^o \Big)
 \end{equation}
 
 The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a fairness condition.
-It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
-Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
+%It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
+%Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
+It states that (always) eventually, the activation of an action will result in an outcome.
+The disjunct $\lnot \pi_a$ is added in order to prevent the system from winning the game by never activating the action.
 
-\begin{subequations}
-	\begin{align}
-		\varphi_a^{return} = \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) &\vee \Big( \lnot \pi_a \wedge \bigwedge \LTLX \lnot \pi_a^o \Big)\label{ActionFairnessConditionsFormula1}\\
-		\varphi_a^{change} = \big( \pi_a \wedge \LTLX \lnot \pi_a \big) &\vee \big( \lnot \pi_a \wedge \LTLX \pi_a \big)\label{ActionFairnessConditionsFormula2}\\
-		\LTLG \LTLF \big( \varphi_a^{return} &\vee \varphi_a^{change} \big)\label{ActionFairnessConditionsFormula}
-	\end{align}
-\end{subequations}
+%\begin{subequations}
+%	\begin{align}
+%		\varphi_a^{return} = \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) &\vee \Big( \lnot \pi_a \wedge \bigwedge \LTLX \lnot \pi_a^o \Big)\label{ActionFairnessConditionsFormula1}\\
+%		\varphi_a^{change} = \big( \pi_a \wedge \LTLX \lnot \pi_a \big) &\vee \big( \lnot \pi_a \wedge \LTLX \pi_a \big)\label{ActionFairnessConditionsFormula2}\\
+%		\LTLG \LTLF \big( \varphi_a^{return} &\vee \varphi_a^{change} \big)\label{ActionFairnessConditionsFormula}
+%	\end{align}
+%\end{subequations}
 
-The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Pre(a)$, looks like in the activation--outcomes paradigm.
+\begin{equation}\label{ActionFairnessConditionsFormula}
+	\LTLG \LTLF \Big( \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) \vee \lnot \pi_a \Big)
+\end{equation}
+
+The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Prec(a)$, looks like in the activation--outcomes paradigm.
 \todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions and modes that are necessary.}
 
 \begin{equation}\label{PreconditionsFormula}
-	\LTLG \big( \bigvee \limits_{p \in Pre(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \big)
+	\LTLG \Big( \bigvee \limits_{p \in Prec(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \Big)
 \end{equation}
 where the superscript $c \in Out(p)$ stands for ``completion".
 
@@ -80,18 +93,19 @@ where the superscript $c \in Out(p)$ stands for ``completion".
 
 \subsubsection{Control Mode Formulas}
 
-For brevity of notation, let $\varphi_m = \pi_m \wedge \bigwedge_{m^\prime \neq m} \lnot \pi_{m^\prime}$.
-Activating $\varphi_m$ takes into account the mutual exclusion between the control modes $m \in \mathcal{M}$.
+For brevity of notation, let $$\varphi_m = \pi_m \wedge \bigwedge_{m^\prime \neq m} \lnot \pi_{m^\prime}$$
+Activating $\varphi_m$, as opposed to $\pi_m$, takes into account the mutual exclusion between control modes $m \in \mathcal{M}$.
+Also let $$\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m,$$
+where $\varphi_\mathcal{M}^{none}$ being $\True$ stands for not activating any control mode transitions, i.e., staying in the same control mode.
 
-The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, such the BDI control mode transition system.
+The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, such as the BDI control mode transition system.
 
 \begin{equation}\label{TransitionRelationFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
-where $\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m$ being $\True$ stands for not activating any control mode transitions, i.e., staying in the same control mode.
 
 The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the BDI control modes.
-\todo[inline, caption = {How to write control mode MutEx formula}]{This formula requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
+\todo[inline, caption = {How to write control mode MutEx formula (slugs)}]{Formula \eqref{TopologyMutexFormula} also requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{TopologyMutexFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Leftrightarrow \bigwedge \limits_{m^\prime \neq m} \LTLX \lnot \pi_{m^\prime}^c \Big)
@@ -115,15 +129,20 @@ The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dic
 	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \pi_m^o \wedge \varphi_\mathcal{M}^{none} \Rightarrow \LTLX \pi_m^o \Big)
 \end{equation}
 
-The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control mode propositions.
+The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control mode transitions.
+This single formula accounts for all control modes.
 
-\begin{subequations}
-	\begin{align}
-		\varphi_\mathcal{M}^{return} = &\bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big)\label{TopologyFairnessConditionsFormula1}\\
-		\varphi_\mathcal{M}^{change} = &\bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \LTLX \lnot \varphi_m \Big)\label{TopologyFairnessConditionsFormula2}\\
-		\LTLG \LTLF \big( \varphi_\mathcal{M}^{return} &\vee \varphi_\mathcal{M}^{change} \vee \varphi_\mathcal{M}^{none} \big)\label{TopologyFairnessConditionsFormula}
-	\end{align}
-\end{subequations}
+%\begin{subequations}
+%	\begin{align}
+%		\varphi_\mathcal{M}^{return} &= \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big)\label{TopologyFairnessConditionsFormula1}\\
+%		\varphi_\mathcal{M}^{change} &= \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \LTLX \lnot \varphi_m \Big)\label{TopologyFairnessConditionsFormula2}\\
+%		\LTLG \LTLF & \big( \varphi_\mathcal{M}^{return} \vee \varphi_\mathcal{M}^{change} \vee \varphi_\mathcal{M}^{none} \big)\label{TopologyFairnessConditionsFormula}
+%	\end{align}
+%\end{subequations}
+
+\begin{equation}\label{TopologyFairnessConditionsFormula}
+	\LTLG \LTLF \Big( \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big) \vee \varphi_\mathcal{M}^{none} \Big)
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -142,13 +161,14 @@ The reason being that, intuitively, if we want something to be an initial condit
 \begin{equation}\label{SystemInitialConditions}
 	\varphi_i^s = \bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \wedge \bigwedge \limits_{j \not \in \mathcal{I}} \lnot \pi_j
 \end{equation}
+\todo[inline, caption = {Where to state memory initial conditions ?}]{Do I move ICs to the end of the section and include memory props explicitly? Or leave them here, but state memory ICs along with ``infinite-to-finite" formulas?}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Specification of Task Goals}
 
-The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormulas} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
+The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormula} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
 In this finite run paradigm, the synthesized state machine (SM) itself has outcomes, $o \in Out(SM)$.
 The propositions corresponding to the SM's outcomes, $\pi_{SM}^o$, are system, not environment, propositions.
 The system propositions, $\mu_g$, serve as memory of having accomplished each goal (c.f. \cite{Vasu2012IROS}).
@@ -157,21 +177,25 @@ The system propositions, $\mu_g$, serve as memory of having accomplished each go
 	\bigwedge \limits_{g \in \mathcal{G}} \lnot \mu_g 
 \end{equation}
 
-\begin{subequations}
-	\label{MemoryFormulas}
-	\begin{align}
-		\bigwedge \limits_{g \in \mathcal{G}} \LTLG& \Big( \LTLX \pi_g^c \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula1}\\
-		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \mu_g \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula2}\\
-		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \lnot \mu_g \wedge \LTLX \lnot \pi_g^c \Rightarrow \LTLX \lnot \mu_g \Big) \label{MemoryFormula3}
-\end{align}
-\end{subequations}
+%\begin{subequations}
+%	\label{MemoryFormulas}
+%	\begin{align}
+%		\bigwedge \limits_{g \in \mathcal{G}} \LTLG& \Big( \LTLX \pi_g^c \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula1}\\
+%		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \mu_g \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula2}\\
+%		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \lnot \mu_g \wedge \LTLX \lnot \pi_g^c \Rightarrow \LTLX \lnot \mu_g \Big) \label{MemoryFormula3}
+%\end{align}
+%\end{subequations}
+
+\begin{equation}\label{MemoryFormula}
+	\bigwedge \limits_{g \in \mathcal{G}} \LTLG \big( \LTLX \pi_g^c \vee \mu_g \Leftrightarrow \LTLX \mu_g \big)
+\end{equation}
 
 \begin{subequations}
 	\label{SMOutcomeFormulas}
 	\begin{align}
-		\LTLG& \Big( \pi_{SM}^{c} \Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
-		\LTLG& \Big( \pi_{SM}^{f} \Leftrightarrow \bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
-		\bigwedge \limits_{o \in Out(SM)} \LTLG& \Big( \pi_{SM}^{o} \Rightarrow \LTLX \pi_{SM}^{o} \Big) \label{SMOutcomePersistenceFormula}
+		\LTLG \Big( \pi_{SM}^{c} \Leftrightarrow &\bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
+		\LTLG \Big( \pi_{SM}^{f} \Leftrightarrow &\bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
+		\bigwedge \limits_{o \in Out(SM)} \LTLG \Big( \pi_{SM}^{o} \Rightarrow &\LTLX \pi_{SM}^{o} \Big) \label{SMOutcomePersistenceFormula}
 	\end{align}
 \end{subequations}
 
@@ -180,14 +204,18 @@ The system propositions, $\mu_g$, serve as memory of having accomplished each go
 \end{equation}
 \todo[inline, caption = {Comment on savings of single liveness requirement ?}]{The time complexity of synthesis is cubic in  the number of liveness requirements. We save by only having one. Although that's probably dominated by the complexity being exponential in the number of propositions.}
 
-Formulas \eqref{MemoryFormulas} do not guarantee that the goals will be achieved in a specific order.
-However, that is often desirable. 
-To account for it, we can define the goals as an ordered set $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, where $g_i < g_j$ for $i<j$, and the relation $g_i < g_j$ means that goal $g_i$ has to be achieved before $g_j$.
-With this definition, we can add the optional safety requirement \eqref{GoalOrderFormula}, whenever strict goal order is desired.
+Formula \eqref{MemoryFormula} does not guarantee that the goals will be achieved in a specific order.
+However, that is often desirable.
+To this end, we can define the goals as an ordered set $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, where $g_i < g_j$ for $i<j$, and the relation $g_i < g_j$ means that goal $g_i$ has to be achieved before $g_j$.
+With this definition, we can replace the safety requirement \eqref{MemoryFormula} with \eqref{GoalOrderFormula}, whenever strict goal order is desired.
 
 \begin{equation}\label{GoalOrderFormula}
-	\bigwedge \limits_{i = 1}^n \LTLG \Big(  \lnot \mu_{g_{i-1}} \Rightarrow \LTLX \lnot \mu_{g_i} \Big), \; \mu_{g_0} \triangleq \True
+%	\bigwedge \limits_{i = 1}^n \LTLG \Big(  \lnot \mu_{g_{i-1}} \Rightarrow \LTLX \lnot \mu_{g_i} \Big), \; \mu_{g_0} \triangleq \True
+	\bigwedge \limits_{i = 1}^n \LTLG \big( (\pi_{g_i} \wedge \LTLX \pi_{g_i}^c) \wedge \mu_{g_{i-1}} \vee \mu_{g_i} \Leftrightarrow \LTLX \mu_{g_i} \big),
 \end{equation}
+where $\mu_{g_0} \triangleq \True$.
+Formula \eqref{GoalOrderFormula} forces the system to carry out goal $g_i$ after it has accomplished goal $g_{i-1}$.
+It can still activate the action corresponding to $\pi_{g_i}$ earlier, as necessitated by other parts of the task, but that will not count towards achievement of $g_i$, as indicated by $\mu_{g_i}$ being $\True$.
 
 Finally, these auxiliary (memory and SM outcome) propositions have to be added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
 
