@@ -3,10 +3,10 @@
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
 Given ATLAS' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $S$, that captures the execution and outcomes of the software implementation of control mode transitions and actions.
-In addition, maintain a mapping, $\mathcal{D}_M : S \rightarrow \mathcal{AP}$, between the elements of the discrete abstraction and the corresponding software components.
+In addition, maintain a mapping, $\mathcal{D}_M : S \rightarrow AP$, between the software components of the system $S$ and the corresponding elements of the discrete abstraction, $\pi \in AP$.
 \end{myProblem}
-\todo[inline, caption = {Properties of mapping $\mathcal{D}_M$}]{In practice, the mapping $\mathcal{D}_M$ is one-to-many. But we can treat it as one-to-one to simplify the things for the paper.}
-\todo[inline, caption = {Mention absence of workspace in $\mathcal{D}$}]{In general, we would have included the robot's workspace in $\mathcal{D}$. However, that was not necessary in the context of the DRC.}
+\todo[inline, caption = {Mathematical properties of mapping $\mathcal{D}_M$}]{In practice, the mapping $\mathcal{D}_M$ is one-to-many. But we can treat it as one-to-one to simplify things for the paper.}
+\todo[inline, caption = {Mention absence of workspace in $\mathcal{D}$}]{In general, we would have included the robot's workspace in $\mathcal{D}$. However, that was not necessary in the context of the DRC. Mention in footnote?}
 
 \begin{myProblem}\label{SpecificationProblem}
 \textbf{(Formal Task Specification):}
@@ -17,5 +17,8 @@ Given a task, in terms of goals $\mathcal{G}$, the task's initial conditions $\m
 \textbf{(Behavior Synthesis):}
 Given a formal task specification, $\mathcal{T}_S$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete, high-level, control strategy that is verifiably guaranteed to satisfy $\mathcal{T}_S$.
 \end{myProblem}
+
+Revisiting Example \ref{Ex:PickupObject}, we could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{approach\_valve}, \mathtt{turn\_valve} \}$ and the initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{STAND} \}$.
+\ldots
 
 % END
