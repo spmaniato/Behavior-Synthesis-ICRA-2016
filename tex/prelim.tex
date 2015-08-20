@@ -2,13 +2,14 @@
 
 \subsection{ATLAS Humanoid Robot}
 
-\ldots Humanoid by Boston Dynamics (see Fig. \ref{Fig:AtlasDoorFinals}), \ldots, BDI control modes (aka ``behaviors"), see Fig. \ref{Fig:ControlModeTS}.
+\ldots Humanoid by Boston Dynamics (see Fig. \ref{Fig:AtlasDoorFinals}), \ldots, BDI control modes (aka ``behaviors"), control mode dictates which joints are controlled by the low-level controllers and which joints the developers can control (see Fig. \ref{Fig:ControlModeTS}).
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/control_modes_ts.png}
-\caption{\ldots
-	\todo[inline, caption = {Create a simple control mode TS figure}]{Placeholder! Create simple control mode TS figure (flat).}
+\caption{Excerpt from the BDI control mode interface.
+Some changes between modes are unidirectional while others are bidirectional.
+After the initial checkout, ATLAS is in the $\mathtt{STAND\_PREP}$ control mode.
 }
 \label{Fig:ControlModeTS}
 %\vspace{-3 pt}
@@ -41,11 +42,11 @@ Example: Fig. \ref{Fig:FlexBESM} \ldots designed manually by Team ViGIR develope
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/behavior_open_door.png}
-\caption{A high-level behavior for carrying out the DRC Finals' ``Door" task.
+\caption{A manually designed high-level behavior for carrying out the DRC Finals' ``Door" task.
 The initial state is indicated by the black arrow originating from the top left.
-This state machine has two outcomes, ``finished" (bottom left) and ``failed" (center).
-This is a hierarchical state machine.
-Yellow states are primitives, gray states are state machines, and purple states are other high-level behaviors embedded in this one.
+The state machine has two outcomes, ``finished" (bottom left) and ``failed" (center).
+It is a hierarchical state machine;
+yellow states are primitives, gray states are state machines, and purple states are other behaviors embedded in this one.
 }
 \label{Fig:FlexBESM}
 \end{figure}
