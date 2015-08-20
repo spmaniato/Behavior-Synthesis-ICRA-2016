@@ -18,18 +18,28 @@ Since LTL is compositional, we can generate individual LTL formulas and then con
 
 \subsubsection{Generic Formulas}
 
-The system safety requirements \eqref{PropositionDeactivationFormula} dictate that an activation proposition should turn $\False$ once an outcome has been returned.
+We say that an activation proposition $\pi_p$, $p \in \{a, m\}$, is $\True$ when the corresponding primitive functionality is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to \cite{Vasu2013ICRA}, where $\pi_p$ being $\False$ stands for the primitive functionality $p$ being \emph{deactivated}, e.g., turning a camera off.}.
+Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_p \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
 
 \begin{equation}\label{PropositionDeactivationFormula}
-	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a \wedge \LTLX \pi_a^o \Rightarrow \LTLX \lnot \pi_a \Big)
+	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \pi_p \wedge \LTLX \pi_p^o \Rightarrow \LTLX \lnot \pi_p \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{OutcomeMutexFormula} dictate that the outcomes of an action are mutually exclusive. 
+The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_p^o$, of the activation of any primitive functionality $p$ are mutually exclusive. 
 For example, an action cannot both succeed and fail.
+Formula \eqref{OutcomeMutexFormula} also allows for no outcome being $\True$.
 \todo[inline, caption = {How to write Outcome MutEx formula (slugs)}]{Formula \eqref{OutcomeMutexFormula} requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{OutcomeMutexFormula}
-	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \LTLX \pi_a^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_a^{o^\prime} \Big)
+	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \LTLX \pi_p^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_p^{o^\prime} \Big)
+\end{equation}
+
+The environment safety assumption \eqref{ActionOutcomeConstraintFormula} constraints the value of outcomes.
+Specifically, it dictates that, if an outcome is $\False$ and the corresponding primitive functionality is not being activated, then that outcome should remain $\False$.
+It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
+
+\begin{equation}\label{ActionOutcomeConstraintFormula}
+	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \lnot \pi_p^o \wedge \lnot \pi_p \Rightarrow \LTLX \lnot \pi_p^o \Big)
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,11 +48,11 @@ For example, an action cannot both succeed and fail.
 
 The following formulas encode the connection between the activation and the possible outcomes of the robot's actions, $a \in \mathcal{A}$.
 
-The environment safety assumptions \eqref{ActionOutcomeConstraintFormula} govern the value of outcomes in the next time step. 
-%Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
-Specifically, formula \eqref{ActionOutcomeConstraintFormula} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
-%This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
-It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
+%The environment safety assumptions \eqref{ActionOutcomeConstraintFormula} govern the value of outcomes in the next time step. 
+%%Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
+%Specifically, formula \eqref{ActionOutcomeConstraintFormula} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
+%%This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
+%It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 
 %\begin{subequations}
 %	\label{ActionOutcomeConstraintsFormula}
@@ -52,9 +62,9 @@ It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 %	\end{align}
 %\end{subequations}
 
-\begin{equation}\label{ActionOutcomeConstraintFormula}
-	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)
-\end{equation}
+%\begin{equation}\label{ActionOutcomeConstraintFormula}
+%	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)
+%\end{equation}
 
 The environment safety assumptions \eqref{ActionOutcomePersistenceFormula} dictate that the value of an outcome should not change if the corresponding action has not been activated again. 
 In other words, outcomes persist.
@@ -117,11 +127,11 @@ The environment safety assumptions \eqref{SingleStepChangeFormula} govern how th
 	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{m^\prime \in Adj(m)} \LTLG \Big( \pi_m^c \wedge  \varphi_{m^\prime} \Rightarrow \big( \LTLX \pi_{m}^c \bigvee \limits_{o \in Out(m^\prime)} \LTLX \pi_{m^\prime}^o \big) \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes control mode transitions.
-
-\begin{equation}\label{TopologyOutcomeConstraintFormula}
-	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \lnot \pi_m^o \wedge \lnot \pi_m \Rightarrow \LTLX \lnot \pi_m^o \Big)
-\end{equation}
+%The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes control mode transitions.
+%
+%\begin{equation}\label{TopologyOutcomeConstraintFormula}
+%	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \lnot \pi_m^o \wedge \lnot \pi_m \Rightarrow \LTLX \lnot \pi_m^o \Big)
+%\end{equation}
 
 The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dictate that the value of the outcomes of control mode transitions must not change if no transition is being activated, i.e., they must persist.
 
