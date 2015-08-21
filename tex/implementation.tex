@@ -31,4 +31,19 @@ Finally, the server requests a state instantiation message from the State Machin
 The resulting message contains instructions that FlexBE can use to generate Python code: an executable state machine that instantiates the synthesized automaton.
 The corresponding action, services, and messages are defined in the $\mathtt{vigir\_synthesis\_msgs}$ package.
 
+%\begin{algorithm}[t]
+The following excerpt\footnote{We have omitted some details for the sake of brevity and clarity of presentation. For example, most list elements are strings, e.g., \scriptsize{\texttt{"template\_id"}}.}
+ is from the State Instantiation list message, which is the end product of $\mathtt{vigir\_behavior\_synthesis}$ (see Fig. \ref{Fig:vigir_behavior_synthesis}).
+Specifically, this excerpt corresponds to the primitive $\mathtt{object\_template}$, which appears in Fig. \ref{Fig:stand_and_pick_sm}.
+This message provides the FlexBE Editor with sufficient information to generate Python code.
+
+\begin{description}
+\setlength{\itemindent}{-.4in}
+	\item \scriptsize{\texttt{state\_path: /4\_object\_template}}	\item \scriptsize{\texttt{state\_class: InputState}}	\item \scriptsize{\texttt{parameter\_names: [request]}}	\item \scriptsize{\texttt{parameter\_values: [InputState.SELECTED\_OBJECT\_ID]}}	\item \scriptsize{\texttt{outcomes: [no\_connection, aborted, received, data\_error]}}	\item \scriptsize{\texttt{transitions: [failed, failed, 6\_manipulate, failed]}}	\item \scriptsize{\texttt{autonomy: [0]}}	\item \scriptsize{\texttt{userdata\_keys: [data]}}	\item \scriptsize{\texttt{userdata\_remapping: [template\_id]}}
+\end{description}
+
+%\caption{Excerpt from $\mathtt{State Instantiation}$ message}
+%\label{Alg:StateInstantiation}
+%\end{algorithm}
+
 % END
