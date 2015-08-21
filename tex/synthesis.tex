@@ -1,9 +1,12 @@
 % !TEX root = ../main.tex
 
-\ldots
+We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
+First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{piterman_06} and Section \ref{S:GR1}).
+Specifically, we employ the synthesis algorithm in \cite{SLUGS}, which can handle a slightly larger fragment of LTL than GR(1).
+Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as in formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula}.
+This algorithm was first used in \cite{Vasu2013ICRA}.
+\todo[inline, caption = {Properly mention SLUGS' fragment}]{@HKG, is it true that Vasu's paper was the first case of synthesis for this fragment? Had Ruediger used it before?}
 
-\subsection{Proposition Grounding}
-
-\todo[inline, caption = {Mapping multiple outcomes to one proposition}]{Comment on the possibility of mapping multiple outcomes to one proposition, since it appears in Fig. \ref{Fig:stand_and_pick_sm}}
+Second, we use the mapping $\mathcal{D}_M^{-1}: AP \rightarrow S$ to instantiate the abstract automaton as a concrete software implementation, i.e., an executable state machine in the SMACH/FlexBE framework (see Section \ref{S:FlexBE}).
 
 % END
