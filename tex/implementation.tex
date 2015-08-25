@@ -8,14 +8,15 @@ Figure \ref{Fig:vigir_behavior_synthesis} depicts these packages as well as the 
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/behavior_synthesis_packages.png}
 \caption{Team ViGIR's ``Behavior Synthesis" ROS packages and the nominal workflow (clockwise, starting from the left).
-\todo[inline, caption = {Update ROS packages figure}]{(i) Add ReSpeC to the image (move msgs to the left) (ii) Either number all arrows or none (iii) If I end up renaming LTLCompilation srv, update image accordingly.}
+\todo[inline, caption = {Update ROS packages figure}]{(i) Add ReSpeC to image (move msgs to the left) (ii) Either number all steps or none (iii) Rename 3 services.}
 }
 \label{Fig:vigir_behavior_synthesis}
 \end{figure}
 
 The synthesis action server ($\mathtt{vigir\_synthesis\_manager}$) receives a request from the user via FlexBE's GUI.
-Given the user's input (initial conditions and goals), the server first requests a full set of LTL formulas for ATLAS from the LTL Compilation service ($\mathtt{vigir\_ltl\_specification}$).
-The generation of the LTL formulas from Section \ref{S:ltl} is delegated to our ``Reactive Specification Construction kit," which is a ROS-independent Python framework\footnote{\scriptsize{\url{https://github.com/team-vigir/ReSpeC}}}.
+Given the user's input (initial conditions and goals), the server first requests a full set of LTL formulas for ATLAS from the $\mathtt{Generate LTL Specification}$ service ($\mathtt{vigir\_ltl\_specification}$ package).
+The generation of the LTL formulas from Section \ref{S:ltl} is delegated to our ``Reactive Specification Construction kit" (ReSpeC),\footnote{\scriptsize{\url{https://github.com/team-vigir/ReSpeC}}}
+ which is a Python framework with rudimentary ROS integration.
 
 \begin{figure}[t]
 \centering
@@ -25,21 +26,28 @@ The generation of the LTL formulas from Section \ref{S:ltl} is delegated to our 
 \label{Fig:SynthesisMenuSimple}
 \end{figure}
 
-The LTL Synthesis service ($\mathtt{vigir\_ltl\_synthesizer}$) acts as a wrapper for an external synthesis tool (currently, \cite{SLUGS} is supported).
-Upon request, it returns an automaton that is guaranteed to satisfy the LTL specification, if one exists.
-Finally, the server requests a state instantiation message from the State Machine Generation service ($\mathtt{vigir\_sm\_generation}$).
-The resulting message contains instructions that FlexBE can use to generate Python code: an executable state machine that instantiates the synthesized automaton.
+The $\mathtt{vigir\_ltl\_synthesizer}$ package acts as a wrapper for external synthesis tools (currently, \cite{SLUGS} is supported).
+Given the generated LTL specification, the $\mathtt{Synthesize Automaton}$ service returns a finite-state automaton that is guaranteed to satisfy it, if one exists.
+Finally, the server requests a $\mathtt{State Instantiation}$ message from the $\mathtt{Generate FlexBE SM}$ service ($\mathtt{vigir\_sm\_generation}$ package).
+This message provides the FlexBE Editor with sufficient information to generate Python code, i.e., an executable state machine that instantiates the synthesized automaton.
 The corresponding action, services, and messages are defined in the $\mathtt{vigir\_synthesis\_msgs}$ package.
 
 %\begin{algorithm}[t]
 The following excerpt\footnote{We have omitted some details for the sake of brevity and clarity of presentation. For example, most list elements are strings, e.g., \scriptsize{\texttt{"template\_id"}}.}
- is from the State Instantiation list message, which is the end product of $\mathtt{vigir\_behavior\_synthesis}$ (see Fig. \ref{Fig:vigir_behavior_synthesis}).
-Specifically, this excerpt corresponds to the primitive $\mathtt{object\_template}$, which appears in Fig. \ref{Fig:stand_and_pick_sm}.
-This message provides the FlexBE Editor with sufficient information to generate Python code.
+ is from the $\mathtt{State Instantiation}$ list message, which is the end product of the $\mathtt{vigir\_behavior\_synthesis}$ workflow (see Fig. \ref{Fig:vigir_behavior_synthesis}).
+Specifically, this excerpt corresponds to the primitive functionality $\mathtt{object\_template}$, which appears in Fig. \ref{Fig:stand_and_pick_sm}.
 
 \begin{description}
 \setlength{\itemindent}{-.4in}
-	\item \scriptsize{\texttt{state\_path: /4\_object\_template}}	\item \scriptsize{\texttt{state\_class: InputState}}	\item \scriptsize{\texttt{parameter\_names: [request]}}	\item \scriptsize{\texttt{parameter\_values: [InputState.SELECTED\_OBJECT\_ID]}}	\item \scriptsize{\texttt{outcomes: [no\_connection, aborted, received, data\_error]}}	\item \scriptsize{\texttt{transitions: [failed, failed, 6\_manipulate, failed]}}	\item \scriptsize{\texttt{autonomy: [0]}}	\item \scriptsize{\texttt{userdata\_keys: [data]}}	\item \scriptsize{\texttt{userdata\_remapping: [template\_id]}}
+	\item \scriptsize{\texttt{state\_path: /4\_object\_template}}
+	\item \scriptsize{\texttt{state\_class: InputState}}
+	\item \scriptsize{\texttt{parameter\_names: [request]}}
+	\item \scriptsize{\texttt{parameter\_values: [InputState.SELECTED\_OBJECT\_ID]}}
+	\item \scriptsize{\texttt{outcomes: [no\_connection, aborted, received, data\_error]}}
+	\item \scriptsize{\texttt{transitions: [failed, failed, 6\_manipulate, failed]}}
+	\item \scriptsize{\texttt{autonomy: [0]}}
+	\item \scriptsize{\texttt{userdata\_keys: [data]}}
+	\item \scriptsize{\texttt{userdata\_remapping: [template\_id]}}
 \end{description}
 
 %\caption{Excerpt from $\mathtt{State Instantiation}$ message}
