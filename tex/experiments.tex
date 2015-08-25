@@ -1,18 +1,22 @@
 % !TEX root = ../main.tex
 
-\ldots Also see video attachment
+Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
+However, we later carried out experimental demonstrations on ATLAS in the lab.
+Due to a hardware issue, ATLAS could not locomote.
+Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
+We summarize these demonstrations below.
+Please also refer to the accompanying video.
 
-\todo[inline, caption = {Synthesis time as a function to number of actions ?}]{Provide data on how computationally costly/cheap behavior synthesis is. Time vs number of actions?}
+\subsection{Behavior Development using Synthesis}
 
-\subsection{Synthesis from scratch}
-
-``stand and pick" demo\footnote{The generated LTL specification and synthesized automaton are available at: \scriptsize{\url{https://gist.github.com/spmaniato/c37fb12e874c73d986da}}}
+In the first experimental demo, we show how a high-level behavior is specified and synthesized starting from scratch\footnote{The generated LTL specification and synthesized automaton are available at: \scriptsize{\url{https://gist.github.com/spmaniato/c37fb12e874c73d986da}}}.
+Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}), it is ready for execution (Fig. \ref{Fig:stand_and_pick_gopro}).
 
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[b]{0.99\columnwidth}
 	\includegraphics[width=0.99\columnwidth,clip]{./img/stand_and_pick_sm.png}
-	\caption{The state machine synthesized for the task $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{look\_down}, \mathtt{pickup\_object} \}$.
+	\caption{The state machine above was synthesized for the task with $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{look\_down}, \mathtt{pickup\_object} \}$.
 	}
 	\label{Fig:stand_and_pick_sm}
 	\end{subfigure}
@@ -20,24 +24,30 @@
 	\vspace{4 pt}
 	\begin{subfigure}[b]{0.95\columnwidth}
 	\includegraphics[width=0.99\columnwidth, clip]{./img/stand_and_pick_gopro.png}
-	\caption{\ldots
+	\caption{ATLAS finishing execution of state $\mathtt{8\_pickup\_object}$.
 	} 
-	\label{Fig:runtime2}
+	\label{Fig:stand_and_pick_gopro}
 	\end{subfigure}
 	\caption{These correspond to the first part of the video attachment.
 	}
 	\label{Fig:stand_and_pick_demo}
 \end{figure}
 
-\subsection{Synthesis on-the-fly}
+\subsection{Online Modifications using Synthesis}
 
-``synthesis\_runtime\_4" demo \ldots
+For the second experimental demonstration, consider a scenario where the operator has designed a state machine that addresses a high-level task (either manually or via synthesis).
+ATLAS is then deployed and starts carrying out this task.
+If, during execution, an \emph{unexpected} situation arises, the operator can use FlexBE's runtime modification capability (Fig. \ref{Fig:synthesis_runtime_demo}).
+In this case, behavior execution is ``locked" (paused) at some state (Fig. \ref{Fig:runtime1}) and the operator specifies a new high-level behavior meant to address the unexpected situation.
+Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is connected to the previous one (Fig. \ref{Fig:runtime1}), and execution resumes.
 
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[b]{0.99\columnwidth}
 	\includegraphics[width=0.99\columnwidth, clip]{./img/synthesis_runtime_connect_sm.png}
-	\caption{\ldots
+	\caption{The operator ``locks" the initial state machine at the state $\mathtt{6\_manipulate}$ (indicated by the orange color), which is allowed to be executed.
+	Then, a new state machine, $\mathtt{back\_up}$, is synthesized with $\mathtt{manipulate}$ as the initial condition.
+	The transition from $\mathtt{6\_manipulate}$ is then moved from $\mathtt{8\_grasp\_object}$ to $\mathtt{back\_up}$.
 	} 
 	\label{Fig:runtime1}
 	\end{subfigure}
@@ -45,13 +55,21 @@
 	\vspace{4 pt}
 	\begin{subfigure}[b]{0.99\columnwidth}
 	\includegraphics[width=0.99\columnwidth, clip]{./img/synthesis_runtime_synthesized_sm.png}
-	\caption{The state machine was synthesized from $\mathcal{I} = \{ \mathtt{manipulate} \}$ and $\mathcal{G} = \{ \mathtt{footstep\_execution} \}$.
+	\caption{The new state machine, $\mathtt{back\_up}$, was synthesized for the task with $\mathcal{I} = \{ \mathtt{manipulate} \}$ and $\mathcal{G} = \{ \mathtt{footstep\_execution} \}$.
 	} 
 	\label{Fig:runtime2}
 	\end{subfigure}
-	\caption{Snapshots from \ldots They correspond to the second part of the video attachment.
+	\caption{During execution of the $\mathtt{stand\_and\_grasp}$ state machine, an unexpected situation arises.
+	In response, the operator pauses execution and specifies a high-level behavior to have ATLAS back away from the object (\ref{Fig:runtime2}).
+	These snapshots correspond to the second part of the video attachment.
 	}
 	\label{Fig:synthesis_runtime_demo}
 \end{figure}
+
+\subsection{Infinite execution or Footstep stuff (simulation)}
+
+For example, ``From stand-prep, walk to object, pick it up, (go to stand-manipulate), carry object, release, and repeat"
+
+\todo[inline, caption = {Synthesis time as a function to number of actions ?}]{Provide data on how computationally costly/cheap behavior synthesis is. Time vs number of actions?}
 
 % END
