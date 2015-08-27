@@ -1,52 +1,72 @@
 % !TEX root = ../main.tex
 
-\subsection{ATLAS Humanoid Robot}
+\subsection{\textsc{Atlas} Humanoid Robot}
 
-\ldots Humanoid by Boston Dynamics (see Fig. \ref{Fig:AtlasDoorFinals}), \ldots, BDI control modes (aka ``behaviors"), control mode dictates which joints are controlled by the low-level controllers and which joints the developers can control (see Fig. \ref{Fig:ControlModeTS}).
+\textsc{Atlas} (Fig. \ref{Fig:AtlasDoorFinals}) is an anthropomorphic robot developed by Boston Dynamics, Inc. (BDI). 
+Team ViGIR chose to leverage the basic capabilities provided by the Boston Dynamics Application Programming Interface (API).
+In the context of this work, we are especially interested in BDI's ``control mode" interface (Fig. \ref{Fig:ControlModeTS}).
+The active control mode dictates which joints are controlled by the low-level BDI controllers and which joints we can command.
+For example, in \textsc{stand} and \textsc{manipulate} BDI's software handles balancing.
+
+\textsc{Atlas} is equipped with a number of sensors, most notably a Carnegie Robotics Multisense SL\footnote{\scriptsize{\url{http://carnegierobotics.com/multisense-sl}}} mounted as the head.
+For the DRC Finals, \textsc{Atlas} was equipped with two Robotiq 3-finger hands,\footnote{\scriptsize{\url{http://robotiq.com/products/industrial-robot-hand}}} providing manipulation capabilities.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/control_modes_ts.png}
 \caption{Excerpt from the BDI control mode interface.
-Some changes between modes are unidirectional while others are bidirectional.
-After the initial checkout, ATLAS is in the $\mathtt{STAND\_PREP}$ control mode.
+Some changes between modes (depicted as arrows) are unidirectional while others are bidirectional.
+After Team ViGIR's initial checkout, \textsc{Atlas} is in the \textsc{stand\_prep} control mode.
 }
 \label{Fig:ControlModeTS}
 %\vspace{-3 pt}
 \end{figure}
 
-\subsection{Team ViGIR's Approach}
+\subsection{Team ViGIR's Approach to the DRC Finals}
 
-\subsubsection{Something}  \ldots \cite{ROS2009ICRA, ROS} \ldots Briefly touch on our software approach \cite{TeamViGIR2014JFR}, especially control modes and templates \cite{Alberto2014Humanoids}. Just enough for the ``High-level Control" subsection and the experimental demos to make sense.
+Team ViGIR based its software on the Robot Operating System (ROS) \cite{ROS2009ICRA, ROS}.
+In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
+For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
+From this point on, we will refer to \textsc{Atlas} running Team ViGIR's software as the \emph{system}.
+\todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
 
-Define \emph{system} as ATLAS plus Team ViGIR software.
+%\subsubsection{Major Software Components}
+As mentioned, Team ViGIR uses BDI's control mode interface.
+This means that some system capabilities are preconditioned on a certain control mode being active.
+For example, in order to execute an arm trajectory, the system must be in \textsc{manipulate}.
+In addition, the system's operation has to respect the constraints on the possible control mode changes (Fig. \ref{Fig:ControlModeTS}).
 
-\subsubsection{High-level Control}\label{S:FlexBE}
+In terms of manipulation, Team ViGIR employs the concept of object templates \cite{Alberto2014Humanoids}.
+In brief, the system presents the human operator with perception data, e.g., a point cloud.
+Then, the operator detects objects of interest and overlays an object template on top of them.
+These templates contain metadata, such as relative robot poses from which the object is reachable, relative pre-grasp and grasp end-effector poses, as well as finger configurations corresponding to different grasps.
+In addition, object templates provide manipulation affordances.
+For instance, the ``door" template provides affordances such as ``turn (handle) clockwise" and ``push".
+\todo[inline, caption = {Improve description of object templates}]{Skim Albert's paper and improve this description of OT.}
 
-\ldots SMACH \cite{SMACH2010RAM}, Behavior control \cite{Philipp2013Bsc, Philipp2015Msc} FlexBE\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}}
-, GUI\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}}
-, behaviors and states\footnote{\scriptsize{\url{https://github.com/team-vigir/vigir_behaviors}}}.
+\subsubsection*{High-level Control}\label{S:FlexBE}
+Team ViGIR's approach to high-level control is especially relevant to this work.
+Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE) \cite{Philipp2013Bsc, Philipp2015Msc}, which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
 
-Some incomplete notes from Philipp's work. Not sure yet how much detail is needed here.
-\todo[inline, caption = {Make FlexBE and Synthesis notation consistent}]{Philipp's definitions differ slightly from the synthesis literature. Ensure that we end up with consistent notation.}
-\begin{itemize}
-	\item A primitive $p \in P$ is any atomic capability of the robot.
-	\item A state $s \in S$ interfaces functionality with behaviors, where the set of all state implementations $S$ includes states based on primitives $S_p \subseteq S$. Each state defines outcomes $s_{Oc}$ and execution of a state is terminated by returning one outcome matching the result of execution $oc \in s_{Oc}$.
-	\item A state machine SM composes a set of states $S_{SM}$, where each state $s(i) \in S_{SM}$ is the instantiation of a state implementation $s \in S$.
-	\item Each state machine SM defines userdata $D_{SM}$
-	\item A behavior B is implemented by its state machine $B_{SM}$.
-\end{itemize}
+Based on the FlexBE framework, developers create ``state implementations", $s \in S$.
+These are small, atomic blocks of code that each interact with some primitive, lower-level, system functionality, $p \in P$.
+Furthermore, each state implementation defines a number of outcomes $Out(s)$, e.g. ``done", ``failed", ``aborted".
+The state implementations can be composed to form hierarchical state machines (SM), which encode the logic of execution as well as the flow of data.
+State machines also have outcomes themselves.
+The top-level state machine will be referred to as a ``behavior".\footnote{\scriptsize{\url{https://github.com/team-vigir/vigir_behaviors}}}
+All states of a state machine, $S_{SM}$, are parametrized instantiations of the state implementations.
+The composition of new state machines is done manually by an expert user.
 
-Example: Fig. \ref{Fig:FlexBESM} \ldots designed manually by Team ViGIR developers using the FlexBE Editor (graphical user interface).
+Finally, development of behaviors and supervision of execution takes place in FlexBE's graphical user interface\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}} (GUI).
+Figure \ref{Fig:FlexBESM} depicts an example of a high-level behavior designed manually in FlexBE GUI's Editor.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/behavior_open_door.png}
 \caption{A manually designed high-level behavior for carrying out the DRC Finals' ``Door" task.
 The initial state is indicated by the black arrow originating from the top left.
-The state machine has two outcomes, ``finished" (bottom left) and ``failed" (center).
-It is a hierarchical state machine;
-yellow states are primitives, gray states are state machines, and purple states are other behaviors embedded in this one.
+The behavior has two outcomes, ``finished" (bottom left) and ``failed" (center).
+Yellow states are parametrized state implementations, gray states are state machines, and purple states are other high-level behaviors embedded in this one.
 }
 \label{Fig:FlexBESM}
 \end{figure}
