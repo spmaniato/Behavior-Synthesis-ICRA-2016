@@ -1,8 +1,8 @@
 % !TEX root = ../main.tex
 
 Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
-However, we later carried out experimental demonstrations on ATLAS in the lab.
-Due to a hardware issue, ATLAS could not locomote.
+However, we later carried out experimental demonstrations on \textsc{Atlas} in the lab.
+Due to a hardware issue, \textsc{Atlas} could not locomote.
 Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
 We summarize these demonstrations below.
 Please also refer to the accompanying video.
@@ -24,7 +24,7 @@ Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}),
 	\vspace{4 pt}
 	\begin{subfigure}[b]{0.95\columnwidth}
 	\includegraphics[width=0.99\columnwidth, clip]{./img/stand_and_pick_gopro.png}
-	\caption{ATLAS finishing execution of state $\mathtt{8\_pickup\_object}$.
+	\caption{\textsc{Atlas} finishing execution of state $\mathtt{8\_pickup\_object}$.
 	} 
 	\label{Fig:stand_and_pick_gopro}
 	\end{subfigure}
@@ -36,7 +36,7 @@ Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}),
 \subsection{Online Modifications using Synthesis}
 
 For the second experimental demonstration, consider a scenario where the operator has designed a state machine that addresses a high-level task (either manually or via synthesis).
-ATLAS is then deployed and starts carrying out this task.
+\textsc{Atlas} is then deployed and starts carrying out this task.
 If, during execution, an \emph{unexpected} situation arises, the operator can use FlexBE's runtime modification capability (Fig. \ref{Fig:synthesis_runtime_demo}).
 In this case, behavior execution is ``locked" (paused) at some state (Fig. \ref{Fig:runtime1}) and the operator specifies a new high-level behavior meant to address the unexpected situation.
 Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is connected to the previous one (Fig. \ref{Fig:runtime1}), and execution resumes.
@@ -60,7 +60,7 @@ Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is con
 	\label{Fig:runtime2}
 	\end{subfigure}
 	\caption{During execution of the $\mathtt{stand\_and\_grasp}$ state machine, an unexpected situation arises.
-	In response, the operator pauses execution and specifies a high-level behavior to have ATLAS back away from the object (\ref{Fig:runtime2}).
+	In response, the operator pauses execution and specifies a high-level behavior to have \textsc{Atlas} back away from the object (\ref{Fig:runtime2}).
 	These snapshots correspond to the second part of the video attachment.
 	}
 	\label{Fig:synthesis_runtime_demo}

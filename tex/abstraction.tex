@@ -2,10 +2,10 @@
 
 \subsection{Control Modes \& Actions}
 
-We model ATLAS' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
+We model \textsc{Atlas}' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
 In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prime) \in \; \boldsymbol\rightarrow \}$ and also allow self-transitions, i.e., $m \in Adj(m), \; \forall m \in \mathcal{M}$.
 
-Furthermore, ATLAS can perform actions. Each action, $a \in \mathcal{A}$, corresponds to an atomic capability of the system, e.g., generation of a footstep plan or closing the robot's fingers.
+Furthermore, \textsc{Atlas} can perform actions. Each action, $a \in \mathcal{A}$, corresponds to an atomic capability of the system, e.g., generation of a footstep plan or closing the robot's fingers.
 Actions may also have one or more preconditions.
 Action preconditions can be control modes or other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$, $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
 
@@ -14,7 +14,7 @@ Action preconditions can be control modes or other actions, i.e., $Prec(a) \in 2
 \todo[inline, caption = {Activation--Outcomes or just Completion-Failure ?}]{Write LTL formulas in terms of any possible outcome, $o \in Out(a)$, or only of completion and failure, $\{c, f\}$?}
 
 We adopt a paradigm that generalizes the one in \cite{Vasu2013ICRA}.
-We abstract the discrete actions, $a \in \mathcal{A}$, that ATLAS can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
+We abstract the discrete actions, $a \in \mathcal{A}$, that \textsc{Atlas} can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
 Similarly,\footnote{The distinction between action and control mode propositions is purely for the sake of clarity of notation. There is nothing special about either.}
 for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_m$ and a number of outcome propositions $\pi_m^o$.
 For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$
