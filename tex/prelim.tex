@@ -48,17 +48,17 @@ For instance, the ``door" template provides affordances such as ``turn (handle) 
 Team ViGIR's approach to high-level control is especially relevant to this work.
 Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE) \cite{Philipp2013Bsc, Philipp2015Msc}, which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
 
-Based on the FlexBE framework, developers create ``state implementations", $s \in S$.
-These are small, atomic blocks of code that each interact with some primitive, lower-level, system functionality, $p \in P$.
-Furthermore, each state implementation defines a number of outcomes $Out(s)$, e.g. ``done", ``failed", ``aborted".
+Based on the FlexBE framework, developers create ``state implementations", $\mathsf{s} \in \mathsf{S}$.
+These are small, atomic blocks of code that each interact with some primitive, lower-level, system capability, $\mathsf{p} \in \mathsf{P}$.
+Furthermore, each state implementation defines a number of outcomes $Out(\mathsf{s})$, e.g. $\{ \mathtt{done}, \mathtt{failed}, \mathtt{aborted} \}$.
 The state implementations can be composed to form hierarchical state machines (SM), which encode the logic of execution as well as the flow of data.
 State machines also have outcomes themselves.
 The top-level state machine will be referred to as a ``behavior".\footnote{\scriptsize{\url{https://github.com/team-vigir/vigir_behaviors}}}
-All states of a state machine, $S_{SM}$, are parametrized instantiations of the state implementations.
-The composition of new state machines is done manually by an expert user.
+All states of a state machine are parametrized instantiations of the state implementations $\mathsf{S}$.
+The composition of new state machines is historically done manually by an expert user.
 
-Finally, development of behaviors and supervision of execution takes place in FlexBE's graphical user interface\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}} (GUI).
-Figure \ref{Fig:FlexBESM} depicts an example of a high-level behavior designed manually in FlexBE GUI's Editor.
+Finally, composition of behaviors and supervision of their execution takes place in FlexBE's graphical user interface\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}} (GUI).
+Figure \ref{Fig:FlexBESM} depicts an example of a high-level behavior designed manually in the FlexBE GUI's editor.
 
 \begin{figure}[t]
 \centering
@@ -73,9 +73,13 @@ Yellow states are parametrized state implementations, gray states are state mach
 
 \subsection{Linear Temporal Logic and Reactive LTL Synthesis}\label{S:GR1}
 
-\ldots Atomic propositions, LTL, environment vs system, etc.
+Linear Temporal Logic (\textsc{ltl}) is a formal language that combines Boolean ($\lnot$, $\wedge$, $\lor$) and temporal (next $\LTLX$, until $\mathcal{U}$) operators.
+Additional temporal operators, always $\LTLG$, eventually $\LTLF$, can be derived from those.
+\textsc{Ltl} formulas are constructed from Boolean atomic propositions $\pi \in AP$.
+In the context of our work, the set of atomic propositions, $AP$, consists of propositions controlled by the system, $\mathcal{Y}$, and propositions controlled by the dynamic, and possibly adversarial, environment, $\mathcal{X}$. That is, $AP = \mathcal{X} \cup \mathcal{Y}$.
 
-GR(1) formulas $\varphi$ have an assume-guarantee structure between the environment ($e$) and the system ($s$):
+In order to synthesize \emph{reactive} mission plans in a computationally tractable manner, we use the \textsc{gr(1)} fragment of \textsc{ltl} \cite{piterman_06}.
+\textsc{Gr(1)} formulas $\varphi$ have an assume-guarantee structure between the dynamic environment ($e$) and the system ($s$):
 %$\varphi = (\varphi_e \Rightarrow \varphi_s)$, where:
 %$$\varphi_e = \varphi_e^i \wedge \varphi_e^t \wedge \varphi_e^g, \; \varphi_s = \varphi_s^i \wedge \varphi_s^t \wedge \varphi_s^g,$$
 \begin{equation}\label{GR1Formula}
@@ -85,9 +89,11 @@ GR(1) formulas $\varphi$ have an assume-guarantee structure between the environm
 	\varphi_s &= \varphi_s^i \wedge \varphi_s^t \wedge \varphi_s^g,
 \end{split}
 \end{equation}
-where the superscript $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $g$ liveness assumptions/requirements (goals) for the environment and the system, respectively. 
+where the superscript $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $g$ liveness assumptions/requirements (i.e., goals) for $e$ and $s$, respectively. 
 
-GR(1) Synthesis \cite{piterman_06} \ldots The result is a finite-state automaton; specifically, a Mealy machine.
-\todo[inline, caption = {If enough space, define Mealy machine}]{If there's any space left, define the FSA/Mealy machine mathematically. Possibly connect to FlexBE SMs.}
+\textsc{Gr(1)} synthesis involves setting up a two-player game between $e$ and $s$ \cite{piterman_06}.
+If a \textsc{gr(1)} specification $\varphi$ is realizable for $s$, we can extract a finite-state automaton; specifically, a Mealy machine. 
+This automaton encodes a strategy for $s$ that guarantees $\varphi_s$ for any evolution of $e$ that satisfies $\varphi_e$.
+\todo[inline, caption = {If enough space, define Mealy machine}]{If there's any space left, define the FSA/Mealy machine mathematically. Possibly connect to FlexBE SMs later.}
 
 % END
