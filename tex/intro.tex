@@ -25,7 +25,7 @@
 	\end{itemize}	
 	\item Multi-paradigm specification (objectives and initial conditions from user, topology/modes, preconditions, task)
 	\todo[inline, caption = {Consider mutex for grounding conflicts in this paper?}]{Also consider mutex for grounding conflicts?}
-	\item Generalization of activation--completion paradigm \cite{Vasu2013ICRA}
+	\item Generalization of activation--completion paradigm \cite{Vasu2013ICRA} Formalize how we deal with failures (and other outcomes). Graceful degradation. Human operators also included in environment.
 	\item Integration with FlexBE and ROS
 	\item Experimental validation on \textsc{Atlas}
 \end{itemize}
@@ -33,11 +33,12 @@
 \subsubsection*{Literature Survey}
 \begin{itemize}
 	\item Vasu's ``fast-slow" paradigm \cite{Vasu2013ICRA}
-	\item Alternatives to GR(1) Synthesis
+	\item Alternatives to LTL and GR(1) Synthesis
 	\begin{itemize}
-		\item STRIPS-type planners
-		\item Optimization-based LTL synthesis (Eric Wolff et al.)
-		\item \textbf{co-safe LTL} (Lydia Kavraki, Calin Belta, etc.)
+		\item Classic AI planners, STRIPS-type planners
+		\item Optimization-based LTL synthesis (Eric Wolff)
+		\item \textbf{co-safe LTL} (Lydia Kavraki, Calin Belta, etc.) We \emph{could} have used it as a different formalism and generated FlexBE state machines that way.
+		\todo[inline, caption = {Comparison of GR(1) to co-safe LTL}]{Check whether co-safe LTL encodes reactivity w.r.t. adversarial environment (worst case)}
 	\end{itemize}
 \end{itemize}
 

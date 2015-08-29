@@ -8,10 +8,11 @@ In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prim
 Furthermore, \textsc{Atlas} can perform actions. Each action, $a \in \mathcal{A}$, corresponds to an atomic capability of the system, e.g., generation of a footstep plan or closing the robot's fingers.
 Actions may also have one or more preconditions.
 Action preconditions can be control modes or other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$, $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
+\todo[inline, caption = {What is the Discrete Abstraction exactly?}]{Are actions, preconditions, and the control mode TS part of the discrete abstraction or should they be defined in the Preliminaries instead? What is $\mathcal{D}$ mathematically?}
 
 \subsection{Atomic Propositions}
 
-\todo[inline, caption = {Activation--Outcomes or just Completion-Failure ?}]{Write LTL formulas in terms of any possible outcome, $o \in Out(a)$, or only of completion and failure, $\{c, f\}$?}
+\todo[inline, caption = {Define props in terms of FlexBE states?}]{Similar to question about $\mathcal{D}_M$. Define atomic propositions in terms of FlexBE states or primitive capabilities?}
 
 We adopt a paradigm that generalizes the one in \cite{Vasu2013ICRA}.
 We abstract the discrete actions, $a \in \mathcal{A}$, that \textsc{Atlas} can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
@@ -29,9 +30,14 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 \end{subequations}
 where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
 
-\subsection{Proposition Grounding / Mapping}
+\subsection{Proposition Mapping}
 
-\todo[inline, caption = {Explicit ``solution" to Problem \ref{DiscreteAbstractionProblem}}]{Now that we have props, show what $\mathcal{D}_M$ looks like.}
-\todo[inline, caption = {Mapping multiple outcomes to one proposition}]{Comment on the possibility of mapping multiple outcomes to one proposition, since it appears in Fig. \ref{Fig:stand_and_pick_sm}}
+The mapping $\mathcal{D}_M : AP \rightarrow \mathsf{S_P}$ from Problem \ref{DiscreteAbstractionProblem} relates parametrized FlexBE state implementations with atomic propositions.
+Specifically, each activation proposition $\pi_p$ is mapped to the execution of a parametrized state implementation $\mathsf{s}_p$.
+In addition, each outcome proposition $\pi_p^o$ is mapped to an outcome $o \in Out(\mathsf{s})$ of the state implementation.
+In practice, an outcome proposition can correspond to multiple outcomes of the state implementation.
+For example, we may want to treat the outcomes $\mathtt{failed}$ and $\mathtt{aborted}$ of $\mathsf{s}_p$ as failure, thus mapping the proposition $\pi_p^f$ to both of them.
+
+\todo[inline, caption = {Mapping $\mathcal{D}_M$ is not properly defined}]{Define $\mathcal{D}_M$ in terms of FlexBE states as above or more generally in terms of primitive system capabilities?}
 
 % END
