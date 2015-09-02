@@ -77,7 +77,7 @@
 
 %
 \title{\LARGE \bf
-	High-level Behavior Synthesis for an ATLAS Humanoid Robot
+	Reactive High-level Behavior Synthesis for an ATLAS Humanoid Robot
 }
 \author{Spyros Maniatopoulos$^{*}$, Philipp Schillinger$^{\dagger}$, Vitchyr H. Pong$^{*}$, David C. Conner$^{\ddagger}$, and Hadas Kress-Gazit$^{*}$% 	<-this % stops a space
 %\thanks{...}% <-this % stops a space
@@ -96,7 +96,17 @@
 \pagestyle{empty}
 %
 \begin{abstract}
-In this paper we \ldots
+In this paper we present an \emph{end-to-end} approach for the automatic generation of software that implements reactive high-level robot behaviors.
+Our approach starts with an informal description of the system, as well as a task's goals and initial conditions.
+First, we abstract the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
+One highlight of our formalism is that it accounts for the possible failures of the various system components.
+We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
+Finally, we automatically generate a state machine that instantiates the synthesized plan in software.
+
+Specifically, this paper focuses on Team ViGIR's software and \textsc{Atlas} humanoid robot.
+The proposed approach has been implemented and open-sourced as a collection of Robot Operating System (ROS) packages.
+We demonstrate the efficacy of our approach via experiments with \textsc{Atlas} in the lab.
+
 \todo[inline, caption = {Title of my TODO example (hyperlink)}]{Body of my TODO example}
 \end{abstract}
 %
