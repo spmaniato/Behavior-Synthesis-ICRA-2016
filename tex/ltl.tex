@@ -4,15 +4,17 @@
 
 Specifying a robot task in a formal language can be time consuming and error prone. It also requires an expert user.
 To alleviate these issues, we employ a multi-paradigm specification approach. 
-We first observe that there are portions of the task specification $\mathcal{T}_S$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
+We first observe that there are portions of the task specification $\mathcal{T}_\mathcal{S}$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
 Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
 For \textsc{Atlas}, we can automatically infer which control modes and actions are pertinent to a task.
 Finally, the initial conditions are either specified by the user or detected at runtime.
 
 Referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
 The discrete abstraction, $\mathcal{D}$, is \textsc{Atlas}-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
-We can now automatically compile the task specification $\mathcal{T}_S$ in (the GR(1) fragment \cite{piterman_06} of) Linear Temporal Logic.
+We can now automatically compile the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{piterman_06} of) Linear Temporal Logic.
 Since LTL is compositional, we can generate individual LTL formulas and then conjunct them to get the full LTL specification.
+
+\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary.}
 
 \subsection{Specification of Actions and Control Mode Constraints}
 
@@ -92,7 +94,6 @@ The disjunct $\lnot \pi_a$ is added in order to prevent the system from winning 
 \end{equation}
 
 The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Prec(a)$, looks like in the activation--outcomes paradigm.
-\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions and modes that are necessary.}
 
 \begin{equation}\label{PreconditionsFormula}
 	\LTLG \Big( \bigvee \limits_{p \in Prec(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \Big)

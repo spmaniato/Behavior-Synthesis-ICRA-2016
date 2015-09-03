@@ -2,23 +2,23 @@
 
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
-Given \textsc{Atlas}' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $s$, that captures the execution and outcomes of the primitive capabilities (control mode transitions and actions).
-In addition, maintain a mapping, $\mathcal{D}_M$, between the primitive capabilities of the system $s$ and the corresponding elements of the discrete abstraction.
+Given \textsc{Atlas}' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $S$, that captures the execution and outcomes of the primitive capabilities (control mode transitions and actions).
+In addition, maintain a mapping, $\mathcal{D}_M$, between the primitive capabilities of the system $\mathcal{S}$ and the corresponding elements of the discrete abstraction.
 \end{myProblem}
 
 \begin{myProblem}\label{SpecificationProblem}
 \textbf{(Formal Task Specification):}
-Given a task in terms of goals $\mathcal{G}$, the task's initial conditions $\mathcal{I}$, and the discrete abstraction $\mathcal{D}$ of the system $s$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem, but we are not modeling it explicitly here.}
- automatically generate a specification $\mathcal{T}_s$ that encodes, in a formal language, the task being carried out by $s$.
+Given a task in terms of goals $\mathcal{G}$, the task's initial conditions $\mathcal{I}$, and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem, but we are not modeling it explicitly here.}
+ automatically generate a specification $\mathcal{T}_\mathcal{S}$ that encodes, in a formal language, the task being carried out by $\mathcal{S}$.
 \end{myProblem}
 
 To illustrate these concepts, consider again the scenario in Example \ref{Ex:PickupObject}. 
-We could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{approach\_valve}, \mathtt{turn\_valve} \}$ and its initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{stand} \}$.
-The system $s$ is ATLAS running Team ViGIR's software, as described in Section \ref{S:TeamViGIR}.
+We could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{turn\_valve} \}$ and its initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{stand} \}$.
+The system $\mathcal{S}$ is ATLAS running Team ViGIR's software, as described in Section \ref{S:TeamViGIR}.
 
 \begin{myProblem}\label{BehaviorSynthesisProblem}
 \textbf{(Behavior Synthesis):}
-Given a formal task specification, $\mathcal{T}_s$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete, high-level, control strategy that is verifiably guaranteed to satisfy $\mathcal{T}_s$.
+Given a formal task specification, $\mathcal{T}_\mathcal{S}$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete, high-level, control strategy that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
 \end{myProblem}
 \todo[inline]{Generate ``software implementation" or FlexBE SM?}
 
