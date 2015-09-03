@@ -1,22 +1,22 @@
 % !TEX root = ../main.tex
 
-\subsection{\textsc{Atlas} Humanoid Robot}
+\subsection{Atlas Humanoid Robot}
 
-\textsc{Atlas} (Fig. \ref{Fig:AtlasDoorFinals}) is an anthropomorphic robot developed by Boston Dynamics, Inc. (BDI). 
+Atlas (Fig. \ref{Fig:AtlasDoorFinals}) is an anthropomorphic robot developed by Boston Dynamics, Inc. (BDI). 
 Team ViGIR chose to leverage the basic capabilities provided by the Boston Dynamics Application Programming Interface (API).
 In the context of this work, we are especially interested in BDI's ``control mode" interface (Fig. \ref{Fig:ControlModeTS}).
 The active control mode dictates which joints are controlled by the low-level BDI controllers and which joints we can command.
 For example, in \textsc{stand} and \textsc{manipulate} BDI's software handles balancing.
 
-\textsc{Atlas} is equipped with a number of sensors, most notably a Carnegie Robotics Multisense SL\footnote{\scriptsize{\url{http://carnegierobotics.com/multisense-sl}}} mounted as the head.
-For the DRC Finals, \textsc{Atlas} was equipped with two Robotiq 3-finger hands,\footnote{\scriptsize{\url{http://robotiq.com/products/industrial-robot-hand}}} providing manipulation capabilities.
+Atlas is equipped with a number of sensors, most notably a Carnegie Robotics Multisense SL\footnote{\scriptsize{\url{http://carnegierobotics.com/multisense-sl}}} mounted as the head.
+For the DRC Finals, Atlas was equipped with two Robotiq 3-finger hands,\footnote{\scriptsize{\url{http://robotiq.com/products/industrial-robot-hand}}} providing manipulation capabilities.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.99\columnwidth,clip]{./img/control_modes_ts.png}
 \caption{Excerpt from the BDI control mode interface.
 Some changes between modes (depicted as arrows) are unidirectional while others are bidirectional.
-After Team ViGIR's initial checkout, \textsc{Atlas} is in the \textsc{stand\_prep} control mode.
+After Team ViGIR's initial checkout, Atlas is in the \textsc{stand\_prep} control mode.
 }
 \label{Fig:ControlModeTS}
 %\vspace{-3 pt}
@@ -27,7 +27,7 @@ After Team ViGIR's initial checkout, \textsc{Atlas} is in the \textsc{stand\_pre
 Team ViGIR based its software on the Robot Operating System (ROS) \cite{ROS2009ICRA, ROS}.
 In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
 For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
-From this point on, we will refer to \textsc{Atlas} running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
+From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
 \todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
 
 %\subsubsection{Major Software Components}
