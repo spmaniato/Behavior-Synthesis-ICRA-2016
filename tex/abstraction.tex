@@ -30,14 +30,13 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 \end{subequations}
 where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
 
-\subsection{Proposition Mapping}
+\subsection{Discrete Mapping}
 
-The mapping $\mathcal{D}_M : AP \rightarrow \mathsf{S_P}$ from Problem \ref{DiscreteAbstractionProblem} relates parametrized FlexBE state implementations with atomic propositions.
+\todo[inline, caption = {Level of detail in definition of $\mathcal{D}_M$}]{If we are going down the generic route, then this is not the right time to relate $\mathcal{D}_M$ to FlexBE. Remove subsection or talk in terms of primitive system capabilities.}
+The mapping $\mathcal{D}_M: \mathcal{D} \rightarrow \mathcal{S}$ from Problem \ref{DiscreteAbstractionProblem} relates parametrized FlexBE state implementations with atomic propositions.
 Specifically, each activation proposition $\pi_p$ is mapped to the execution of a parametrized state implementation $\mathsf{s}_p$.
 In addition, each outcome proposition $\pi_p^o$ is mapped to an outcome $o \in Out(\mathsf{s})$ of the state implementation.
 In practice, an outcome proposition can correspond to multiple outcomes of the state implementation.
 For example, we may want to treat the outcomes $\mathtt{failed}$ and $\mathtt{aborted}$ of $\mathsf{s}_p$ as failure, thus mapping the proposition $\pi_p^f$ to both of them.
-
-\todo[inline, caption = {Mapping $\mathcal{D}_M$ is not properly defined}]{Define $\mathcal{D}_M$ in terms of FlexBE states as above or more generally in terms of primitive system capabilities?}
 
 % END

@@ -8,13 +8,12 @@ We first observe that there are portions of the task specification $\mathcal{T}_
 Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
 For Atlas, we can automatically infer which control modes and actions are pertinent to a task.
 Finally, the initial conditions are either specified by the user or detected at runtime.
+\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary [?]}
 
 Referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
 The discrete abstraction, $\mathcal{D}$, is Atlas-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
 We can now automatically compile the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{piterman_06} of) Linear Temporal Logic.
 Since LTL is compositional, we can generate individual LTL formulas and then conjunct them to get the full LTL specification.
-
-\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary.}
 
 \subsection{Specification of Actions and Control Mode Constraints}
 

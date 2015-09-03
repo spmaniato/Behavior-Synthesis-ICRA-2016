@@ -1,9 +1,11 @@
 % !TEX root = ../main.tex
 
+
+
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
 Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $S$, that captures the execution and outcomes of the primitive capabilities (control mode transitions and actions).
-In addition, maintain a mapping, $\mathcal{D}_M$, between the primitive capabilities of the system $\mathcal{S}$ and the corresponding elements of the discrete abstraction.
+In addition, maintain a mapping, $\mathcal{D}_M: \mathcal{D} \rightarrow \mathcal{S}$, between the elements of the discrete abstraction and the primitive capabilities of the system $\mathcal{S}$.
 \end{myProblem}
 
 \begin{myProblem}\label{SpecificationProblem}
@@ -18,8 +20,7 @@ The system $\mathcal{S}$ is ATLAS running Team ViGIR's software, as described in
 
 \begin{myProblem}\label{BehaviorSynthesisProblem}
 \textbf{(Behavior Synthesis):}
-Given a formal task specification, $\mathcal{T}_\mathcal{S}$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete, high-level, control strategy that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
+Given a formal task specification, $\mathcal{T}_\mathcal{S}$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete mission plan that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
 \end{myProblem}
-\todo[inline]{Generate ``software implementation" or FlexBE SM?}
 
 % END
