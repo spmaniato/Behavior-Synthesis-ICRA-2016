@@ -1,11 +1,12 @@
 % !TEX root = ../main.tex
 
-
+We are interested in capturing a range of outcomes \ldots such as the possibility of failure \ldots And react \ldots Also automate formal specification construction \ldots
 
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
-Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $S$, that captures the execution and outcomes of the primitive capabilities (control mode transitions and actions).
-In addition, maintain a mapping, $\mathcal{D}_M: \mathcal{D} \rightarrow \mathcal{S}$, between the elements of the discrete abstraction and the primitive capabilities of the system $\mathcal{S}$.
+Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $S$, that captures the execution and outcomes of its primitive capabilities (control mode transitions and actions).
+In addition, maintain a mapping, $\gamma: \mathcal{D} \rightarrow \mathcal{C}$, which grounds\footnote{We refer the reader to \cite{Grounding2013} for a review of symbol grounding in robotics.}
+ the abstract symbols of the discrete abstraction to the primitive capabilities of the system $\mathcal{S}$.
 \end{myProblem}
 
 \begin{myProblem}\label{SpecificationProblem}
@@ -17,10 +18,12 @@ Given a task in terms of goals $\mathcal{G}$, the task's initial conditions $\ma
 To illustrate these concepts, consider again the scenario in Example \ref{Ex:PickupObject}. 
 We could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{turn\_valve} \}$ and its initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{stand} \}$.
 The system $\mathcal{S}$ is ATLAS running Team ViGIR's software, as described in Section \ref{S:TeamViGIR}.
+Its primitive capabilities $\mathcal{C}$ include walking, rotating the wrist joint, and closing the fingers.
 
 \begin{myProblem}\label{BehaviorSynthesisProblem}
 \textbf{(Behavior Synthesis):}
-Given a formal task specification, $\mathcal{T}_\mathcal{S}$, and the mapping $\mathcal{D}_M$, automatically generate a software implementation of a discrete mission plan that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
+%\textbf{(Synthesis):}
+Given a formal task specification $\mathcal{T}_\mathcal{S}$ and the mapping $\mathcal{C}$, automatically generate a software implementation of a mission plan that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
 \end{myProblem}
 
 % END

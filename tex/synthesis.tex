@@ -1,4 +1,6 @@
 % !TEX root = ../main.tex
+\todo[inline, caption = {Title of section that solves Problem 3}]{Maybe rename this to ``Synthesis of Executable State Machines"? (Will depend on whether the term remains overloaded due to FlexBE ``behaviors".)}
+
 
 We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
 First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{piterman_06} and Section \ref{S:GR1}).
@@ -7,7 +9,7 @@ Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, suc
 This algorithm was first used in \cite{Vasu2013ICRA}.
 \todo[inline, caption = {Properly mention SLUGS' fragment}]{@HKG, is it true that Vasu's paper was the first case of synthesis for this fragment? Had Ruediger used it before?}
 
-\todo[inline, caption = {Relate $\mathcal{D}_M$ to FlexBE in Synthesis?}]{If we are going down the generic route, then now would be the time to relate $\mathcal{D}_M$ to FlexBE states, right? Because in order to address Problem \ref{BehaviorSynthesisProblem}, we need the output of our solution to be a software implementation.}
-Second, we use the mapping $\mathcal{D}_M: \mathcal{D} \rightarrow \mathcal{S}$ to instantiate the abstract automaton as a concrete software implementation, i.e., an executable state machine in the FlexBE framework introduced in Section \ref{S:FlexBE}.
+\todo[inline, caption = {Relate $\gamma$ to FlexBE states}]{Say that, in our setup, the capabilities $\mathcal{C}$ are accessed via parametrized FlexBE states $\mathsf{S_P}$. Therefore \ldots}
+Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to instantiate the abstract automaton as a concrete software implementation, i.e., an executable state machine in the FlexBE framework introduced in Section \ref{S:FlexBE}.
 
 % END
