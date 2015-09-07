@@ -1,11 +1,11 @@
 % !TEX root = ../main.tex
 
-\subsection{Control Modes \& Actions}
+\subsection{Control Modes \& Actions}\label{S:CMActions}
 
 We model Atlas' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
 In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prime) \in \; \boldsymbol\rightarrow \}$ and also allow self-transitions, i.e., $m \in Adj(m), \; \forall m \in \mathcal{M}$.
 
-Furthermore, Atlas can perform actions. Actions, $a \in \mathcal{A}$, correspond to system capabilities $\mathcal{C}$ other than control mode changes, e.g., generation of a footstep plan or closing the fingers.
+Furthermore, the system can perform actions. Actions, $a \in \mathcal{A}$, correspond to system capabilities $\mathcal{C}$ (other than control mode changes), e.g., generation of a footstep plan or closing the fingers.
 Actions may also have one or more preconditions.
 Action preconditions can be control modes or (the completion of) other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$ (power set) and $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
 \todo[inline, caption = {What is the Discrete Abstraction exactly?}]{Are actions, preconditions, and the control mode TS part of the discrete abstraction or should they be defined in the Preliminaries instead? What is $\mathcal{D}$ mathematically?}
@@ -14,22 +14,27 @@ Action preconditions can be control modes or (the completion of) other actions, 
 \subsection{Atomic Propositions}
 
 We adopt a paradigm that generalizes the one in \cite{Vasu2013ICRA}.
-We abstract the discrete actions, $a \in \mathcal{A}$, that Atlas can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
+We abstract the actions, $a \in \mathcal{A}$, that Atlas can perform (activate) using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
 Similarly,\footnote{The distinction between action and control mode propositions is purely for the sake of clarity of notation. There is nothing special about either.}
-for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_m$ and a number of outcome propositions $\pi_m^o$.
-For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$
+for each control mode, $m \in \mathcal{M}$, we also have an activation proposition $\pi_m$ and a number of outcome propositions $\pi_m^o$.
 Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 
 \begin{subequations}
 	\label{ActOutAP}
 	\begin{align}
 		\mathcal{Y} &= \bigcup \limits_{a \in \mathcal{A}} \pi_a \bigcup \limits_{m \in \mathcal{M}} \pi_m,\\
-		\mathcal{X}^\prime &= \mathcal{X} \bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
+%		\mathcal{X}^\prime &= \mathcal{X} 
+		\mathcal{X} &= 
+		\bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
 	\end{align}
 \end{subequations}
-where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
+%where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
+It is up to us to decide which possible outcomes of activating a system capability we want to model explicitly.
+For the sake of simplicity of presentation, here we will abstract all positive outcomes as ``completion" ($c$) and all negative outcomes as ``failure" ($f$). 
+That is, $Out(a) = Out(m) = \{ c, f \}$, $\forall a,m$.
+%For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$.
 
-To conclude this section, we could say (somewhat informally) that the discrete abstraction $\mathcal{D}$ consists of symbols ($m \in \mathcal{M}$, $a \in \mathcal{A}$, $\pi \in AP$) and relations between them (e.g., $\boldsymbol\rightarrow$, $Prec$, $Out$).
+To conclude this section, we could say (somewhat informally) that the resulting discrete abstraction $\mathcal{D}$ consists of symbols ($m \in \mathcal{M}$, $a \in \mathcal{A}$, $\pi \in AP$) and relations between them (e.g., $\boldsymbol\rightarrow$, $Prec$, $Out$).
 We defer a discussion of the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ until Section \ref{S:synthesis}.
 
 %\subsection{Discrete Mapping}

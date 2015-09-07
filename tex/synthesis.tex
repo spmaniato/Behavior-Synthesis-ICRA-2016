@@ -3,7 +3,7 @@
 
 
 We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
-First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{piterman_06} and Section \ref{S:GR1}).
+First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{Bloem2012GR1} and Section \ref{S:GR1}).
 Specifically, we employ the synthesis algorithm in \cite{SLUGS}, which can handle a slightly larger fragment of LTL than GR(1).
 Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as in formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula}.
 This algorithm was first used in \cite{Vasu2013ICRA}.
@@ -11,5 +11,7 @@ This algorithm was first used in \cite{Vasu2013ICRA}.
 
 \todo[inline, caption = {Relate $\gamma$ to FlexBE states}]{Say that, in our setup, the capabilities $\mathcal{C}$ are accessed via parametrized FlexBE states $\mathsf{S_P}$. Therefore \ldots}
 Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to instantiate the abstract automaton as a concrete software implementation, i.e., an executable state machine in the FlexBE framework introduced in Section \ref{S:FlexBE}.
+\todo[inline, caption = {Pre-made states machines can be capabilities too}]{Point out that pre-made state machines (aka behaviors) are system capabilities too. Just not primitive. Notation?}
+\todo[inline, caption = {Memory props not in FlexBE SM}]{Memory propositions are not mapped to any system capabilities and therefore do not appear in FlexBE SMs.}
 
 % END
