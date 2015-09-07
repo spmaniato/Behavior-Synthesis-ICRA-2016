@@ -2,32 +2,38 @@
 
 \subsection{Multi-Paradigm Specification}
 
-Specifying a robot task in a formal language can be time consuming and error prone. It also requires an expert user.
+Specifying a robot task in a formal language can be a time consuming and error prone process.
+It also requires an expert user, unless a natural language based approach is used \cite{Lignos2015AURO}. 
 To alleviate these issues, we employ a multi-paradigm specification approach. 
 We first observe that there are portions of the task specification $\mathcal{T}_\mathcal{S}$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
 Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
-For Atlas, we can automatically infer which control modes and actions are pertinent to a task.
+We can infer which actions are pertinent to a task and use the discrete abstraction $\mathcal{D}$ as the basis for automatically generating the portion of the formal specification that is related to the system itself.
 Finally, the initial conditions are either specified by the user or detected at runtime.
-\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary [?]}
+%\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary [?]}
 
-Referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
-The discrete abstraction, $\mathcal{D}$, is Atlas-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
-We can now automatically compile the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{piterman_06} of) Linear Temporal Logic.
-Since LTL is compositional, we can generate individual LTL formulas and then conjunct them to get the full LTL specification.
+Thus, referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
+The discrete abstraction, $\mathcal{D}$, is system-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
+We can now automatically generate the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{Bloem2012GR1} of) Linear Temporal Logic.
+Since LTL is compositional, we can generate individual formulas and then conjunct them to get the full LTL specification.
+
 
 \subsection{Specification of Actions and Control Mode Constraints}
+
+Since the activation of capabilities is controlled by the system, the corresponding LTL formulas will be in $\varphi_s$ (c.f. Section \ref{S:GR1}).
+Conversely, we do not control the outcome of activation; the environment does.
+Therefore, the LTL formulas specifying the behavior of outcomes will be in $\varphi_e$.
 
 \subsubsection{Generic Formulas}
 
 We say that an activation proposition $\pi_p$, $p \in \{a, m\}$, is $\True$ when the corresponding primitive functionality is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to \cite{Vasu2013ICRA}, where $\pi_p$ being $\False$ stands for the primitive functionality $p$ being \emph{deactivated}, e.g., turning a camera off.}.
 Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_p \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
+Note that the left-hand side of formula \eqref{PropositionDeactivationFormula} is only $\True$ at those distinct time steps where an outcome was just returned.
 
 \begin{equation}\label{PropositionDeactivationFormula}
 	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \pi_p \wedge \LTLX \pi_p^o \Rightarrow \LTLX \lnot \pi_p \Big)
 \end{equation}
 
-The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_p^o$, of the activation of any primitive functionality $p$ are mutually exclusive. 
-For example, an action cannot both succeed and fail.
+The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_p^o$, of the activation of any system capability are mutually exclusive (e.g., an action cannot both succeed and fail).
 Formula \eqref{OutcomeMutexFormula} also allows for no outcome being $\True$.
 \todo[inline, caption = {How to write Outcome MutEx formula (slugs)}]{Formula \eqref{OutcomeMutexFormula} requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
@@ -36,7 +42,7 @@ Formula \eqref{OutcomeMutexFormula} also allows for no outcome being $\True$.
 \end{equation}
 
 The environment safety assumption \eqref{ActionOutcomeConstraintFormula} constraints the value of outcomes.
-Specifically, it dictates that, if an outcome is $\False$ and the corresponding primitive functionality is not being activated, then that outcome should remain $\False$.
+Specifically, it dictates that, if an outcome is $\False$ and the corresponding capability is not being activated, then that outcome should remain $\False$.
 It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 
 \begin{equation}\label{ActionOutcomeConstraintFormula}
@@ -67,8 +73,8 @@ The following formulas encode the connection between the activation and the poss
 %	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)
 %\end{equation}
 
-The environment safety assumptions \eqref{ActionOutcomePersistenceFormula} dictate that the value of an outcome should not change if the corresponding action has not been activated again. 
-In other words, outcomes persist.
+The environment safety assumption \eqref{ActionOutcomePersistenceFormula} dictates that the value of an outcome should not change if the corresponding action has not been activated again. 
+In other words, outcomes persist through time.
 
 \begin{equation}\label{ActionOutcomePersistenceFormula}
 	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \pi_a^o \Big)
@@ -78,7 +84,7 @@ The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a
 %It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
 %Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
 It states that (always) eventually, the activation of an action will result in an outcome.
-The disjunct $\lnot \pi_a$ is added in order to prevent the system from winning the game by never activating the action.
+The disjunct $\lnot \pi_a$ is added in order to prevent situations where the environment loses the game due to the system never activating the action.
 
 %\begin{subequations}
 %	\begin{align}
@@ -92,7 +98,7 @@ The disjunct $\lnot \pi_a$ is added in order to prevent the system from winning 
 	\LTLG \LTLF \Big( \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) \vee \lnot \pi_a \Big)
 \end{equation}
 
-The system safety requirement \eqref{PreconditionsFormula} demonstrates how a formula encoding the preconditions of an action, $Prec(a)$, looks like in the activation--outcomes paradigm.
+The system safety requirement \eqref{PreconditionsFormula} constrains the activation of an action $a$ unless it preconditions, $Prec(a)$, are met.
 
 \begin{equation}\label{PreconditionsFormula}
 	\LTLG \Big( \bigvee \limits_{p \in Prec(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \Big)
@@ -108,20 +114,20 @@ Activating $\varphi_m$, as opposed to $\pi_m$, takes into account the mutual exc
 Also let $$\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m,$$
 where $\varphi_\mathcal{M}^{none}$ being $\True$ stands for not activating any control mode transitions, i.e., staying in the same control mode.
 
-The system safety requirements \eqref{TransitionRelationFormula} encode a topological transition relation, such as the BDI control mode transition system.
+The system safety requirement \eqref{TransitionRelationFormula} encodes the BDI control mode transition system (Section \ref{S:CMActions}, Fig. \ref{Fig:ControlModeTS}) in LTL.
 
 \begin{equation}\label{TransitionRelationFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{TopologyMutexFormula} enforce mutual exclusion between the BDI control modes.
+The environment safety assumption \eqref{TopologyMutexFormula} enforces mutual exclusion between the BDI control modes.
 \todo[inline, caption = {How to write control mode MutEx formula (slugs)}]{Formula \eqref{TopologyMutexFormula} also requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{TopologyMutexFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Leftrightarrow \bigwedge \limits_{m^\prime \neq m} \LTLX \lnot \pi_{m^\prime}^c \Big)
 \end{equation}
 
-The environment safety assumptions \eqref{SingleStepChangeFormula} govern how the active control mode can change in a single time step in response to the activation of a control mode transition.
+The environment safety assumption \eqref{SingleStepChangeFormula} governs how the active control mode can change (or not) in a single time step, in response to the activation of a control mode transition.
 
 \begin{equation}\label{SingleStepChangeFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{m^\prime \in Adj(m)} \LTLG \Big( \pi_m^c \wedge  \varphi_{m^\prime} \Rightarrow \big( \LTLX \pi_{m}^c \bigvee \limits_{o \in Out(m^\prime)} \LTLX \pi_{m^\prime}^o \big) \Big)
@@ -133,14 +139,14 @@ The environment safety assumptions \eqref{SingleStepChangeFormula} govern how th
 %	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \lnot \pi_m^o \wedge \lnot \pi_m \Rightarrow \LTLX \lnot \pi_m^o \Big)
 %\end{equation}
 
-The environment safety assumptions \eqref{TopologyOutcomePersistenceFormula} dictate that the value of the outcomes of control mode transitions must not change if no transition is being activated, i.e., they must persist.
+Similar to \eqref{ActionOutcomePersistenceFormula}, the environment safety assumption \eqref{TopologyOutcomePersistenceFormula} dictates that the value of the outcomes of control mode transitions must not change if no transition is being activated.
 
 \begin{equation}\label{TopologyOutcomePersistenceFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \pi_m^o \wedge \varphi_\mathcal{M}^{none} \Rightarrow \LTLX \pi_m^o \Big)
 \end{equation}
 
-The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control mode transitions.
-This single formula accounts for all control modes.
+The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control modes.
+A single formula suffices for mutually exclusive propositions \cite{Vasu2013ICRA}.
 
 %\begin{subequations}
 %	\begin{align}
@@ -154,6 +160,8 @@ This single formula accounts for all control modes.
 	\LTLG \LTLF \Big( \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big) \vee \varphi_\mathcal{M}^{none} \Big)
 \end{equation}
 
+This concludes the system-specific portion of $\mathcal{T_S}$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Specification of Initial Conditions}
@@ -166,7 +174,7 @@ All other outcome propositions corresponding to those actions and control modes,
 \end{equation}
 
 Activation propositions are $\False$ regardless of whether that action or control mode is in the initial conditions or not \eqref{SystemInitialConditions}.
-The reason being that, intuitively, if we want something to be an initial condition, then we shouldn't have the resulting controller re-activate it at the beginning of execution.
+The intuitive reasons is that if we want something to be an initial condition, then the resulting plan should not activate it at the beginning of execution.
 
 \begin{equation}\label{SystemInitialConditions}
 	\varphi_i^s = \bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \wedge \bigwedge \limits_{j \not \in \mathcal{I}} \lnot \pi_j
@@ -178,10 +186,18 @@ The reason being that, intuitively, if we want something to be an initial condit
 
 \subsection{Specification of Task Goals}
 
-The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormula} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (as opposed to infinite execution, which is what LTL is defined over).
-In this finite run paradigm, the synthesized state machine (SM) itself has outcomes, $o \in Out(SM)$.
-The propositions corresponding to the SM's outcomes, $\pi_{SM}^o$, are system, not environment, propositions.
-The system propositions, $\mu_g$, serve as memory of having accomplished each goal (c.f. \cite{Vasu2012IROS}).
+So far, we have handled the system-specific portion of $\mathcal{T_S}$ and the initial conditions, $\mathcal{I}$.
+All that is left is the automatic generation of formulas from the user-specified task goals, $\mathcal{G}$.
+Motivated by the DRC tasks, we will present \textsc{ltl} formulas that encode the accomplishment of each goal once.
+However, \textsc{ltl} and its \textsc{gr(1)} fragment can naturally handle repeating tasks (e.g. patrolling).
+In the context of graceful degradation, we could even combine the two.
+For example, ``accomplish the goals $\mathcal{G}$ infinitely often, but if anything fails, abort".
+
+The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormula} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (using the same \textsc{ltl} semantics as for infinite execution).
+In this paradigm, we say that the run itself has outcomes too.
+We denote them by $o \in Out(SM)$, since they will correspond to the outcomes of the synthesized plan, which will be a state machine (SM).
+Note that the propositions corresponding to the run's outcomes, $\pi_{SM}^o$, are system, not environment, propositions.
+We also introduce auxiliary system propositions, $\mu_g$, which will serve as memory (c.f. \cite{Vasu2012IROS}) of having accomplished each goal $g \in \mathcal{G}$.
 
 \begin{equation}\label{MemoryInitialCondition}
 	\bigwedge \limits_{g \in \mathcal{G}} \lnot \mu_g 
@@ -203,16 +219,16 @@ The system propositions, $\mu_g$, serve as memory of having accomplished each go
 \begin{subequations}
 	\label{SMOutcomeFormulas}
 	\begin{align}
-		\LTLG \Big( \pi_{SM}^{c} \Leftrightarrow &\bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
-		\LTLG \Big( \pi_{SM}^{f} \Leftrightarrow &\bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
-		\bigwedge \limits_{o \in Out(SM)} \LTLG \Big( \pi_{SM}^{o} \Rightarrow &\LTLX \pi_{SM}^{o} \Big) \label{SMOutcomePersistenceFormula}
+		\LTLG \Big( \pi_{SM}^{c} \Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
+		\LTLG \Big( \pi_{SM}^{f} \Leftrightarrow \bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
+		\bigwedge \limits_{o \in Out(SM)} \LTLG \Big( \pi_{SM}^{o} \Rightarrow \LTLX \pi_{SM}^{o} \Big) \label{SMOutcomePersistenceFormula}
 	\end{align}
 \end{subequations}
 
 \begin{equation}\label{SuccessLivenessFormula}
 	\LTLG \LTLF \big( \bigvee \limits_{o \in Out(SM)} \pi_{SM}^{o} \big)
 \end{equation}
-\todo[inline, caption = {Comment on savings of single liveness requirement ?}]{The time complexity of synthesis is cubic in  the number of liveness requirements. We save by only having one. Although that's probably dominated by the complexity being exponential in the number of propositions.}
+The formulas above can be interpreted as: ``If nothing fails, then eventually accomplish each goal. Otherwise, abort". 
 
 Formula \eqref{MemoryFormula} does not guarantee that the goals will be achieved in a specific order.
 However, that is often desirable.
@@ -225,8 +241,8 @@ With this definition, we can replace the safety requirement \eqref{MemoryFormula
 \end{equation}
 where $\mu_{g_0} \triangleq \True$.
 Formula \eqref{GoalOrderFormula} forces the system to carry out goal $g_i$ after it has accomplished goal $g_{i-1}$.
-It can still activate the action corresponding to $\pi_{g_i}$ earlier, as necessitated by other parts of the task, but that will not count towards achievement of $g_i$, as indicated by $\mu_{g_i}$ being $\True$.
+It can still activate the capability corresponding to $\pi_{g_i}$ earlier, as necessitated by other parts of the task, but that will not count towards achievement of $g_i$ (indicated by $\mu_{g_i}$ being $\True$).
 
-Finally, these auxiliary (memory and SM outcome) propositions have to be added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
+Finally, these auxiliary propositions (memory and outcomes of the run) are added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \cup \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
 
 %END
