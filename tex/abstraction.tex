@@ -2,21 +2,19 @@
 
 \subsection{Control Modes \& Actions}
 
-We model \textsc{Atlas}' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
+We model Atlas' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
 In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prime) \in \; \boldsymbol\rightarrow \}$ and also allow self-transitions, i.e., $m \in Adj(m), \; \forall m \in \mathcal{M}$.
 
-Furthermore, \textsc{Atlas} can perform actions. Each action, $a \in \mathcal{A}$, corresponds to an atomic capability of the system, e.g., generation of a footstep plan or closing the robot's fingers.
+Furthermore, Atlas can perform actions. Actions, $a \in \mathcal{A}$, correspond to system capabilities $\mathcal{C}$ other than control mode changes, e.g., generation of a footstep plan or closing the fingers.
 Actions may also have one or more preconditions.
-Action preconditions can be control modes or other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$ (powerset), $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
+Action preconditions can be control modes or (the completion of) other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$ (power set) and $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
 \todo[inline, caption = {What is the Discrete Abstraction exactly?}]{Are actions, preconditions, and the control mode TS part of the discrete abstraction or should they be defined in the Preliminaries instead? What is $\mathcal{D}$ mathematically?}
 \todo[inline, caption = {Our preconditions are kinda limited}]{We are not handling preconditions that refer to the state of the \emph{world}, e.g. ``object in hand". Instead, we precondition on (the completion of) actions, e.g., grasping the object, which is not as powerful in my opinion.}
 
 \subsection{Atomic Propositions}
 
-\todo[inline, caption = {Define props in terms of FlexBE states?}]{Similar to question about $\mathcal{D}_M$. Define atomic propositions in terms of FlexBE states or primitive capabilities?}
-
 We adopt a paradigm that generalizes the one in \cite{Vasu2013ICRA}.
-We abstract the discrete actions, $a \in \mathcal{A}$, that \textsc{Atlas} can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
+We abstract the discrete actions, $a \in \mathcal{A}$, that Atlas can perform using one system proposition, $\pi_a$, per action and one environment proposition, $\pi_a^o$, per possible outcome of that action, $o \in Out(a)$.
 Similarly,\footnote{The distinction between action and control mode propositions is purely for the sake of clarity of notation. There is nothing special about either.}
 for each control mode, $m \in \mathcal{M}$, we have a system proposition $\pi_m$ and a number of outcome propositions $\pi_m^o$.
 For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$
@@ -30,6 +28,9 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 	\end{align}
 \end{subequations}
 where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
+
+To conclude this section, we could say (somewhat informally) that the discrete abstraction $\mathcal{D}$ consists of symbols ($m \in \mathcal{M}$, $a \in \mathcal{A}$, $\pi \in AP$) and relations between them (e.g., $\boldsymbol\rightarrow$, $Prec$, $Out$).
+We defer a discussion of the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ until Section \ref{S:synthesis}.
 
 %\subsection{Discrete Mapping}
 %
