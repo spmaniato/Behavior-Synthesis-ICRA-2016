@@ -10,7 +10,7 @@
 
 In preparation for the 2015 DARPA Robotics Challenge (DRC) Finals, Team ViGIR, as well as many other teams, developed an approach to high-level robot control \cite{Philipp2013Bsc, Philipp2015Msc}.
 However, these approaches relied on experts developing scripted behaviors or, in the case of Team ViGIR, manually designing state machines.
-In addition, there was no guarantee that the resulting high-level behavior was correct with respect to the task at hand.
+In addition, there was no guarantee that the resulting high-level behavior was correct \ac{wrt} the task at hand.
 Moreover, many participants observed that such approaches were fragile in practice \cite{DRC-what-happened}.
 
 Motivated by these shortcomings, we present an approach for the automatic generation of software that implements high-level robot behaviors in a provably-correct manner.
@@ -35,22 +35,30 @@ We first create a discrete abstraction of the problem and automatically construc
 We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
 Finally, in an effort to bridge the gap between theoretical results and practice, we automatically generate a state machine that instantiates the synthesized plan in software.
 
-In this paper, we present and experimentally validate the proposed approach in the context of a Boston Dynamics Atlas humanoid robot running the software that Team ViGIR developed for the DARPA Robotics Challenge (Fig. \ref{Fig:AtlasDoorFinals}).
+In this paper, we present and experimentally validate the proposed approach in the context of a Boston Dynamics Atlas humanoid robot running the software that Team ViGIR developed for the DRC (Fig. \ref{Fig:AtlasDoorFinals}).
 However, the concepts apply to different systems.
-Finally, we have implemented and open-sourced the proposed approach as a collection of Robot Operating System (ROS) packages.
+We have implemented and open-sourced the proposed approach as a collection of Robot Operating System (ROS) packages \cite{ROS2009ICRA, ROS}.
 
 \subsubsection*{Literature Survey}
 \begin{itemize}
 	\item Vasu's ``fast-slow" paradigm \cite{Vasu2013ICRA}
+	\item In Jon's setting, uncertainty in locomotion \cite{Jon2015ICRA}. Uses \cite{Vasu2013ICRA}
+	\item Robot Creation from Functional Specifications \cite{Ankur2015ISRR}
+	\item Easier specification: Structured English \cite{JFRKG2012ICRA}, NL \cite{Lignos2015AURO}
 	\item Alternatives to LTL and GR(1) Synthesis
 	\begin{itemize}
-		\item Classic AI planners, STRIPS-type planners
+		\item Classic AI planners, STRIPS \cite{STRIPS1971AI}, PDDL \cite{PDDL1998TR} + new versions, etc.
 		\item Optimization-based LTL synthesis (Eric Wolff)
 		\item \textbf{co-safe LTL} (Lydia Kavraki, Calin Belta, etc.) We \emph{could} have used it as a different formalism and generated FlexBE state machines that way.
 		\todo[inline, caption = {Comparison of GR(1) to co-safe LTL}]{Check whether co-safe LTL encodes reactivity w.r.t. adversarial environment (worst case)}
 	\end{itemize}
 \end{itemize}
 
-The rest of this paper is organized as follows. \ldots
+The rest of this paper is organized as follows.
+In Section \ref{S:prelim}, we introduce Atlas, Team ViGIR's approach to the DRC, and Linear Temporal Logic.
+In Section \ref{S:problem}, we state the problems that this paper addresses.
+Sections \ref{S:abstraction} through \ref{S:synthesis} present the proposed approach, while Section \ref{S:implementation} summarizes its ROS implementation.
+We present experimental demonstrations in Section \ref{S:experiments}.
+Finally, we draw conclusions and propose future research directions in Section \ref{S:conclusion}.
 
 %END
