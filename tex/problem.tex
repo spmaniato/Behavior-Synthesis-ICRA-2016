@@ -1,6 +1,10 @@
 % !TEX root = ../main.tex
 
-We are interested in capturing a range of outcomes \ldots such as the possibility of failure \ldots And react \ldots Also automate formal specification construction \ldots
+We are motivated by three main considerations.
+First, we want to formally specify the task to be carried out by our system in a way that also captures the possibility of failure and allows for the system's reaction to failure.
+In addition, we want to allow non-expert users to create such formal specifications.
+Finally, we want to automatically generate a mission plan that is verifiably-correct \ac{wrt} the formal specification, as well as its software implementation.
+These considerations give rise to the following problem statements.
 
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
@@ -11,7 +15,7 @@ In addition, maintain a mapping, $\gamma: \mathcal{D} \rightarrow \mathcal{C}$, 
 
 \begin{myProblem}\label{SpecificationProblem}
 \textbf{(Formal Task Specification):}
-Given a task in terms of goals $\mathcal{G}$, the task's initial conditions $\mathcal{I}$, and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem, but we are not modeling it explicitly here.}
+Given a task in terms of goals $\mathcal{G}$, the task's initial conditions $\mathcal{I}$, and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem. However, we are not modeling it explicitly here.}
  automatically generate a specification $\mathcal{T}_\mathcal{S}$ that encodes, in a formal language, the task being carried out by $\mathcal{S}$.
 \end{myProblem}
 
@@ -23,7 +27,7 @@ Its primitive capabilities $\mathcal{C}$ include walking, rotating the wrist joi
 \begin{myProblem}\label{BehaviorSynthesisProblem}
 \textbf{(Behavior Synthesis):}
 %\textbf{(Synthesis):}
-Given a formal task specification $\mathcal{T}_\mathcal{S}$ and the mapping $\mathcal{C}$, automatically generate a software implementation of a mission plan that is verifiably guaranteed to satisfy $\mathcal{T}_\mathcal{S}$.
+Given a formal task specification $\mathcal{T}_\mathcal{S}$ and the mapping $\gamma$, automatically generate a software implementation of a reactive mission plan that is guaranteed to satisfy $\mathcal{T}_\mathcal{S}$, if one exists.
 \end{myProblem}
 
 % END
