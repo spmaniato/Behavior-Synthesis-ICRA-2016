@@ -24,7 +24,7 @@ After Team ViGIR's initial checkout, Atlas is in the \textsc{stand\_prep} contro
 
 \subsection{Team ViGIR's Approach to the DRC Finals}\label{S:TeamViGIR}
 
-Team ViGIR based its software on the Robot Operating System (ROS).
+Team ViGIR has based its software on the Robot Operating System (ROS).
 In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
 For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
 From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
@@ -32,7 +32,7 @@ From this point on, we will refer to Atlas running Team ViGIR's software as the 
 
 %\subsubsection{Major Software Components}
 Since Team ViGIR uses BDI's control mode interface, some system capabilities are preconditioned on a certain control mode being active.
-For example, in order to execute an arm trajectory, the system must be in \textsc{manipulate}.
+For example, in order to execute an arm trajectory, the system must be in the \textsc{manipulate} mode.
 In addition, the system's operation has to respect the constraints on the possible control mode changes (Fig. \ref{Fig:ControlModeTS}).
 
 In terms of manipulation, Team ViGIR employs the concept of object templates \cite{Alberto2014Humanoids}.
@@ -54,7 +54,7 @@ The state implementations can be composed to form hierarchical state machines\fo
  (SM), which encode the logic of execution as well as the flow of data.
 Specifically, state machines consist of \emph{parametrized} instantiations, $\mathsf{s_p} \in \mathsf{S_P}$, of the state implementations $\mathsf{S}$.
 For example, if a state implementation corresponds to changing control modes, its parametrized counterparts correspond to changing to specific control modes.
-State machines also have outcomes themselves.
+State machines also have outcomes themselves, e.g. $\{ \mathtt{finished}, \mathtt{failed} \}$.
 %The top-level state machine will be referred to as a ``behavior".
 %The composition of new state machines is historically carried out manually by an expert user.
 
