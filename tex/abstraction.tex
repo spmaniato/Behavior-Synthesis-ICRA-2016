@@ -2,12 +2,12 @@
 
 \subsection{Control Modes \& Actions}\label{S:CMActions}
 
-We model Atlas' control mode interface (c.f. Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
+We model Atlas' control mode interface (Fig. \ref{Fig:ControlModeTS}) as a transition system $(\mathcal{M}, \boldsymbol\rightarrow)$, where $\mathcal{M}$ is the set of states, each corresponding to one control mode, $m \in \mathcal{M}$, and $\boldsymbol\rightarrow$ is a set of valid control mode transitions (subset of $\mathcal{M} \times \mathcal{M}$).
 In addition, we define $Adj(m) = \{ m^\prime \in \mathcal{M} \; | \; (m, m^\prime) \in \; \boldsymbol\rightarrow \}$ and also allow self-transitions, i.e., $m \in Adj(m), \; \forall m \in \mathcal{M}$.
 
 Furthermore, the system can perform actions. Actions, $a \in \mathcal{A}$, correspond to system capabilities $\mathcal{C}$ (other than control mode changes), e.g., generation of a footstep plan or closing the fingers.
 Actions may also have one or more preconditions.
-Action preconditions can be control modes or (the completion of) other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$ (power set) and $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
+The preconditions of an action can be control modes or (the prior completion of) other actions, i.e., $Prec(a) \in 2^{(\mathcal{A} \cup \mathcal{M})}$ (power set) and $a \not \in Prec(a)$, $\forall a \in \mathcal{A}$.
 \todo[inline, caption = {What is the Discrete Abstraction exactly?}]{Are actions, preconditions, and the control mode TS part of the discrete abstraction or should they be defined in the Preliminaries instead? What is $\mathcal{D}$ mathematically?}
 \todo[inline, caption = {Our preconditions are kinda limited}]{We are not handling preconditions that refer to the state of the \emph{world}, e.g. ``object in hand". Instead, we precondition on (the completion of) actions, e.g., grasping the object, which is not as powerful in my opinion.}
 
@@ -22,10 +22,10 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 \begin{subequations}
 	\label{ActOutAP}
 	\begin{align}
-		\mathcal{Y} &= \bigcup \limits_{a \in \mathcal{A}} \pi_a \bigcup \limits_{m \in \mathcal{M}} \pi_m,\\
+		\mathcal{Y} &= \bigcup \limits_{a \in \mathcal{A}} \pi_a \cup \bigcup \limits_{m \in \mathcal{M}} \pi_m,\\
 %		\mathcal{X}^\prime &= \mathcal{X} 
 		\mathcal{X} &= 
-		\bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
+		\bigcup \limits_{a \in \mathcal{A}} \bigcup \limits_{o \in Out(a)} \pi_a^o \cup \bigcup \limits_{m \in \mathcal{M}} \bigcup \limits_{o \in Out(m)} \pi_m^o,
 	\end{align}
 \end{subequations}
 %where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.

@@ -95,7 +95,7 @@ The disjunct $\lnot \pi_a$ is added in order to prevent situations where the env
 %\end{subequations}
 
 \begin{equation}\label{ActionFairnessConditionsFormula}
-	\LTLG \LTLF \Big( \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) \vee \lnot \pi_a \Big)
+	\LTLG \LTLF \Big( \Big( \pi_a \wedge \bigvee \limits_{o \in Out(a)} \LTLX \pi_a^o \Big) \vee \lnot \pi_a \Big)
 \end{equation}
 
 The system safety requirement \eqref{PreconditionsFormula} constrains the activation of an action $a$ unless it preconditions, $Prec(a)$, are met.
