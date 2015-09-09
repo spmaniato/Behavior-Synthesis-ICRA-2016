@@ -19,6 +19,7 @@ Specifically, correct-by-construction mission plans can be automatically synthes
 
 \begin{myExample}\label{Ex:PickupObject}
 	Consider the task, ``Walk to the valve and turn it" (Fig. \ref{Fig:AtlasDoorFinals}).
+	\todo[inline, caption = {Example of a ``high-level behavior"}]{Maybe provide example of ``high-level behavior" (identify valve, walk to it, use arm and hand to turn it)}
 	This would be an intuitive way to express the task from a non-expert user's point-of-view.
 	However, this task specification is not formal, it does not account for the robot's capabilities -- a robot with no means of locomotion or manipulation wouldn't even be able to carry it out -- and it does not specify what should happen if a failure occurs. % manipulation?
 \end{myExample}
@@ -28,7 +29,8 @@ In this paper, we automatically generate the logic-based specifications from a h
 Furthermore, most approaches in this field assume that the simple, low-level components that make up the high-level plan will work as expected, i.e., they never fail.
 In this paper, we take a first step towards lifting this assumption by formally accounting for the possibility of failure when executing the low-level components.
 We achieve this by generalizing the concepts of ``activation" and ``completion", which were introduced in \cite{Vasu2013ICRA} to deal with the time semantics of logic-based specifications.
-While a failure is still a failure and there might be no way to recover, we can still achieve \emph{graceful degradation}.
+While there might be no way to recover from a failure, we can still achieve \emph{graceful degradation}.
+That is, we want to specify the system's reaction to failure in the formal specification.
 
 Furthermore, ours is an end-to-end approach that starts with an informal specification and results in an executable software implementation of a high-level plan.
 We first create a discrete abstraction of the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
@@ -39,7 +41,7 @@ In this paper, we present and experimentally validate the proposed approach in t
 However, the concepts apply to different systems.
 We have implemented and open-sourced the proposed approach as a collection of Robot Operating System (ROS) packages \cite{ROS2009ICRA, ROS}.
 
-\subsubsection*{Literature Survey}
+\subsubsection*{Related Work}
 Our work generalizes that in \cite{Vasu2013ICRA}, which allows us to reason about multiple outcomes of an action, such as failure, in the formal specification.
 The approaches in \cite{Jon2015ICRA} and \cite{Kavraki2012ICRA} deal with the related problem of uncertainty in mobile robot motion.
 In terms of our approach to creating the formal specification, some other options would have been asking the user to (i) write the formal specification, e.g., \textsc{ltl} formulas, directly, (ii) write Structured English statements \cite{JFRKG2012ICRA}, or (iii) specify the task in natural language \cite{Lignos2015AURO}.
@@ -48,7 +50,8 @@ In terms of the mission planning step, we opted for \textsc{gr(1)}, i.e., reacti
 These included classical AI planners, such as STRIPS \cite{STRIPS1971AI} and PDDL \cite{PDDL1998TR}, optimization under \textsc{ltl} constraints \cite{Wolff2014ICRA}, and, most notably, synthesis from co-safe \textsc{ltl} specifications, e.g., \cite{Kavraki2015ICRA}.
 Our main reason for choosing \textsc{gr(1)} synthesis is the ability to specify reactivity \ac{wrt} a dynamic, and even adversarial (worst-case), environment (such as external events and component failures).
 Finally, \cite{Ankur2015ISRR} also presents an end-to-end approach (from formal specification to software generation), while the toolkit presented in \cite{Finucane2010IROS} employs an executive that executes the abstract synthesized automaton.
-However, in both of those cases, the user has to write a Structured English \cite{JFRKG2012ICRA} specification that exactly maps to \textsc{ltl}, a non-trivial task.
+However, in both of works, the user has to write a Structured English \cite{JFRKG2012ICRA} specification that exactly maps to \textsc{ltl}, a non-trivial task.
+In our work, the user input is a partial, informal specification.
 
 The rest of this paper is organized as follows.
 In Section \ref{S:prelim}, we introduce Atlas, Team ViGIR's approach to the DRC, and Linear Temporal Logic.
