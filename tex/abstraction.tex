@@ -29,9 +29,9 @@ Therefore, the set of atomic propositions $AP$ is given by Eq. \eqref{ActOutAP}:
 	\end{align}
 \end{subequations}
 %where $\mathcal{X}$ are environment propositions other than outcome propositions, e.g., ones that abstract sensors, as per \cite{KGFP_TRO09}.
-It is up to us to decide which possible outcomes of activating a system capability we want to model explicitly.
+It is up to the system designer to decide which possible outcomes of activating a system capability should be modeled explicitly.
 For the sake of simplicity of presentation, here we will abstract all positive outcomes as ``completion" ($c$) and all negative outcomes as ``failure" ($f$). 
-That is, $Out(a) = Out(m) = \{ c, f \}$, $\forall a,m$.
+That is, $Out(a) = Out(m) = \{ c, f \}$, $\forall a \in \mathcal{A}$ and $\forall m \in \mathcal{M}$.
 %For both actions and control mode transitions, the outcomes that are of most interest in the context of this paper are completion ($c$) and failure ($f$) of the action. That is, $Out(a) = Out(m) = \{ c, f \}$.
 
 To conclude this section, we could say (somewhat informally) that the resulting discrete abstraction $\mathcal{D}$ consists of symbols ($m \in \mathcal{M}$, $a \in \mathcal{A}$, $\pi \in AP$) and relations between them (e.g., $\boldsymbol\rightarrow$, $Prec$, $Out$).
