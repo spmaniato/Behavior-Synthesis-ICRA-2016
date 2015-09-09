@@ -243,6 +243,6 @@ where $\mu_{g_0} \triangleq \True$.
 Formula \eqref{GoalOrderFormula} forces the system to carry out goal $g_i$ after it has accomplished goal $g_{i-1}$.
 It can still activate the capability corresponding to $\pi_{g_i}$ earlier, as necessitated by other parts of the task, but that will not count towards achievement of $g_i$ (indicated by $\mu_{g_i}$ being $\True$).
 
-Finally, these auxiliary propositions (memory and outcomes of the run) are added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \cup \bigcup \limits_{g \in \mathcal{G}} \mu_g \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
+Finally, these auxiliary propositions (memory and outcomes of the run) are added to the system propositions: $$\mathcal{Y}^\prime = \mathcal{Y} \cup \bigcup \limits_{g \in \mathcal{G}} \mu_g \cup \bigcup \limits_{o \in Out(SM)} \pi_{SM}^o$$
 
 %END
