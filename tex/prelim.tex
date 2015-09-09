@@ -47,13 +47,13 @@ For instance, the ``door" template provides affordances such as ``turn (handle) 
 Team ViGIR's approach to high-level control is especially relevant to this work.
 Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE) \cite{Philipp2013Bsc, Philipp2015Msc}, which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
 
-Using the FlexBE framework, developers create ``state implementations", $\mathsf{s} \in \mathsf{S}$. % Maybe definitions?
+Using the FlexBE framework, developers create ``state implementations", $q \in Q$. % Maybe definitions?
 These are small, atomic blocks of code that interface with the lower-level system capabilities $\mathcal{C}$.
-Furthermore, each state implementation defines a number of outcomes $Out(\mathsf{s})$, e.g., $\{ \mathtt{done}, \mathtt{failed}, \mathtt{aborted} \}$.
+Furthermore, each state implementation defines a number of outcomes $Out(q)$, e.g., $\{ \mathtt{done}, \mathtt{failed}, \mathtt{aborted} \}$.
 The state implementations can be composed to form hierarchical state machines\footnote{\scriptsize{\url{https://github.com/team-vigir/vigir_behaviors}}}
  (SM), which encode the logic of execution as well as the flow of data.
-Specifically, state machines consist of \emph{parametrized} instantiations, $\mathsf{s_p} \in \mathsf{S_P}$, of the state implementations $\mathsf{S}$.
-For example, if a state implementation corresponds to changing control modes, its parametrized counterparts correspond to changing to specific control modes.
+Specifically, state machines consist of \emph{parametrized} instantiations, $q_p \in Q_P$, of the state implementations $Q$.
+For example, if a state implementation corresponds to changing control modes, its parametrized counterparts correspond to changing to specific control modes, e.g., to \textsc{stand}.
 State machines also have outcomes themselves, e.g. $\{ \mathtt{finished}, \mathtt{failed} \}$.
 %The top-level state machine will be referred to as a ``behavior".
 %The composition of new state machines is historically carried out manually by an expert user.
