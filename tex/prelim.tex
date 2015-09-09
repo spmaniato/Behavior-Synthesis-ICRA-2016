@@ -56,7 +56,6 @@ Specifically, state machines consist of \emph{parametrized} instantiations, $q_p
 For example, if a state implementation corresponds to changing control modes, its parametrized counterparts correspond to changing to specific control modes, e.g., to \textsc{stand}.
 State machines also have outcomes themselves, e.g. $\{ \mathtt{finished}, \mathtt{failed} \}$.
 %The top-level state machine will be referred to as a ``behavior".
-%The composition of new state machines is historically carried out manually by an expert user.
 
 Finally, both composition of state machines and supervision of their execution takes place in FlexBE's graphical user interface\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}} (GUI).
 Figure \ref{Fig:FlexBESM} depicts an example of a state machine that implements a high-level behavior (opening and traversing through a door).
@@ -71,6 +70,7 @@ The state machine has two outcomes, ``finished" (bottom left) and ``failed" (cen
 Yellow states are parametrized state implementations.
 Gray and purple states are state machines.
 %, and purple states are other high-level behaviors embedded in this one.
+In brief, the high-level behavior implemented by this state machine is one where the system first asks the human operator to identify the door handle and then Atlas approaches the door, turns the handle, and then strafes through the door.
 }
 \label{Fig:FlexBESM}
 \end{figure}
@@ -79,11 +79,11 @@ Gray and purple states are state machines.
 
 Linear Temporal Logic (\textsc{ltl}) is a formal language that combines Boolean ($\lnot$, $\wedge$, $\lor$) and temporal (next $\LTLX$, until $\mathcal{U}$) operators.
 Additional temporal operators, always $\LTLG$, eventually $\LTLF$, can be derived from those.
-\textsc{Ltl} formulas are constructed from Boolean atomic propositions $\pi \in AP$.
+\textsc{LTL} formulas are constructed from Boolean atomic propositions $\pi \in AP$.
 In the context of our work, the set of atomic propositions, $AP$, consists of propositions controlled by the system, $\mathcal{Y}$, and propositions controlled by the dynamic, and possibly adversarial, environment, $\mathcal{X}$. That is, $AP = \mathcal{X} \cup \mathcal{Y}$.
 
 In order to synthesize \emph{reactive} mission plans in a computationally tractable manner, we use the \textsc{gr(1)} fragment of \textsc{ltl} \cite{Bloem2012GR1}.
-\textsc{Gr(1)} formulas $\varphi$ have an assume-guarantee structure between the dynamic environment ($e$) and the system ($s$):
+\textsc{GR(1)} formulas $\varphi$ have an assume-guarantee structure between the dynamic environment ($e$) and the system ($s$):
 %$\varphi = (\varphi_e \Rightarrow \varphi_s)$, where:
 %$$\varphi_e = \varphi_e^i \wedge \varphi_e^t \wedge \varphi_e^g, \; \varphi_s = \varphi_s^i \wedge \varphi_s^t \wedge \varphi_s^g,$$
 \begin{equation}\label{GR1Formula}
@@ -95,7 +95,7 @@ In order to synthesize \emph{reactive} mission plans in a computationally tracta
 \end{equation}
 where the superscript $i$ denotes initial conditions, $t$ safety assumptions/requirements, and $g$ liveness assumptions/requirements (i.e., goals) for $e$ and $s$, respectively. 
 
-\textsc{Gr(1)} synthesis involves setting up a two-player game between $e$ and $s$ \cite{Bloem2012GR1}.
+\textsc{GR(1)} synthesis involves setting up a two-player game between $e$ and $s$ \cite{Bloem2012GR1}.
 If a \textsc{gr(1)} specification $\varphi$ is realizable for $s$, we can extract a finite-state automaton; specifically, a Mealy machine. 
 This automaton encodes a strategy for $s$ that guarantees $\varphi_s$ for any evolution of $e$ that satisfies $\varphi_e$.
 \todo[inline, caption = {If enough space, define Mealy machine}]{If there's any space left, define the FSA/Mealy machine mathematically. Possibly connect to FlexBE SMs later.}
