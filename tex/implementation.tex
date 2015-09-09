@@ -14,8 +14,8 @@ Figure \ref{Fig:vigir_behavior_synthesis} depicts these packages as well as the 
 \end{figure}
 
 The synthesis action server ($\mathtt{vigir\_synthesis\_manager}$) receives a request from the user via FlexBE's GUI.
-Given the user's input (initial conditions and goals), the server first requests a full set of LTL formulas for Atlas from the $\mathtt{Generate LTL Specification}$ service ($\mathtt{vigir\_ltl\_specification}$ package).
-The generation of the LTL formulas from Section \ref{S:ltl} is delegated to our ``Reactive Specification Construction kit" (ReSpeC),\footnote{\scriptsize{\url{https://github.com/team-vigir/ReSpeC}}}
+Given the user's input (initial conditions and goals), the server first requests a full set of \textsc{ltl} formulas for Atlas from the $\mathtt{Generate LTL Specification}$ service ($\mathtt{vigir\_ltl\_specification}$ package).
+The generation of the \textsc{ltl} formulas from Section \ref{S:ltl} is delegated to our ``Reactive Specification Construction kit" (ReSpeC),\footnote{\scriptsize{\url{https://github.com/team-vigir/ReSpeC}}}
  which is a Python framework with rudimentary ROS integration.
 
 \begin{figure}[t]
@@ -27,7 +27,7 @@ The generation of the LTL formulas from Section \ref{S:ltl} is delegated to our 
 \end{figure}
 
 The $\mathtt{vigir\_ltl\_synthesizer}$ package acts as a wrapper for external synthesis tools (currently, \cite{SLUGS} is supported).
-Given the generated LTL specification, the $\mathtt{Synthesize Automaton}$ service returns a finite-state automaton that is guaranteed to satisfy it, if one exists.
+Given the generated \textsc{ltl} specification, the $\mathtt{Synthesize Automaton}$ service returns a finite-state automaton that is guaranteed to satisfy it, if one exists.
 Finally, the server requests a $\mathtt{State Instantiation}$ message from the $\mathtt{Generate FlexBE SM}$ service ($\mathtt{vigir\_sm\_generation}$ package).
 This message provides the FlexBE Editor with sufficient information to generate Python code, i.e., an executable state machine that instantiates the synthesized automaton.
 The corresponding action, services, and messages are defined in the $\mathtt{vigir\_synthesis\_msgs}$ package.

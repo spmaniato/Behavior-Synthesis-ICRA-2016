@@ -14,14 +14,14 @@ Finally, the initial conditions are either specified by the user or detected at 
 Thus, referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
 The discrete abstraction, $\mathcal{D}$, is system-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
 We can now automatically generate the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{Bloem2012GR1} of) Linear Temporal Logic.
-Since LTL is compositional, we can generate individual formulas and then conjunct them to get the full LTL specification.
+Since \textsc{ltl} is compositional, we can generate individual formulas and then conjunct them to get the full \textsc{ltl} specification.
 
 
 \subsection{Specification of Actions and Control Mode Constraints}
 
-Since the activation of capabilities is controlled by the system, the corresponding LTL formulas will be in $\varphi_s$ (c.f. Section \ref{S:GR1}).
+Since the activation of capabilities is controlled by the system, the corresponding \textsc{ltl} formulas will be in $\varphi_s$ (c.f. Section \ref{S:GR1}).
 Conversely, we do not control the outcome of activation; the environment does.
-Therefore, the LTL formulas specifying the behavior of outcomes will be in $\varphi_e$.
+Therefore, the \textsc{ltl} formulas specifying the behavior of outcomes will be in $\varphi_e$.
 
 \subsubsection{Generic Formulas}
 
@@ -114,7 +114,7 @@ Activating $\varphi_m$, as opposed to $\pi_m$, takes into account the mutual exc
 Also let $$\varphi_\mathcal{M}^{none} = \bigwedge_{m \in \mathcal{M}} \lnot \pi_m,$$
 where $\varphi_\mathcal{M}^{none}$ being $\True$ stands for not activating any control mode transitions, i.e., staying in the same control mode.
 
-The system safety requirement \eqref{TransitionRelationFormula} encodes the BDI control mode transition system (Section \ref{S:CMActions}, Fig. \ref{Fig:ControlModeTS}) in LTL.
+The system safety requirement \eqref{TransitionRelationFormula} encodes the BDI control mode transition system (Section \ref{S:CMActions}, Fig. \ref{Fig:ControlModeTS}) in \textsc{ltl}.
 
 \begin{equation}\label{TransitionRelationFormula}
 	\bigwedge \limits_{m \in \mathcal{M}} \LTLG \Big( \LTLX \pi_m^c \Rightarrow \bigvee \limits_{m^\prime \in Adj(m)} \LTLX \varphi_{m^\prime} \vee \LTLX \varphi_\mathcal{M}^{none} \Big)
