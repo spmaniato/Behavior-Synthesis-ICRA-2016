@@ -46,14 +46,15 @@ We have implemented and open-sourced the proposed approach as a collection of Ro
 
 \subsubsection*{Related Work}
 Our work generalizes that by Raman, et al. \cite{Vasu2013ICRA} in a way that allows us to reason about multiple outcomes of an action, such as failure, in the formal specification.
-\todo[inline, caption = {Dibs on graceful degradation in formal synthesis ?}]{``To the best of our knowledge, this is the first time graceful degradation (or failure) is addressed in the context of formal synthesis" [?]}
+\todo[inline, caption = {Dibs on graceful degradation in formal synthesis ?}]{Maybe say, ``To the best of our knowledge, this is the first time graceful degradation (or failure) is addressed in the context of formal synthesis" Is this true?}
 Sucan and Kavraki \cite{Kavraki2012ICRA} and DeCastro, et al. \cite{Jon2015ICRA} deal with the related problem of uncertainty in mobile robot motion.
 In terms of our approach to creating the formal specification, some other options would have been asking the user to (i) write the formal specification, e.g., \textsc{ltl} formulas, directly, (ii) write Structured English statements \cite{JFRKG2012ICRA}, or (iii) specify the task in natural language \cite{Lignos2015AURO}.
 Each option comes with trade-offs and we chose one where the user input is essentially minimal.
 In terms of the mission planning step, we opted for \textsc{gr(1)}, i.e., reactive \textsc{ltl}, synthesis \cite{Bloem2012GR1} over other approaches.
-These included classical AI planners, such as STRIPS \cite{STRIPS1971AI} and PDDL \cite{PDDL1998TR}, optimization under \textsc{ltl} constraints \cite{Wolff2014ICRA}, and, most notably, synthesis from co-safe \textsc{ltl} specifications (see, e.g., \cite{Kavraki2015ICRA}).
+These included classical AI planners, such as STRIPS \cite{STRIPS1971AI} and PDDL \cite{PDDL1998TR}, optimization under \textsc{ltl} constraints \cite{Wolff2014ICRA}, and, most notably, synthesis from co-safe \textsc{ltl} specifications (see, e.g., the work of He, et al. \cite{Kavraki2015ICRA} and Aydin Gol, et al. \cite{Belta2014TAC}).
 Our main reason for choosing \textsc{gr(1)} synthesis is the ability to specify reactivity \ac{wrt} a dynamic, and even adversarial (worst-case), environment (such as external events and component failures).
-Finally, Mehta, et al.\cite{Ankur2015ISRR} also present an end-to-end approach (from formal specification to software generation), while the toolkit developed by Finucane, et al. \cite{Finucane2010IROS} employs an executive that executes the abstract synthesized automaton.
+
+Furthermore, Mehta, et al.\cite{Ankur2015ISRR} also present an end-to-end approach (from formal specification to software generation), while the toolkit developed by Finucane, et al. \cite{Finucane2010IROS} employs an executive that executes the abstract synthesized automaton.
 However, in both works, the user has to write a Structured English \cite{JFRKG2012ICRA} specification that exactly maps to \textsc{ltl}, a non-trivial task.
 In our work, the user input is a partial, informal specification.
 Finally, it should be noted that Filippidis, et al. \cite{Filippidis2015SYNT} also employ \textsc{gr(1)} synthesis from multi-paradigm specifications.
