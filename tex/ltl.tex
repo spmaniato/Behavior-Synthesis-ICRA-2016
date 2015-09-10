@@ -7,6 +7,7 @@ It also requires an expert user, unless a natural language based approach is use
 To alleviate these issues, we employ a multi-paradigm specification approach. 
 We first observe that there are portions of the task specification $\mathcal{T}_\mathcal{S}$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
 Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
+\todo[inline, caption = {Mention offline system design earlier}]{This is important and needs to be mentioned earlier. Definitely in the intro. The fact that the system designer can put these things in place and users don't need to worry about them. (HKG)}
 We can infer which actions are pertinent to a task and use the discrete abstraction $\mathcal{D}$ as the basis for automatically generating the portion of the formal specification that is related to the system itself.
 Finally, the initial conditions are either specified by the user or detected at runtime.
 %\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary [?]}
@@ -23,7 +24,7 @@ Since the activation of capabilities is controlled by the system, the correspond
 Conversely, we do not control the outcome of activation; the environment does.
 Therefore, the \textsc{ltl} formulas specifying the behavior of outcomes will be in $\varphi_e$.
 
-\subsubsection{Generic Formulas}
+\subsubsection{General Formulas}
 
 We say that an activation proposition $\pi_p$, $p \in \{a, m\}$, is $\True$ when the corresponding primitive functionality is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to \cite{Vasu2013ICRA}, where $\pi_p$ being $\False$ stands for the primitive functionality $p$ being \emph{deactivated}, e.g., turning a camera off.}.
 Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_p \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
@@ -85,6 +86,7 @@ The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a
 %Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
 It states that (always) eventually, the activation of an action will result in an outcome.
 The disjunct $\lnot \pi_a$ is added in order to prevent situations where the environment loses the game due to the system never activating the action.
+\todo[inline, caption = {Simplify fairness conditions explanation}]{Too technical. Explain the intuition - for each action we expect an outcome to become true unless the action is not called. (HKG)}
 
 %\begin{subequations}
 %	\begin{align}
@@ -196,6 +198,7 @@ For example, ``accomplish the goals $\mathcal{G}$ infinitely often, but if anyth
 The system initial condition \eqref{MemoryInitialCondition}, safety requirements \eqref{MemoryFormula} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} are used to reason about the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (using the same \textsc{ltl} semantics as for infinite execution).
 In this paradigm, we say that the run itself has outcomes too.
 We denote them by $o \in Out(SM)$, since they will correspond to the outcomes of the synthesized plan, which will be a state machine (SM).
+\todo[inline, caption = {Rename "SM outcome" propositions}]{I don't think the use of SM is good - these are behavior level propositions (outcomes, memory) but it does not matter that it is implemented as a state machine. it is a bit confusing. it is simply another set of propositions that are automatically added to the task formalism. (HKG)}
 Note that the propositions corresponding to the run's outcomes, $\pi_{SM}^o$, are system, not environment, propositions.
 We also introduce auxiliary system propositions, $\mu_g$, which will serve as memory (c.f. \cite{Vasu2012IROS}) of having accomplished each goal $g \in \mathcal{G}$.
 
