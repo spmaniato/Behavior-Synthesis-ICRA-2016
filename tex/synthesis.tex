@@ -16,10 +16,13 @@ Without loss of generality, we generate executable state machines in the FlexBE 
 Thus, the primitive system capabilities $\mathcal{C}$ are invoked via the execution of parametrized FlexBE states $Q_P$.
 
 Specifically, activation propositions $\pi_y \in \mathcal{Y}$, $y \in \{ a, m \}$, that evaluate to $\True$ in a state of the synthesized automaton are instantiated as a state $q_p \in Q_P$ in the FlexBE state machine.
-Furthermore, the corresponding outcome propositions $\pi_y^o \in \mathcal{X}$, $o \in Out(y)$, are mapped to the outgoing transitions of the state $q_p$.
+Furthermore, the corresponding outcome propositions $\pi_y^o \in \mathcal{X}$, $o \in Out(y)$, are mapped to the outcomes of that state, $Out(q_p)$.
+In practice, an outcome proposition can correspond to multiple outcomes of the state implementation.
 The auxiliary memory propositions introduced in Section \ref{S:ltl-goals} were only necessary for the specification and synthesis steps.
 They do not have to be instantiated in software.
 Finally, in the finite run case, the outcomes $\pi_?^o \in \mathcal{Y}$, $o \in Out(?)$, are mapped to the outcomes of the FlexBE state machine, $Out(SM)$.
+The transitions of the synthesized automaton are mapped to those of the state machine.
+%(after some extra processing where, e.g., we group all of the $\mathtt{failed}$ states in Fig. \ref{Fig:SynthesizedAutomaton} together).
 Examples of FlexBE state machines generated using our behavior synthesis approach are provided in Section \ref{S:experiments}.
 
 %That is, $\gamma^\prime: \mathcal{AP} \rightarrow (Q_P \cup_{q_r \in Q_R} Out(q_r))$.
