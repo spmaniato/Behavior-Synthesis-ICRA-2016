@@ -1,6 +1,6 @@
 % !TEX root = ../main.tex
 
-In preparation for the 2015 DARPA Robotics Challenge (DRC) Finals, Team ViGIR, as well as many other teams, developed an approach to high-level robot control \cite{Philipp2013Bsc, Philipp2015Msc}.
+In preparation for the 2015 DARPA Robotics Challenge (DRC) Finals, Team ViGIR, as well as many other teams, developed an approach to high-level robot control \cite{Philipp2013Bsc, Philipp2015MSc}.
 However, these approaches relied on experts developing scripted behaviors or, in the case of Team ViGIR, manually designing state machines.
 In addition, there was no guarantee that the resulting high-level behavior was correct \ac{wrt} the task at hand.
 Moreover, many participants observed that such approaches were fragile in practice \cite{DRC-what-happened}.
@@ -31,7 +31,7 @@ Specifically, the system description, which includes constraints such as action 
 Then, non-expert users only have to specify a task's goal and initial conditions, without worrying about the internals of the robot and the software it is running.
 Furthermore, most approaches in this field assume that the simple, low-level system components that make up the high-level plan will work as expected, i.e., they never fail.
 In this paper, we take a first step towards lifting this assumption by formally accounting for the possibility of failure when executing the low-level components.
-We achieve this by generalizing the concepts of ``activation" and ``completion", which were introduced by Raman, et al. \cite{Vasu2013ICRA} to deal with the time semantics of logic-based specifications.
+We achieve this by generalizing the concepts of ``activation" and ``completion", which were introduced by Raman, et al. \cite{Vasu2013ICRA, Vasu2015TRO} to deal with the time semantics of logic-based specifications.
 While there might be no way to recover from a failure, we can still achieve \emph{graceful degradation}.
 That is, we want to specify the system's reaction to failure in the formal specification.
 

@@ -30,7 +30,6 @@ For a complete overview of Team ViGIR's approach, we refer the interested reader
 From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
 \todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
 
-%\subsubsection{Major Software Components}
 Since Team ViGIR uses BDI's control mode interface, some system capabilities are preconditioned on a certain control mode being active.
 For example, in order to execute an arm trajectory, the system must be in the \textsc{manipulate} mode.
 In addition, the system's operation has to respect the constraints on the possible control mode changes (Fig. \ref{Fig:ControlModeTS}).
@@ -45,7 +44,7 @@ For instance, the ``door" template provides affordances such as ``turn (handle) 
 
 \subsubsection*{High-level Control}\label{S:FlexBE}
 Team ViGIR's approach to high-level control is especially relevant to this work.
-Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE) \cite{Philipp2013Bsc, Philipp2015Msc}, which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
+Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE) \cite{Philipp2013Bsc, Philipp2015MSc}, which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
 
 Using the FlexBE framework, developers create ``state implementations", $Q$. % Maybe definitions?
 Each $q \in Q$ is a small, atomic block of code that interfaces with \emph{one} of the lower-level system capabilities $\mathcal{C}$.
