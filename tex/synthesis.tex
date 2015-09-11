@@ -6,13 +6,36 @@ We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
 First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{Bloem2012GR1} and Section \ref{S:GR1}).
 Specifically, we employ the synthesis algorithm in \cite{SLUGS}, which can handle a slightly larger fragment of LTL than GR(1).
 Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as in formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula}.
-This algorithm was first used in \cite{Vasu2013ICRA}.
+This algorithm was first used by Raman, et al. \cite{Vasu2013ICRA}.
 \todo[inline, caption = {Properly mention SLUGS' fragment}]{@HKG, is it true that Vasu's paper was the first case of synthesis for this fragment? Had Ruediger used it before?}
+If the specification, $\mathcal{T}_S$, is realizable, we can extract a finite-state automaton.
+An example is provided in Fig. \ref{Fig:SynthesizedAutomaton}.
 
-\todo[inline, caption = {Relate $\gamma$ to FlexBE states}]{Say that, in our setup, the capabilities $\mathcal{C}$ are accessed via parametrized FlexBE states $\mathsf{S_P}$. Therefore \ldots}
-Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to instantiate the abstract automaton as a concrete software implementation, i.e., an executable state machine in the FlexBE framework introduced in Section \ref{S:FlexBE}.
+Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to automatically instantiate the abstract automaton as a concrete software implementation.
+Without loss of generality, we generate executable state machines in the FlexBE framework introduced in Section \ref{S:FlexBE}.
+Thus, the primitive system capabilities $\mathcal{C}$ are invoked via the execution of parametrized FlexBE states $Q_P$.
+
+Specifically, activation propositions $\pi_y \in \mathcal{Y}$, $y \in \{ a, m \}$, that evaluate to $\True$ in a state of the synthesized automaton are instantiated as a state $q_p \in Q_P$ in the FlexBE state machine.
+Furthermore, the corresponding outcome propositions $\pi_y^o \in \mathcal{X}$, $o \in Out(y)$, are mapped to the outgoing transitions of the state $q_p$.
+The auxiliary memory propositions introduced in Section \ref{S:ltl-goals} were only necessary for the specification and synthesis steps.
+They do not have to be instantiated in software.
+Finally, in the finite run case, the outcomes $\pi_?^o \in \mathcal{Y}$, $o \in Out(?)$, are mapped to the outcomes of the FlexBE state machine, $Out(SM)$.
+Examples of FlexBE state machines generated using our behavior synthesis approach are provided in Section \ref{S:experiments}.
+
+%That is, $\gamma^\prime: \mathcal{AP} \rightarrow (Q_P \cup_{q_r \in Q_R} Out(q_r))$.
+
 \todo[inline, caption = {Expand more on automaton-to-software (grounding)}]{This needs more explaining, both in the intro and here. This is basically solving the grounding problem of the propositions to code. You need to motivate why this is important, why it is difficult and that this is a critical step to going from the theory of synthesis to deployment on real systems. This should be a main point in this paper. (HKG)}
-\todo[inline, caption = {Pre-made states machines can be capabilities too}]{Point out that pre-made state machines (aka behaviors) are system capabilities too. Just not primitive. Notation?}
-\todo[inline, caption = {Memory props not in FlexBE SM}]{Memory propositions are not mapped to any system capabilities and therefore do not appear in FlexBE SMs.}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\columnwidth,clip]{./img/synthesized_automaton.png}
+\caption{
+	The output of \textsc{gr(1)} synthesis is a symbolic finite-state automaton.
+	For clarity, only the atomic propositions that are $\True$ are depicted.
+	The formal specification was generated from the user input $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{pickup\_object} \}$, according to Section \ref{S:ltl}.
+	\todo[inline, caption = {Finalize synthesized automaton figure}]{Replace with automaton that has memory propositions.}
+}
+\label{Fig:SynthesizedAutomaton}
+\end{figure}
 
 % END
