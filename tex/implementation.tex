@@ -13,7 +13,7 @@ Figure \ref{Fig:vigir_behavior_synthesis} depicts these packages as well as the 
 \label{Fig:vigir_behavior_synthesis}
 \end{figure}
 
-The synthesis action server ($\mathtt{vigir\_synthesis\_manager}$) receives a request from the user via FlexBE's GUI.
+The synthesis action server ($\mathtt{vigir\_synthesis\_manager}$) receives a request from the user via FlexBE's GUI (Fig. \ref{Fig:SynthesisMenuSimple}).
 Given the user's input (initial conditions and goals), the server first requests a full set of \textsc{ltl} formulas for Atlas from the $\mathtt{Generate LTL Specification}$ service ($\mathtt{vigir\_ltl\_specification}$ package).
 The generation of the \textsc{ltl} formulas from Section \ref{S:ltl} is delegated to our ``Reactive Specification Construction kit" (ReSpeC),\footnote{\scriptsize{\url{https://github.com/team-vigir/ReSpeC}}}
  which is a Python framework with rudimentary ROS integration.
