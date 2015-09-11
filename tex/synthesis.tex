@@ -1,17 +1,14 @@
 % !TEX root = ../main.tex
-\todo[inline, caption = {Title of section that solves Problem 3}]{Maybe rename this to ``Synthesis of Executable State Machines"? (Will depend on whether the term remains overloaded due to FlexBE ``behaviors".)}
-
 
 We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
-First, we automatically generate a correct-by-construction automaton from the formal specification $\mathcal{T}_S$ using GR(1) synthesis (see \cite{Bloem2012GR1} and Section \ref{S:GR1}).
-Specifically, we employ the synthesis algorithm in \cite{SLUGS}, which can handle a slightly larger fragment of LTL than GR(1).
-Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as in formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula}.
-This algorithm was first used by Raman, et al. \cite{Vasu2013ICRA}.
-\todo[inline, caption = {Properly mention SLUGS' fragment}]{@HKG, is it true that Vasu's paper was the first case of synthesis for this fragment? Had Ruediger used it before?}
-If the specification, $\mathcal{T}_S$, is realizable, we can extract a finite-state automaton.
+First, we automatically generate a correct-by-construction symbolic automaton from the formal specification $\mathcal{T}_S$ using \textsc{gr(1)} synthesis (Section \ref{S:GR1}, \cite{Bloem2012GR1}).
+Specifically, we use the tool $\mathtt{slugs}$ \cite{SLUGS}, which implements a synthesis algorithm introduced by Raman, et al. \cite{Vasu2013ICRA, Vasu2015TRO}.
+Their algorithm can handle a fragment of \textsc{ltl} slightly larger than \textsc{gr(1)}.
+Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula} in Section \ref{S:ltl}.
+If the formal specification, $\mathcal{T}_S$, is realizable, we can extract a finite-state automaton.
 An example is provided in Fig. \ref{Fig:SynthesizedAutomaton}.
 
-Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to automatically instantiate the abstract automaton as a concrete software implementation.
+Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to automatically generate code that instantiates the symbolic automaton.
 Without loss of generality, we generate executable state machines in the FlexBE framework introduced in Section \ref{S:FlexBE}.
 Thus, the primitive system capabilities $\mathcal{C}$ are invoked via the execution of parametrized FlexBE states $Q_P$.
 
@@ -20,14 +17,10 @@ Furthermore, the corresponding outcome propositions $\pi_y^o \in \mathcal{X}$, $
 In practice, an outcome proposition can correspond to multiple outcomes of the state implementation.
 The auxiliary memory propositions introduced in Section \ref{S:ltl-goals} were only necessary for the specification and synthesis steps.
 They do not have to be instantiated in software.
-Finally, in the finite run case, the outcomes $\pi_?^o \in \mathcal{Y}$, $o \in Out(?)$, are mapped to the outcomes of the FlexBE state machine, $Out(SM)$.
+Finally, in the finite run case, the outcome propositions $\pi_{Exec}^o \in \mathcal{Y}$, $o \in Out(Exec)$, are mapped to the outcomes of the FlexBE state machine, $Out(SM)$.
 The transitions of the synthesized automaton are mapped to those of the state machine.
 %(after some extra processing where, e.g., we group all of the $\mathtt{failed}$ states in Fig. \ref{Fig:SynthesizedAutomaton} together).
 Examples of FlexBE state machines generated using our behavior synthesis approach are provided in Section \ref{S:experiments}.
-
-%That is, $\gamma^\prime: \mathcal{AP} \rightarrow (Q_P \cup_{q_r \in Q_R} Out(q_r))$.
-
-\todo[inline, caption = {Expand more on automaton-to-software (grounding)}]{This needs more explaining, both in the intro and here. This is basically solving the grounding problem of the propositions to code. You need to motivate why this is important, why it is difficult and that this is a critical step to going from the theory of synthesis to deployment on real systems. This should be a main point in this paper. (HKG)}
 
 \begin{figure}[t]
 \centering
