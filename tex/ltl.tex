@@ -10,7 +10,6 @@ Intuitively, a user should only have to specify the goals without worrying about
 \todo[inline, caption = {Mention offline system design earlier}]{This is important and needs to be mentioned earlier. Definitely in the intro. The fact that the system designer can put these things in place and users don't need to worry about them. (HKG)}
 We can infer which actions are pertinent to a task and use the discrete abstraction $\mathcal{D}$ as the basis for automatically generating the portion of the formal specification that is related to the system itself.
 Finally, the initial conditions are either specified by the user or detected at runtime.
-%\todo[inline, caption = {Procedure for recursively adding preconditions}]{Demonstrate how, given partial specification, we can bring in only those actions $\mathcal{A}$ that are necessary [?]}
 
 Thus, referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
 The discrete abstraction, $\mathcal{D}$, is system-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
@@ -26,20 +25,20 @@ Therefore, the \textsc{ltl} formulas specifying the behavior of outcomes will be
 
 \subsubsection{General Formulas}
 
-We say that an activation proposition $\pi_p$, $p \in \{a, m\}$, is $\True$ when the corresponding primitive functionality is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to \cite{Vasu2013ICRA}, where $\pi_p$ being $\False$ stands for the primitive functionality $p$ being \emph{deactivated}, e.g., turning a camera off.}.
-Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_p \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
+We say that an activation proposition $\pi_y$, $y \in \{a, m\}$, is $\True$ when the corresponding primitive capability is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to the work of Raman, et al. \cite{Vasu2013ICRA}, where, e.g., $\pi_{camera}$ being $\False$ stands for the corresponding primitive capability being \emph{deactivated}, i.e., turning a camera off.}.
+Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_y \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
 Note that the left-hand side of formula \eqref{PropositionDeactivationFormula} is only $\True$ at those distinct time steps where an outcome was just returned.
 
 \begin{equation}\label{PropositionDeactivationFormula}
-	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \pi_p \wedge \LTLX \pi_p^o \Rightarrow \LTLX \lnot \pi_p \Big)
+	\bigwedge \limits_{o \in Out(y)} \LTLG \Big( \pi_y \wedge \LTLX \pi_y^o \Rightarrow \LTLX \lnot \pi_y \Big)
 \end{equation}
 
-The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_p^o$, of the activation of any system capability are mutually exclusive (e.g., an action cannot both succeed and fail).
+The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_y^o$, of the activation of any system capability are mutually exclusive (e.g., an action cannot both succeed and fail).
 Formula \eqref{OutcomeMutexFormula} also allows for no outcome being $\True$.
 \todo[inline, caption = {How to write Outcome MutEx formula (slugs)}]{Formula \eqref{OutcomeMutexFormula} requires the $\LTLX$ operators to synthesize properly (slugs), but intuitively, they shouldn't be there.}
 
 \begin{equation}\label{OutcomeMutexFormula}
-	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \LTLX \pi_p^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_p^{o^\prime} \Big)
+	\bigwedge \limits_{o \in Out(y)} \LTLG \Big( \LTLX \pi_y^o \Rightarrow \bigwedge \limits_{o^\prime \neq o} \LTLX \lnot \pi_y^{o^\prime} \Big)
 \end{equation}
 
 The environment safety assumption \eqref{ActionOutcomeConstraintFormula} constraints the value of outcomes.
@@ -47,7 +46,7 @@ Specifically, it dictates that, if an outcome is $\False$ and the corresponding 
 It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 
 \begin{equation}\label{ActionOutcomeConstraintFormula}
-	\bigwedge \limits_{o \in Out(p)} \LTLG \Big( \lnot \pi_p^o \wedge \lnot \pi_p \Rightarrow \LTLX \lnot \pi_p^o \Big)
+	\bigwedge \limits_{o \in Out(y)} \LTLG \Big( \lnot \pi_y^o \wedge \lnot \pi_y \Rightarrow \LTLX \lnot \pi_y^o \Big)
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,9 +102,9 @@ The disjunct $\lnot \pi_a$ is added in order to prevent situations where the env
 The system safety requirement \eqref{PreconditionsFormula} constrains the activation of an action $a$ unless it preconditions, $Prec(a)$, are met.
 
 \begin{equation}\label{PreconditionsFormula}
-	\LTLG \Big( \bigvee \limits_{p \in Prec(a)} \lnot \pi_p^c \Rightarrow \lnot \pi_a \Big)
+	\LTLG \Big( \bigvee \limits_{y \in Prec(a)} \lnot \pi_y^c \Rightarrow \lnot \pi_a \Big)
 \end{equation}
-where the superscript $c \in Out(p)$ stands for ``completion".
+where the superscript $c \in Out(y)$ stands for ``completion".
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
