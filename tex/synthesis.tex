@@ -1,12 +1,24 @@
 % !TEX root = ../main.tex
 
 We tackle Problem \ref{BehaviorSynthesisProblem} in two sequential steps.
+
+\subsection{Reactive LTL Synthesis}
+
 First, we automatically generate a correct-by-construction symbolic automaton from the formal specification $\mathcal{T}_S$ using \textsc{gr(1)} synthesis (Section \ref{S:GR1}, \cite{Bloem2012GR1}).
 Specifically, we use the tool $\mathtt{slugs}$ \cite{SLUGS}, which implements a synthesis algorithm introduced by Raman, et al. \cite{Vasu2013ICRA, Vasu2015TRO}.
 Their algorithm can handle a fragment of \textsc{ltl} slightly larger than \textsc{gr(1)}.
 Namely, the one that includes $\LTLX$ (next) operators in liveness formulas, such as formulas \eqref{ActionFairnessConditionsFormula} and \eqref{TopologyFairnessConditionsFormula} in Section \ref{S:ltl}.
 If the formal specification, $\mathcal{T}_S$, is realizable, we can extract a finite-state automaton.
 An example is provided in Fig. \ref{Fig:SynthesizedAutomaton}.
+
+\textsc{Gr(1)} synthesis is quadratic in the size of the state space \cite{Bloem2012GR1}, which in turn is exponential in the number of atomic propositions (known as the state explosion problem).
+Thus, one concern might be that the introduction of outcome (Section \ref{S:AP}) and memory (Section \ref{S:ltl-goals}) propositions will increase the state space by a factor of $O(2^{k | \mathcal{Y} | + | \mathcal{G} | })$, where $k$ is the number of outcomes corresponding to each capability ($k=2$ if $Out(y) = \{ c, f \}$, $\forall y \in \mathcal{Y}$).
+However, while the state space definitely grows in size, the increase is far from worst-case exponential, because the outcome propositions are tied to the corresponding activation propositions via the environment safety assumptions (Section \ref{S:ltl}).
+In addition, the activation of actions is also constrained by formula \eqref{PreconditionsFormula}, when they have preconditions.
+Likewise, memory propositions are also highly constrained by formulas \eqref{MemoryFormula} or \eqref{GoalOrderFormula}.
+For these reasons, an exponential blow-up is mitigated in practice.
+
+\subsection{Proposition Grounding \& State Machine Instantiation}
 
 Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to automatically generate code that instantiates the symbolic automaton.
 Without loss of generality, we generate executable state machines in the FlexBE framework introduced in Section \ref{S:FlexBE}.
