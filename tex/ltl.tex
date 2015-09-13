@@ -165,12 +165,12 @@ This concludes the system-specific portion of $\mathcal{T_S}$.
 
 \subsection{Specification of Task Goals}\label{S:ltl-goals}
 
-Motivated by the DRC tasks, we will present \textsc{ltl} formulas that encode the accomplishment of each goal once.
-However, \textsc{ltl} and its \textsc{gr(1)} fragment can naturally handle repeating tasks (e.g. patrolling).
-In the context of graceful degradation, we could even combine the two.
-For example, ``accomplish the goals $\mathcal{G}$ infinitely often, but if anything fails, abort".
+Motivated by the DRC tasks, we present formulas that encode the accomplishment of each goal once.
+However, \textsc{ltl} can naturally handle repeating tasks (e.g. patrolling).
+We can even combine the two paradigms, e.g.,
+``Accomplish the goals $\mathcal{G}$ infinitely often, but if anything fails, abort".
 
-The safety requirements \eqref{MemoryFormula} and \eqref{SMOutcomeFormulas}, and liveness requirement \eqref{SuccessLivenessFormula} specify the satisfaction of the system's goals, $g \in \mathcal{G}$, in a finite run (using the same \textsc{ltl} semantics as for infinite execution).
+The system safety requirements \eqref{MemoryFormula} - \eqref{SMOutcomePersistenceFormula} and liveness requirement \eqref{SuccessLivenessFormula} specify the achievement of the user-provided goals, $g \in \mathcal{G}$, over a finite run (using the same \textsc{ltl} semantics as for infinite execution).
 In this paradigm, we say that the execution itself has outcomes too.
 We denote them by $o \in Out(Exec)$ and, for simplicity, $Out(Exec) = \{ c, f \}$.
 Note that the propositions corresponding to these outcomes, $\pi_{Exec}^o$, are system, not environment, propositions.
@@ -192,17 +192,23 @@ We also introduce auxiliary system propositions, $\mu_g$, which serve as memory 
 \begin{subequations}
 	\label{SMOutcomeFormulas}
 	\begin{align}
-		\LTLG \Big( \pi_{Exec}^{c} \Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
-		\LTLG \Big( \pi_{Exec}^{f} \Leftrightarrow \bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}\\
-		\bigwedge \limits_{o \in Out(Exec)} \LTLG \Big( \pi_{Exec}^{o} \Rightarrow \LTLX \pi_{Exec}^{o} \Big) \label{SMOutcomePersistenceFormula}
+		\LTLG \Big( \pi_{Exec}^{c} &\Leftrightarrow \bigwedge \limits_{g \in \mathcal{G}} \mu_g \Big) \label{SuccessfulOutcomeFormula}\\
+		\LTLG \Big( \pi_{Exec}^{f} &\Leftrightarrow \bigvee \limits_{\pi \in \mathcal{Y}} \pi^f \Big) \label{FailedOutcomeFormula}	 
 	\end{align}
 \end{subequations}
+
+\begin{equation}\label{SMOutcomePersistenceFormula}
+	\bigwedge \limits_{o \in Out(Exec)} \LTLG \Big( \pi_{Exec}^{o} \Rightarrow \LTLX \pi_{Exec}^{o} \Big)
+\end{equation}
 
 \begin{equation}\label{SuccessLivenessFormula}
 	\LTLG \LTLF \big( \bigvee \limits_{o \in Out(Exec)} \pi_{Exec}^{o} \big)
 \end{equation}
 The formulas above can be interpreted as: ``If nothing fails, then eventually accomplish each goal. Otherwise, abort".
-\todo[inline, caption = {NASA aborted execution upon failure too!}]{Steve Squyres said at his Robotics seminar talk that, if something went wrong while the Mars rover was navigating autonomously, then the desired response was to stop/abort execution. Mention and reference.}
+That is, we assume that the desired reaction to failure $\mathcal{F}$ in Problem \ref{SpecificationProblem} is to stop execution.
+While this may sound simplistic and overly conservative, it is actually in line with real-world settings.
+For example, NASA JPL's Mars rovers automatically terminate an autonomous drive if the activation of any actuators results in excessive motor current, rover tilt, wheel slip, etc \cite{MER2006Aero}.
+Of course this is but one option; the system designers can specify different reactions to failure.
 
 Formula \eqref{MemoryFormula} does not guarantee that the goals will be achieved in a specific order.
 However, that is often desirable.
