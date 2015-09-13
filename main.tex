@@ -81,7 +81,7 @@
 }
 \author{Spyros Maniatopoulos$^{*}$, Philipp Schillinger$^{\dagger}$, Vitchyr H. Pong$^{*}$, David C. Conner$^{\ddagger}$, and Hadas Kress-Gazit$^{*}$% 	<-this % stops a space
 %\thanks{...}% <-this % stops a space
-\thanks{This work was supported by the Defense Advanced Research Projects Agency (DARPA) under Air Force Research Lab (AFRL) contract FA8750-12-C-0337.}
+\thanks{This work was supported by the Defense Advanced Research Projects Agency (DARPA) under Air Force Research Lab (AFRL) contract FA8750-12-C-0337. The authors are with Team ViGIR, \url{www.teamvigir.org}.}
 \thanks{$^{*}$Verifiable Robotics Research Group, Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA {\tt \{sm2296, vhp22, hadaskg\}\nolinkurl{@cornell.edu}}}
 \thanks{$^{\dagger}$Robert Bosch GmbH, Corporate Research, Department for Cognitive Systems, 70442 Stuttgart, Germany {\tt philipp.schillinger\nolinkurl{@de.bosch.com}}}
 \thanks{$^{\ddagger}$Capable Humanitarian Robotics \& Intelligent Systems Lab, Department of Physics, Computer Science and Engineering, Christopher Newport University, Newport News, VA 23606, USA {\tt david.conner\nolinkurl{@cnu.edu}}}
@@ -96,17 +96,29 @@
 \pagestyle{empty}
 %
 \begin{abstract}
-In this paper we present an \emph{end-to-end} approach for the automatic generation of software %HKG had a comment about this
- that implements reactive high-level robot behaviors in a verifiably-correct manner.
-Our approach starts with an informal description of the system, as well as a task's goals and initial conditions.
-First, we abstract the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
-One highlight of our formalism is that it accounts for the possible failures of the various system components.
-We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
-Finally, we automatically generate a state machine that instantiates the synthesized plan in software.
 
-Specifically, this paper focuses on Team ViGIR's software and Atlas humanoid robot.
-The proposed approach has been implemented and open-sourced as a collection of Robot Operating System (ROS) packages.
-We demonstrate the efficacy of our approach via experiments with Atlas in the lab.
+In this paper, we take a step towards bridging the gap between the theory of formal synthesis and its application to real-world, complex, robotic systems.
+In particular, we present an \emph{end-to-end} approach for the automatic generation of code that implements reactive high-level robot behaviors in a verifiably-correct manner, including reaction to the possible \emph{failures} of low-level actions.
+Our approach starts with a description of the system and the desired reaction to low-level failures.
+Then, a non-expert user specifies a task in terms of its goals and initial conditions.
+First, we automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
+We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification, i.e., achieve the goals or correctly react to failures.
+Finally, we automatically generate a state machine that instantiates the synthesized symbolic plan in software.
+
+We showcase our approach using Team ViGIR's software and Atlas humanoid robot and present lab experiments, thus demonstrating the application of formal synthesis techniques to complex robotic systems.
+The proposed approach has been implemented and open-sourced as a collection of Robot Operating System (ROS) packages, which are adaptable to other systems. % ~1350/1500 characters
+
+%In this paper we present an \emph{end-to-end} approach for the automatic generation of software
+% that implements reactive high-level robot behaviors in a verifiably-correct manner.
+%Our approach starts with an informal description of the system, as well as a task's goals and initial conditions.
+%First, we abstract the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
+%One highlight of our formalism is that it accounts for the possible failures of the various system components.
+%We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
+%Finally, we automatically generate a state machine that instantiates the synthesized plan in software.
+%
+%Specifically, this paper focuses on Team ViGIR's software and Atlas humanoid robot.
+%The proposed approach has been implemented and open-sourced as a collection of Robot Operating System (ROS) packages.
+%We demonstrate the efficacy of our approach via experiments with Atlas in the lab.
 \end{abstract}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
