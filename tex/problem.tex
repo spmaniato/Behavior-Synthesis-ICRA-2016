@@ -1,21 +1,34 @@
 % !TEX root = ../main.tex
 
-We are motivated by three main considerations.
-First, we want to formally specify the task to be carried out by our system in a way that also captures the possibility of failure and allows for the system's reaction to failure.
-In addition, we want to allow non-expert users to create such formal specifications.
-Finally, we want to automatically generate a mission plan that is verifiably-correct \ac{wrt} the formal specification, as well as its software implementation.
-These considerations give rise to the following problem statements.
+\begin{myProblem}\label{OverarchingProblem}
+\textbf{(High-level Behavior Synthesis):}
+	Given a system $\mathcal{S}$, which comprises a robot and its primitive capabilities $\mathcal{C}$, a system designer-specified reaction to failures $\mathcal{F}$, and a user-provided task $\mathcal{T}$, in terms of its goals $\mathcal{G}$ and initial conditions\footnote{If the task specification process is taking place online, i.e., during system operation, then the initial conditions could also be detected automatically.}
+	 $\mathcal{I}$, automatically generate the software implementation of a high-level plan that \emph{guarantees} the system will either:
+	\begin{enumerate}[i]
+		\item achieve the goals $\mathcal{G}$ safely, if possible,
+		\item or react according to the specification $\mathcal{F}$, if the execution of any primitive capabilities $\mathcal{C}$ does not succeed.
+	\end{enumerate}
+\end{myProblem}
+
+Problem \ref{OverarchingProblem} involves three main considerations.
+First, we have to accept input from non-expert users, in the form of $\mathcal{T}$.
+In addition, we have to formally specify the task to be carried out by the system in order to capture the goals and initial conditions, system-specific safety requirements, and the possibility of failure.
+This formal specification should also account for the desired system's reaction to failure $\mathcal{F}$.
+Finally, we want to automatically generate a high-level plan that is verifiably-correct \ac{wrt} the formal specification, as well as its software implementation.
+These considerations give rise to the following subproblem statements, which together outline our approach to tackling Problem \ref{OverarchingProblem} for Team ViGIR's Atlas humanoid robot.
 
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
-Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $\mathcal{S}$, that captures the execution and outcomes of its primitive capabilities (control mode transitions and actions).
+Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $\mathcal{S}$, that captures both the execution and possible outcomes of its primitive capabilities (control mode transitions and actions).
 In addition, maintain a mapping, $\gamma: \mathcal{D} \rightarrow \mathcal{C}$, which grounds\footnote{We refer the reader to \cite{Grounding2013} for a review of symbol grounding in robotics.}
  the abstract symbols of the discrete abstraction to the primitive capabilities $\mathcal{C}$ of the system $\mathcal{S}$.
 \end{myProblem}
 
 \begin{myProblem}\label{SpecificationProblem}
 \textbf{(Formal Task Specification):}
-Given a task in terms of goals $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, the task's initial conditions $\mathcal{I} = \{ i_1, i_2, \ldots, i_m \}$, and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem. However, we are not modeling it explicitly here.}
+Given a task $\mathcal{T}$ in terms of goals $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, the task's initial conditions $\mathcal{I} = \{ i_1, i_2, \ldots, i_m \}$,
+the desired reaction to failures $\mathcal{F}$,
+and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem. However, we are not modeling it explicitly here.}
  automatically generate a specification $\mathcal{T}_\mathcal{S}$ that encodes, in a formal language, the task being carried out by $\mathcal{S}$.
 \end{myProblem}
 
@@ -23,13 +36,15 @@ To illustrate these concepts, consider again the scenario in Example \ref{Ex:Pic
 We could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{turn\_valve} \}$ and its initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{stand} \}$.
 The system $\mathcal{S}$ is Atlas running Team ViGIR's software, as described in Section \ref{S:TeamViGIR}.
 Its primitive capabilities $\mathcal{C}$ include walking, rotating the wrist joint, and closing the fingers.
-The system-specific constraints (e.g., action preconditions and  valid control mode changes) are encoded in $\mathcal{D}$.
+The system-specific safety requirements (e.g., action preconditions and control mode changes) are encoded in $\mathcal{D}$.
 
 \begin{myProblem}\label{BehaviorSynthesisProblem}
-\textbf{(Behavior Synthesis):}
+\textbf{(Mission Plan \& Software Implementation):}
 %\textbf{(Synthesis):}
 Given a formal task specification $\mathcal{T}_\mathcal{S}$, synthesize a reactive mission plan that is guaranteed to satisfy $\mathcal{T}_\mathcal{S}$, if one exists.
 Additionally, if such a plan exists, and given the mapping $\gamma$, automatically generate a software implementation of the reactive mission plan. 
 \end{myProblem}
+
+We present our approach to Problems \ref{DiscreteAbstractionProblem}, \ref{SpecificationProblem}, and \ref{BehaviorSynthesisProblem} in Sections \ref{S:abstraction}, \ref{S:ltl}, and \ref{S:synthesis}, respectively.
 
 % END
