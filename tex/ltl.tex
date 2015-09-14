@@ -4,7 +4,6 @@
 
 Specifying a robot task in a formal language can be a time consuming and error prone process.
 It also requires an expert user.
-%, unless a natural language based approach is used \cite{Lignos2015AURO}. 
 To alleviate these issues, we employ a multi-paradigm specification approach. 
 We first observe that there are portions of the task specification $\mathcal{T}_\mathcal{S}$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
 Intuitively, a non-expert user should only have to specify the goals $\mathcal{G}$ without worrying about the internals of the robot and the software it is running.
@@ -52,25 +51,7 @@ It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 
 \subsubsection{Action-specific Formulas}
 
-The following formulas encode the connection between the activation and the possible outcomes of the robot's actions, $a \in \mathcal{A}$.
-
-%The environment safety assumptions \eqref{ActionOutcomeConstraintFormula} govern the value of outcomes in the next time step. 
-%%Specifically, formula \eqref{ActionOutcomeConstraintsFormula3} says that if an outcome has been returned, and the corresponding action is re-activated, then any outcome can become $\True$. 
-%Specifically, formula \eqref{ActionOutcomeConstraintFormula} dictates that, if an outcome is $\False$ and the corresponding action is not activated, then that outcome should remain $\False$.
-%%This pair of formulas is a generalization of the ``fast-slow" formulas (3) and (4) in \cite{Vasu2013ICRA}.
-%It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
-
-%\begin{subequations}
-%	\label{ActionOutcomeConstraintsFormula}
-%	\begin{align}
-%		\LTLG& \Big( \bigvee \pi_a^o \wedge \pi_a \Rightarrow \bigvee \LTLX \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula3}\\
-%		\bigwedge \limits_{o \in Out(a)} \LTLG& \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)\label{ActionOutcomeConstraintsFormula4}
-%	\end{align}
-%\end{subequations}
-
-%\begin{equation}\label{ActionOutcomeConstraintFormula}
-%	\bigwedge \limits_{o \in Out(a)} \LTLG \Big( \lnot \pi_a^o \wedge \lnot \pi_a \Rightarrow \LTLX \lnot \pi_a^o \Big)
-%\end{equation}
+The following formulas encode the connection between the activation and the possible outcomes of the system's actions, $a \in \mathcal{A}$.
 
 The environment safety assumption \eqref{ActionOutcomePersistenceFormula} dictates that the value of an outcome should not change if the corresponding action has not been activated again. 
 In other words, outcomes persist through time.
@@ -80,18 +61,8 @@ In other words, outcomes persist through time.
 \end{equation}
 
 The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a fairness condition.
-%It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
-%Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
 It states that (always) eventually, the activation of an action will result in an outcome, unless that action is not activated to begin with.
 %The disjunct $\lnot \pi_a$ is added in order to prevent situations where the environment loses the game due to the system never activating the action.
-
-%\begin{subequations}
-%	\begin{align}
-%		\varphi_a^{return} = \Big( \pi_a \wedge \bigvee \LTLX \pi_a^o \Big) &\vee \Big( \lnot \pi_a \wedge \bigwedge \LTLX \lnot \pi_a^o \Big)\label{ActionFairnessConditionsFormula1}\\
-%		\varphi_a^{change} = \big( \pi_a \wedge \LTLX \lnot \pi_a \big) &\vee \big( \lnot \pi_a \wedge \LTLX \pi_a \big)\label{ActionFairnessConditionsFormula2}\\
-%		\LTLG \LTLF \big( \varphi_a^{return} &\vee \varphi_a^{change} \big)\label{ActionFairnessConditionsFormula}
-%	\end{align}
-%\end{subequations}
 
 \begin{equation}\label{ActionFairnessConditionsFormula}
 	\LTLG \LTLF \Big( \Big( \pi_a \wedge \bigvee \limits_{o \in Out(a)} \LTLX \pi_a^o \Big) \vee \lnot \pi_a \Big)
@@ -131,12 +102,6 @@ The environment safety assumption \eqref{SingleStepChangeFormula} governs how th
 	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{m^\prime \in Adj(m)} \LTLG \Big( \pi_m^c \wedge  \varphi_{m^\prime} \Rightarrow \big( \LTLX \pi_{m}^c \bigvee \limits_{o \in Out(m^\prime)} \LTLX \pi_{m^\prime}^o \big) \Big)
 \end{equation}
 
-%The environment safety assumptions \eqref{TopologyOutcomeConstraintFormula} constrain the outcomes control mode transitions.
-%
-%\begin{equation}\label{TopologyOutcomeConstraintFormula}
-%	\bigwedge \limits_{m \in \mathcal{M}} \bigwedge \limits_{o \in Out(m)} \LTLG \Big( \lnot \pi_m^o \wedge \lnot \pi_m \Rightarrow \LTLX \lnot \pi_m^o \Big)
-%\end{equation}
-
 Similar to \eqref{ActionOutcomePersistenceFormula}, the environment safety assumption \eqref{TopologyOutcomePersistenceFormula} dictates that the value of the outcomes of control mode transitions must not change if no transition is being activated.
 
 \begin{equation}\label{TopologyOutcomePersistenceFormula}
@@ -145,14 +110,6 @@ Similar to \eqref{ActionOutcomePersistenceFormula}, the environment safety assum
 
 The environment liveness assumption \eqref{TopologyFairnessConditionsFormula} is the equivalent of the fairness condition \eqref{ActionFairnessConditionsFormula} for control modes.
 A single formula suffices for mutually exclusive propositions \cite{Vasu2013ICRA}.
-
-%\begin{subequations}
-%	\begin{align}
-%		\varphi_\mathcal{M}^{return} &= \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big)\label{TopologyFairnessConditionsFormula1}\\
-%		\varphi_\mathcal{M}^{change} &= \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \LTLX \lnot \varphi_m \Big)\label{TopologyFairnessConditionsFormula2}\\
-%		\LTLG \LTLF & \big( \varphi_\mathcal{M}^{return} \vee \varphi_\mathcal{M}^{change} \vee \varphi_\mathcal{M}^{none} \big)\label{TopologyFairnessConditionsFormula}
-%	\end{align}
-%\end{subequations}
 
 \begin{equation}\label{TopologyFairnessConditionsFormula}
 	\LTLG \LTLF \Big( \bigvee \limits_{m \in \mathcal{M}} \Big( \varphi_m \wedge \bigvee \limits_{o \in Out(m)} \LTLX \pi_m^o \Big) \vee \varphi_\mathcal{M}^{none} \Big)
@@ -174,15 +131,6 @@ In this paradigm, we say that the execution itself has outcomes too.
 We denote them by $o \in Out(Exec)$ and, for simplicity, $Out(Exec) = \{ c, f \}$.
 Note that the propositions corresponding to these outcomes, $\pi_{Exec}^o$, are system, not environment, propositions.
 We also introduce auxiliary system propositions, $\mu_g$, which serve as memory \cite{Vasu2012IROS} of having accomplished each goal $g \in \mathcal{G}$.
-
-%\begin{subequations}
-%	\label{MemoryFormulas}
-%	\begin{align}
-%		\bigwedge \limits_{g \in \mathcal{G}} \LTLG& \Big( \LTLX \pi_g^c \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula1}\\
-%		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \mu_g \Rightarrow \LTLX \mu_g \Big) \label{MemoryFormula2}\\
-%		\bigwedge \limits_{g \in \mathcal{G}}\LTLG& \Big(  \lnot \mu_g \wedge \LTLX \lnot \pi_g^c \Rightarrow \LTLX \lnot \mu_g \Big) \label{MemoryFormula3}
-%\end{align}
-%\end{subequations}
 
 \begin{equation}\label{MemoryFormula}
 	\bigwedge \limits_{g \in \mathcal{G}} \LTLG \big( \LTLX \pi_g^c \vee \mu_g \Leftrightarrow \LTLX \mu_g \big)
