@@ -1,31 +1,31 @@
 % !TEX root = ../main.tex
 
-\subsection{Multi-Paradigm Specification}
+\subsection{Multi-Paradigm Specification}\label{S:multi-paradigm}
 
 Specifying a robot task in a formal language can be a time consuming and error prone process.
-It also requires an expert user, unless a natural language based approach is used \cite{Lignos2015AURO}. 
+It also requires an expert user.
+%, unless a natural language based approach is used \cite{Lignos2015AURO}. 
 To alleviate these issues, we employ a multi-paradigm specification approach. 
 We first observe that there are portions of the task specification $\mathcal{T}_\mathcal{S}$ that are going to be system-specific and portions that are going to be task-specific, such as the task's goals.
-Intuitively, a user should only have to specify the goals without worrying about the internals of the robot and the software it is running.
-\todo[inline, caption = {Mention offline system design earlier}]{This is important and needs to be mentioned earlier. Definitely in the intro. The fact that the system designer can put these things in place and users don't need to worry about them. (HKG)}
-We can infer which actions are pertinent to a task and use the discrete abstraction $\mathcal{D}$ as the basis for automatically generating the portion of the formal specification that is related to the system itself.
-Finally, the initial conditions are either specified by the user or detected at runtime.
+Intuitively, a non-expert user should only have to specify the goals $\mathcal{G}$ without worrying about the internals of the robot and the software it is running.
+We can infer which actions $\mathcal{A}$ are pertinent to a task and use the discrete abstraction $\mathcal{D}$ as the basis for automatically generating the portion of the formal specification that is related to the system itself.
+Finally, the initial conditions $\mathcal{I}$ are either specified by the user or detected at runtime.
 
-Thus, referring to Problem \ref{SpecificationProblem}, we get the goals, $\mathcal{G}$, and initial conditions, $\mathcal{I}$, from the user.
-The discrete abstraction, $\mathcal{D}$, is system-specific and we assume that it has been created a priori from expert developers, according to Section \ref{S:abstraction}.
-We can now automatically generate the task specification $\mathcal{T}_\mathcal{S}$ in (the GR(1) fragment \cite{Bloem2012GR1} of) Linear Temporal Logic.
+Thus, referring to Problem \ref{SpecificationProblem}, we get the goals $\mathcal{G}$ and initial conditions $\mathcal{I}$ from a user.
+The discrete abstraction $\mathcal{D}$ is system-specific and has been defined \emph{a priori} by the expert system designers, according to Section \ref{S:abstraction}.
+We can now automatically generate the task specification $\mathcal{T}_\mathcal{S}$ in (the \textsc{gr(1)} fragment \cite{Bloem2012GR1} of) Linear Temporal Logic.
 Since \textsc{ltl} is compositional, we can generate individual formulas and then conjunct them to get the full \textsc{ltl} specification.
 
 
 \subsection{Specification of Actions and Control Mode Constraints}
 
-Since the activation of capabilities is controlled by the system, the corresponding \textsc{ltl} formulas will be in $\varphi_s$ (c.f. Section \ref{S:GR1}).
-Conversely, we do not control the outcome of activation; the environment does.
-Therefore, the \textsc{ltl} formulas specifying the behavior of outcomes will be in $\varphi_e$.
+Since the activation of capabilities is controlled by the system, the corresponding \textsc{ltl} formulas will be in $\varphi_s$, the safety requirements (see Section \ref{S:GR1}).
+Conversely, we do not control the outcome of activation; the adversarial environment does.
+Therefore, the \textsc{ltl} formulas specifying the behavior of outcomes will be in $\varphi_e$, the safety assumptions.
 
 \subsubsection{General Formulas}
 
-We say that an activation proposition $\pi_y$, $y \in \{a, m\}$, is $\True$ when the corresponding primitive capability is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to the work of Raman, et al. \cite{Vasu2013ICRA}, where, e.g., $\pi_{camera}$ being $\False$ stands for the corresponding primitive capability being \emph{deactivated}, i.e., turning a camera off.}.
+We say that an activation proposition $\pi_y$, $y \in \{a, m\}$, is $\True$ when the corresponding primitive capability is being activated and $\False$ when it is not being activated\footnote{Note that this is in contrast to the work of Raman, et al. \cite{Vasu2013ICRA}, where, e.g., $\pi_{camera}$ being $\False$ stands for the act of \emph{deactivating} the corresponding primitive capability, i.e., turning a camera off.}.
 Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_y \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
 Note that the left-hand side of formula \eqref{PropositionDeactivationFormula} is only $\True$ at those distinct time steps where an outcome was just returned.
 
