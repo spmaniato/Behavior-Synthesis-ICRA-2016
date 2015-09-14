@@ -18,6 +18,20 @@ In addition, the activation of actions is also constrained by formula \eqref{Pre
 Likewise, memory propositions are also highly constrained by formulas \eqref{MemoryFormula} or \eqref{GoalOrderFormula}.
 For these reasons, an exponential blow-up is mitigated in practice.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\columnwidth,clip]{./img/synthesized_automaton.png}
+\caption{
+	The output of \textsc{gr(1)} synthesis is a symbolic finite-state automaton.
+	For clarity, only the atomic propositions that are $\True$ are depicted.
+	The formal specification was generated from the user input $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{look\_down, pickup\_object} \}$, according to Section \ref{S:ltl}.
+	We will revisit this example in Section \ref{S:SynthesisFromScratch}.
+	In general, the synthesized automata are not tree-like structures.
+	This is an artifact of our choice of formulas in Section \ref{S:ltl-goals}.
+}
+\label{Fig:SynthesizedAutomaton}
+\end{figure}
+
 \subsection{Proposition Grounding \& State Machine Instantiation}
 
 Second, we use the mapping $\gamma: \mathcal{D} \rightarrow \mathcal{C}$ to automatically generate code that instantiates the symbolic automaton.
@@ -33,19 +47,5 @@ Finally, in the finite run case, the outcome propositions $\pi_{Exec}^o \in \mat
 The transitions of the synthesized automaton are mapped to those of the state machine.
 %(after some extra processing where, e.g., we group all of the $\mathtt{failed}$ states in Fig. \ref{Fig:SynthesizedAutomaton} together).
 Examples of FlexBE state machines generated using our behavior synthesis approach are provided in Section \ref{S:experiments}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.95\columnwidth,clip]{./img/synthesized_automaton.png}
-\caption{
-	The output of \textsc{gr(1)} synthesis is a symbolic finite-state automaton.
-	For clarity, only the atomic propositions that are $\True$ are depicted.
-	The formal specification was generated from the user input $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{pickup\_object} \}$, according to Section \ref{S:ltl}.
-	Note that, in general, the synthesized automata are not tree-like structures.
-	This is an artifact of our choice of formulas in Section \ref{S:ltl-goals}.
-	\todo[inline, caption = {Finalize synthesized automaton figure}]{Replace with a good example and update caption.}
-}
-\label{Fig:SynthesizedAutomaton}
-\end{figure}
 
 % END
