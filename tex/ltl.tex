@@ -82,9 +82,8 @@ In other words, outcomes persist through time.
 The environment liveness assumption \eqref{ActionFairnessConditionsFormula} is a fairness condition.
 %It states that, (always) eventually, either the activation of an action will return an outcome, \eqref{ActionFairnessConditionsFormula1}, or that the robot will ``change its mind", \eqref{ActionFairnessConditionsFormula2}.
 %Formula \eqref{ActionFairnessConditionsFormula1} is a generalization of $\varphi_a^{completion}$ in \cite{Vasu2013ICRA}, whereas formula \eqref{ActionFairnessConditionsFormula2} is exactly the same as $\varphi_a^{change}$ in \cite{Vasu2013ICRA}, since it consists of activation propositions only.
-It states that (always) eventually, the activation of an action will result in an outcome.
-The disjunct $\lnot \pi_a$ is added in order to prevent situations where the environment loses the game due to the system never activating the action.
-\todo[inline, caption = {Simplify fairness conditions explanation}]{Too technical. Explain the intuition - for each action we expect an outcome to become true unless the action is not called. (HKG)}
+It states that (always) eventually, the activation of an action will result in an outcome, unless that action is not activated to begin with.
+%The disjunct $\lnot \pi_a$ is added in order to prevent situations where the environment loses the game due to the system never activating the action.
 
 %\begin{subequations}
 %	\begin{align}
