@@ -41,7 +41,9 @@ Examples of FlexBE state machines generated using our behavior synthesis approac
 	The output of \textsc{gr(1)} synthesis is a symbolic finite-state automaton.
 	For clarity, only the atomic propositions that are $\True$ are depicted.
 	The formal specification was generated from the user input $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{pickup\_object} \}$, according to Section \ref{S:ltl}.
-	\todo[inline, caption = {Finalize synthesized automaton figure}]{Replace with automaton that has memory propositions.}
+	Note that, in general, the synthesized automata are not tree-like structures.
+	This is an artifact of our choice of formulas in Section \ref{S:ltl-goals}.
+	\todo[inline, caption = {Finalize synthesized automaton figure}]{Replace with a good example and update caption.}
 }
 \label{Fig:SynthesizedAutomaton}
 \end{figure}
