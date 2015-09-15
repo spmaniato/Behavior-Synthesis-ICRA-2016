@@ -55,7 +55,7 @@ The state implementations can be composed to form hierarchical state machines,\f
 Specifically, state machines consist of \emph{parametrized} instantiations, $q_p \in Q_P$, of the state implementations $Q$.
 For example, if a state implementation corresponds to changing control modes, its parametrized counterparts correspond to changing to specific control modes, e.g., to \textsc{stand}.
 State machines also have outcomes themselves, e.g. $\{ \mathtt{finished}, \mathtt{failed} \}$.
-Finally, FlexBE states machines can be reused by saving and then embedding them in other state machines, e.g., state $\mathtt{Walk\_to\_Template}$ (purple) in Fig. \ref{Fig:FlexBESM}.
+Finally, FlexBE state machines can be reused by saving and then embedding them in other state machines, e.g., state $\mathtt{Walk\_to\_Template}$ (purple) in Fig. \ref{Fig:FlexBESM}.
 %The top-level state machine will be referred to as a ``behavior".
 
 Both composition of state machines and supervision of their execution takes place in FlexBE's graphical user interface\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_chrome_app}}} (GUI).
