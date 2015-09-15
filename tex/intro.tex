@@ -1,9 +1,14 @@
 % !TEX root = ../main.tex
 
 In preparation for the 2015 DARPA Robotics Challenge (DRC) Finals, Team ViGIR, as well as many other teams, developed an approach to high-level robot control \cite{Philipp2013Bsc, Philipp2015MSc}.
-However, these approaches relied on experts developing scripted behaviors or, in the case of Team ViGIR, manually designing state machines.
-In addition, there was no guarantee that the resulting high-level behavior was correct \ac{wrt} the task at hand.
+However, these approaches relied on experts developing scripted behaviors or, in our case, manually designing state-machine-based controllers.
+In addition, there was no guarantee that the resulting high-level behaviors were correct with respect to the tasks at hand.
 Moreover, many participants observed that such approaches were fragile in practice \cite{DRC-what-happened}.
+Motivated by these shortcomings, and enabled by recent advances in the field of formal methods for robotics \cite{Vasu2013ICRA, Vasu2015TRO, JFRKG2012ICRA, Lignos2015AURO, Kavraki2015AAAI, Fainekos2014ICRA, Dimos2014ICRA, Jon2015ICRA, Ben2015IJRR, Wolff2014ICRA, Belta2014TAC, Ankur2015ISRR, Finucane2010IROS, Topcu2011RAM, Kavraki2015ICRA},
+we present an approach for the synthesis of provably-correct high-level robot behavior and the 
+automatic generation of the corresponding software implementation.
+%This is enabled in part by recent advances in the field of formal methods for robotics.
+%Specifically, the synthesis of correct-by-construction mission plans from high-level, logic-based specifications.
 
 \begin{figure}[t]
 \centering
@@ -13,36 +18,32 @@ Moreover, many participants observed that such approaches were fragile in practi
 \label{Fig:AtlasDoorFinals}
 \end{figure}
 
-Motivated by these shortcomings, we present an approach for the automatic generation of software that implements high-level robot behaviors in a provably-correct manner.
-This was enabled in part by recent advances in the field of formal methods for robotics.
-Specifically, correct-by-construction mission plans can be automatically synthesized from high-level, logic-based specifications [cite ALL the papers].
-\todo[inline, caption = {Cite a bunch of research groups}]{Don't forget to ``cite ALL the papers here!"}
-
 \begin{myExample}\label{Ex:PickupObject}
-	Consider the task, ``Walk to the valve and turn it" (Fig. \ref{Fig:AtlasDoorFinals}).
-	\todo[inline, caption = {Example of a ``high-level behavior"}]{Maybe provide example of ``high-level behavior" (identify valve, walk to it, use arm and hand to turn it)}
-	This would be an intuitive way to express the task from a non-expert user's point-of-view.
-	However, this task specification is not formal, it does not account for the robot's capabilities -- a robot with no means of locomotion or manipulation wouldn't even be able to carry it out -- and it does not specify what should happen if a failure occurs. % manipulation?
+	Consider the DRC task of walking to the valve and turn it (Fig. \ref{Fig:AtlasDoorFinals}).
+	Carrying out this task involves steps such as object detection, footstep planning, manipulation, etc.
+	These capabilities also differ from robot to robot.
+	Ideally, a non-expert user should be able to specify such tasks in terms of the goals to be achieved, without having to worry about the details of how the robotic system will achieve them.
+	Moreover, it would be advantageous if any failures that might occur during execution were handled automatically.
 \end{myExample}
 
-However, writing a formal, logic-based specification is a non-trivial task that requires expert knowledge.
-In this paper, we automatically generate the logic-based specifications from a higher level, partial, multi-paradigm specifications: a description of the system's capabilities, the task's goals, and the task's initial conditions.
-Specifically, the system description, which includes constraints such as action preconditions, is set up \emph{a priori} by the system designers.
-Then, non-expert users only have to specify a task's goal and initial conditions, without worrying about the internals of the robot and the software it is running.
-Furthermore, most approaches in this field assume that the simple, low-level system components that make up the high-level plan will work as expected, i.e., they never fail.
+%However, writing a formal, logic-based specification is a non-trivial task that requires expert knowledge.
+To this end, we automatically generate logic-based specifications from a higher level, multi-paradigm specification: a user-specified task and the description of the system's capabilities, which includes constraints such as action preconditions, and is set up \emph{a priori} by the system designers.
+%Then, non-expert users only have to specify a task's goal and initial conditions, without worrying about the internals of the robot and the software it is running.
+Furthermore, most approaches employing formal methods assume that the low-level system components that make up the high-level plan will work as expected, i.e., they never fail.
 In this paper, we take a first step towards lifting this assumption by formally accounting for the possibility of failure when executing the low-level components.
-We achieve this by generalizing the concepts of ``activation" and ``completion", which were introduced by Raman, et al. \cite{Vasu2013ICRA, Vasu2015TRO} to deal with the time semantics of logic-based specifications.
-While there might be no way to recover from a failure, we can still achieve \emph{graceful degradation}.
-That is, we want to specify the system's reaction to failure in the formal specification.
+%We achieve this by generalizing the concepts of ``activation" and ``completion", which were introduced by Raman, et al. \cite{Vasu2013ICRA, Vasu2015TRO} to deal with the time semantics of logic-based specifications.
+While there might be no way to recover from such a failure, we can still achieve \emph{graceful degradation}.
+That is, we can formally specify the system's reaction to failure.
 
-Furthermore, ours is an end-to-end approach that starts with an informal specification and results in an executable software implementation of a high-level plan.
-We first create a discrete abstraction of the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
-We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
-Finally, in an effort to bridge the gap between theoretical results and practice, we automatically generate the implementation of a state machine that instantiates the synthesized plan in software.
-
-In this paper, we present and experimentally validate the proposed approach in the context of a Boston Dynamics Atlas humanoid robot running the software that Team ViGIR developed for the DRC (Fig. \ref{Fig:AtlasDoorFinals}).
+Finally, we make an effort to bridge the gap between theoretical results and practice. 
+Thus, we automatically generate the software implementation of a state machine that instantiates the synthesized mission plan by grounding it to the robotic system's capabilities.
+The result is in an end-to-end approach.
+%Furthermore, ours is an end-to-end approach that starts with an informal specification and results in an executable software implementation of a high-level plan.
+%We first create a discrete abstraction of the problem and automatically construct a formal task specification in a fragment of Linear Temporal Logic (\textsc{LTL}).
+%We then synthesize a \emph{reactive} mission plan that is guaranteed to satisfy the formal specification.
+In addition, we present and experimentally validate our approach in the context of a complex system, a Boston Dynamics Atlas humanoid robot (Fig. \ref{Fig:AtlasDoorFinals}) running the software that Team ViGIR developed for the DRC.
 However, the concepts apply to different systems.
-We have implemented and open-sourced the proposed approach as a collection of Robot Operating System (ROS) packages \cite{ROS2009ICRA, ROS}.
+We have implemented and open-sourced the proposed approach as a collection of Robot Operating System (ROS \cite{ROS}) packages.
 
 %\subsubsection*{Related Work}
 
