@@ -1,27 +1,24 @@
 % !TEX root = ../main.tex
 
-In this paper, we presented an end-to-end approach to high-level mission planning.
-We combine an informal task specification provided by the user with a discrete abstraction of the robot and software system to automatically generate a formal specification in the \textsc{gr(1)} fragment of Linear Temporal Logic.
-We then synthesize a verifiably-correct reactive mission plan.
-Finally, we automatically generate a software implementation of the mission plan in the form of an executable state machine.
-We implemented our approach as a collection of Robot Operating System packages and experimentally validated it on a Boston Dynamics humanoid robot running the software that Team ViGIR developed for the DARPA Robotics Challenge.
+We presented an end-to-end approach to mission planning for complex robotic systems.
+We combined a task, specified by a non-expert user, with a discrete abstraction of the system, defined \emph{a priori}, to automatically generate a formal specification.
+We then synthesized a provably correct mission plan that achieves the task's goals or reacts to any failures in the low-level system components.
+Finally, we automatically generated a software implementation of the mission plan in the form of an executable state machine.
+We implemented our approach as a collection of ROS packages and experimentally validated it on an Atlas humanoid robot running the software that Team ViGIR developed for the DRC.
 
-It is important to note that there is a trade-off between expressivity and automation.
+It is important to point out the trade-off between expressivity and automation.
 On the one hand, an expert user can manually write a very expressive and customized formal specification.
-On the other hand, the generation of the formal specification can be automated, as we do here, but possibly at the expense of expressivity (e.g., due to the use of template formulas or hard-coded assumptions.)
+On the other hand, the generation of the formal specification can be automated, as we do here, but possibly at the expense of expressivity (e.g., due to hard-coded design choices.)
+However, there is no research barrier to recovering expressivity; the formal language supports it.
+Thus, we plan on extending our user interface in immediate future work.
 
 The discrete abstraction and formal specification paradigm that we presented in this paper constitute the first steps towards achieving graceful degradation.
-In other words, we hinted at the question, ``What does it mean to offer formal guarantees when the activation of robot capabilities can result in failure?"
+In other words, we hinted at the question, ``What formal guarantees can we offer when the execution of robot capabilities can result in failure?"
 We plan on further exploring this research direction.
 
-In addition, we are interested in automating another step of our approach, the construct of the discrete abstraction.
-Currently, an expert user had to construct it (once for each system).
-We believe that by formally specifying the capabilities and requirements of individual system components, we will be able to automatically the discrete abstraction, which includes action preconditions, action outcomes, etc.
-Finally, we will be demonstrating our approach on a number of other, more accessible, robotic systems.
-
-% Once we have a synthesized SM, it can be treated as a primitive action with its outcomes, etc.
-% Comment on limited message size over bad comms? (send partial specification $\rightarrow$ compile and synthesize onboard)
-
-%\ldots Future work: Capability specification, consider mutex for ``grounding conflicts", integrate more robots, \ldots
+We are also interested in automating the construction of the discrete abstraction, which includes action preconditions, outcomes, etc.
+Currently, the system designer defines it (once per system).
+We believe that, by formally specifying the capabilities and constraints of individual system components, we will be able to automatically generate the discrete abstraction.
+Finally, we will be demonstrating our approach on a number of different robotic systems in the near future.
 
 %END
