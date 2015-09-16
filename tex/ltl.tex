@@ -133,7 +133,7 @@ The system safety requirements \eqref{MemoryFormula} - \eqref{SMOutcomePersisten
 In this paradigm, we say that the execution itself has outcomes too.
 We denote them by $o \in Out(Exec)$ and, for simplicity, $Out(Exec) = \{ c, f \}$.
 Note that the propositions corresponding to these outcomes, $\pi_{Exec}^o$, are system, not environment, propositions.
-We also introduce auxiliary system propositions, $\mu_g$, which serve as memory \cite{Vasu2012IROS} of having accomplished each goal $g \in \mathcal{G}$.
+We also introduce auxiliary system propositions, $\mu_g$, which serve as memory of having accomplished each goal $g \in \mathcal{G}$.
 
 \begin{equation}\label{MemoryFormula}
 	\bigwedge \limits_{g \in \mathcal{G}} \LTLG \big( \LTLX \pi_g^c \vee \mu_g \Leftrightarrow \LTLX \mu_g \big)
