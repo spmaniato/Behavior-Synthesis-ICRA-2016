@@ -28,11 +28,10 @@ We say that an activation proposition $\pi_y$, $y \in \{a, m\}$, is $\True$ when
 Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_y \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
 Note that the left-hand side of formula \eqref{PropositionDeactivationFormula} is only $\True$ at those distinct time steps where an outcome was just returned.
 
-\todo[inline, caption = {Fix proposition ``deactivation" formula}]{This formula is not consistent with the implementation in ReSpeC, even though they might be 100\% equivalent.
-Look like I might be able to remove it altogether!}
+\todo[inline, caption = {Remove proposition ``deactivation" formula ?}]{Look like I might be able to remove this formula.}
 
 \begin{equation}\label{PropositionDeactivationFormula}
-	\bigwedge \limits_{o \in Out(y)} \LTLG \Big( \pi_y \wedge \LTLX \pi_y^o \Rightarrow \LTLX \lnot \pi_y \Big)
+	\LTLG \Big( \pi_y \wedge \bigvee \limits_{o \in Out(y)} \LTLX \pi_y^o \Rightarrow \LTLX \lnot \pi_y \Big)
 \end{equation}
 
 The environment safety assumption \eqref{OutcomeMutexFormula} dictates that the outcomes, $\pi_y^o$, of the activation of any system capability are mutually exclusive (e.g., an action cannot both succeed and fail).
@@ -54,8 +53,7 @@ It is a generalization of formula (4) in \cite{Vasu2013ICRA}.
 
 \subsubsection{Action-specific Formulas}
 
-The following formulas encode the connection between the activation and the possible outcomes of the system's actions, $a \in \mathcal{A}$.
-
+We now encode the connection between the activation and the possible outcomes of the system's actions, $a \in \mathcal{A}$.
 The environment safety assumption \eqref{ActionOutcomePersistenceFormula} dictates that the value of an outcome should not change if the corresponding action has not been activated again. 
 In other words, outcomes persist through time.
 
