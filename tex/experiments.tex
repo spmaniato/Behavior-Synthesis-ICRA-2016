@@ -1,19 +1,21 @@
 % !TEX root = ../main.tex
 
 %Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
-We carried out experimental demonstrations on Atlas in the lab, where, due to a hardware issue, Atlas could not locomote.
+We experimentally validated our end-to-end approach in the lab, using Atlas and the software that Team ViGIR developed for the DRC.
+Due to a hardware issue, Atlas could not locomote.
 %Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
 In the first experimental demonstration, we show how a high-level behavior is specified and synthesized starting from scratch.\footnote{The automatically generated \textsc{ltl} specification for this demo is available at: \scriptsize{\url{https://gist.github.com/spmaniato/a2698db2dee1e11d9b0c}}}
 Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}), it is ready for execution (Fig. \ref{Fig:stand_and_pick_gopro}).
 
 \begin{figure}[t]
 	\centering
-	\begin{subfigure}[b]{0.99\columnwidth}
+	\begin{subfigure}[b]{0.999\columnwidth}
 	\includegraphics[width=0.99\columnwidth,clip]{./img/stand_and_pick_sm.png}
 	\caption{
 	The state machine above was synthesized for the task with $\mathcal{I} = \{ \mathtt{stand\_prep} \}$ and $\mathcal{G} = \{ \mathtt{look\_down}, \mathtt{pickup\_object} \}$.
 	The capability $\mathtt{object\_template}$ requests an object template from the operator (Section \ref{S:TeamViGIR}).
-	It is a precondition of $\mathtt{pickup\_object}$.
+	It is a precondition of $\mathtt{pickup\_object}$
+	The corresponding synthesized automaton is the one in Fig. \ref{Fig:SynthesizedAutomaton}.
 	}
 	\label{Fig:stand_and_pick_sm}
 	\end{subfigure}
@@ -36,8 +38,9 @@ For the second experimental demonstration, consider a scenario where the operato
 Atlas is then deployed and starts carrying out this task.
 If, during execution, an \emph{unexpected} situation arises, the operator can use FlexBE's runtime modification capability \cite{Philipp2015MSc} (Fig. \ref{Fig:synthesis_runtime_demo}).
 In this case, behavior execution is ``locked" at some state, i.e., this state is prevented from returning an outcome (Fig. \ref{Fig:runtime1}). 
-Then, the operator specifies a new high-level behavior meant to address the unexpected situation.
-Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is connected to the previous one (Fig. \ref{Fig:runtime1}), and execution resumes.
+The operator then specifies a new high-level behavior meant to address the unexpected situation.
+Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it gets connected to the previous one (Fig. \ref{Fig:runtime1}), and execution resumes.
+The synthesis process is much faster, compared to manually designing a state machine, and comes with correctness guarantees.
 
 \begin{figure}[t]
 	\centering
