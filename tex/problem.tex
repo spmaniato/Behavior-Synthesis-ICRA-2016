@@ -2,8 +2,8 @@
 
 \begin{myProblem}\label{OverarchingProblem}
 \textbf{(High-level Behavior Synthesis):}
-	Given a system $\mathcal{S}$, which comprises a robot and its primitive capabilities $\mathcal{C}$, a system designer-specified reaction to failures $\mathcal{F}$, and a user-provided task $\mathcal{T}$, in terms of its goals $\mathcal{G}$ and initial conditions\footnote{If the task specification process is taking place online, i.e., during system operation, then the initial conditions could also be detected automatically.}
-	 $\mathcal{I}$, automatically generate the software implementation of a high-level plan that \emph{guarantees} the system will either:
+	Given a system $\mathcal{S}$, which comprises a robot and its primitive capabilities $\mathcal{C}$, a desired reaction to failures $\mathcal{F}$ specified by the system designer, and a task $\mathcal{T}$ specified by a non-expert user, in terms of its goals $\mathcal{G}$ and initial conditions\footnote{If the task specification process is taking place online, i.e., during system operation, then the initial conditions could also be detected automatically.}
+	 $\mathcal{I}$, automatically generate the software implementation of a high-level mission plan that \emph{guarantees} the system will either:
 	\begin{enumerate}[i]
 		\item achieve the goals $\mathcal{G}$ safely, if possible,
 		\item or react according to the specification $\mathcal{F}$, if the execution of any primitive capabilities $\mathcal{C}$ does not succeed.
@@ -19,22 +19,23 @@ These considerations give rise to the following subproblem statements, which tog
 
 \begin{myProblem}\label{DiscreteAbstractionProblem}
 \textbf{(Discrete Abstraction):}
-Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, define a discrete abstraction $\mathcal{D}$ of the robot-plus-software system, $\mathcal{S}$, that captures both the execution and possible outcomes of its primitive capabilities (control mode transitions and actions).
+%Given Atlas' control mode transition constraints and the available actions $\mathcal{A}$, 
+Define a discrete abstraction $\mathcal{D}$ of a robot-plus-software system, $\mathcal{S}$, that captures both the execution and possible outcomes of its primitive capabilities $\mathcal{C}$.
 In addition, maintain a mapping, $\gamma: \mathcal{D} \rightarrow \mathcal{C}$, which grounds\footnote{We refer the reader to \cite{Grounding2013} for a review of symbol grounding in robotics.}
- the abstract symbols of the discrete abstraction to the primitive capabilities $\mathcal{C}$ of the system $\mathcal{S}$.
+ the abstract symbols of this discrete abstraction to the primitive capabilities $\mathcal{C}$ of the system $\mathcal{S}$.
 \end{myProblem}
 
 \begin{myProblem}\label{SpecificationProblem}
 \textbf{(Formal Task Specification):}
-Given a task $\mathcal{T}$ in terms of goals $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$, the task's initial conditions $\mathcal{I} = \{ i_1, i_2, \ldots, i_m \}$,
-the desired reaction to failures $\mathcal{F}$,
+Given a task $\mathcal{T}$ in terms of goals $\mathcal{G} = \{ g_1, g_2, \ldots, g_n \}$ and initial conditions $\mathcal{I} = \{ i_1, i_2, \ldots, i_m \}$,
+a desired reaction to failures $\mathcal{F}$,
 and the discrete abstraction $\mathcal{D}$ of the system $\mathcal{S}$ that is to carry out the task,\footnote{In general, a discrete abstraction of the robot's workspace would also be an input to this problem. However, we are not modeling it explicitly here.}
- automatically generate a specification $\mathcal{T}_\mathcal{S}$ that encodes, in a formal language, the task being carried out by $\mathcal{S}$.
+ automatically generate a specification $\mathcal{T}_\mathcal{S}$ that encodes, in a formal language, the task being carried out by $\mathcal{S}$ while reacting to failures according to $\mathcal{F}$.
 \end{myProblem}
 
-To illustrate these concepts, consider again the scenario in Example \ref{Ex:PickupObject}. 
+To illustrate these concepts, we revisit Example \ref{Ex:TurnValve}. 
+The system $\mathcal{S}$ is Atlas running Team ViGIR's software.
 We could say that the task's goals $\mathcal{G}$ are $\{ \mathtt{turn\_valve} \}$ and its initial conditions $\mathcal{I}$ are, e.g., $\{ \mathtt{stand} \}$.
-The system $\mathcal{S}$ is Atlas running Team ViGIR's software, as described in Section \ref{S:TeamViGIR}.
 Its primitive capabilities $\mathcal{C}$ include walking, rotating the wrist joint, and closing the fingers.
 The system-specific safety requirements (e.g., action preconditions and control mode changes) are encoded in $\mathcal{D}$.
 
