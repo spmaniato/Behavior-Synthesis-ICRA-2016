@@ -1,9 +1,9 @@
 % !TEX root = ../main.tex
 
-\subsection{Atlas Humanoid Robot}
+\subsection{Team ViGIR's Approach to the DRC Finals}\label{S:TeamViGIR}
 
-Atlas (Fig. \ref{Fig:AtlasDoorFinals}) is an anthropomorphic robot developed by Boston Dynamics, Inc. (BDI). 
-Team ViGIR chose to leverage the basic capabilities provided by the Boston Dynamics Application Programming Interface (API).
+Team ViGIR was awarded an Atlas (Fig. \ref{Fig:AtlasDoorFinals}), which is an anthropomorphic robot developed by Boston Dynamics, Inc. (BDI). 
+We chose to leverage the basic capabilities provided by BDI's Application Programming Interface (API).
 In the context of this work, we are especially interested in BDI's ``control mode" interface (Fig. \ref{Fig:ControlModeTS}).
 The active control mode dictates which joints are controlled by the low-level BDI controllers and which joints we can command.
 For example, in \textsc{stand} and \textsc{manipulate} BDI's software handles balancing.
@@ -22,10 +22,8 @@ After Team ViGIR's initial checkout, Atlas is in the \textsc{stand\_prep} contro
 \vspace{-10pt}
 \end{figure}
 
-\subsection{Team ViGIR's Approach to the DRC Finals}\label{S:TeamViGIR}
-
-Team ViGIR has based its software on the ROS.
-In this section, we highlight some elements of the software's design that are relevant to high-level control and synthesis.
+Team ViGIR has based its software on ROS.
+In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
 For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
 From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
 \todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
@@ -37,18 +35,18 @@ We call such considerations system-specific safety requirements.
 
 In terms of manipulation, Team ViGIR employs the concept of object templates \cite{Alberto2014Humanoids}.
 In brief, the system presents the human operator with perception data, e.g., a point cloud.
-Then, the operator detects objects of interest and overlays an object template on top of them.
+The operator then detects objects of interest and overlays templates on top of them.
 These templates contain metadata, such as relative robot poses from which the object is reachable, relative pre-grasp and grasp end-effector poses, as well as finger configurations corresponding to different grasps.
-In addition, object templates provide manipulation affordances.
-For instance, the ``door" template provides affordances such as ``turn (handle) clockwise" and ``push".
+%In addition, object templates provide manipulation affordances.
+%For instance, the ``door" template provides affordances such as ``turn (handle) clockwise" and ``push".
 \todo[inline, caption = {Improve description of object templates}]{Skim Albert's paper and improve this description of OT.}
 
 \subsubsection*{High-level Control}\label{S:FlexBE}
-Team ViGIR's approach to high-level control is especially relevant to this work.
+Team ViGIR's approach to high-level control is especially relevant to this paper.
 Its corner stone is the Flexible Behavior Engine\footnote{\scriptsize{\url{https://github.com/team-vigir/flexbe_behavior_engine}}} (FlexBE \cite{Philipp2015MSc}), which is a major extension of the SMACH high-level executive \cite{SMACH2010RAM}.
 
 Using the FlexBE framework, developers create ``state implementations", $Q$. % Maybe definitions?
-Each $q \in Q$ is a small, atomic block of code that interfaces with \emph{one} of the lower-level system capabilities $\mathcal{C}$.
+Each $q \in Q$ is a small, atomic block of code that interfaces with \emph{one} of the lower-level system capabilities $\mathcal{C}$ (e.g., footstep planning).
 Furthermore, each state implementation defines a number of outcomes $Out(q)$, e.g., $\{ \mathtt{done}, \mathtt{failed}, \mathtt{aborted} \}$.
 The state implementations can be composed to form hierarchical state machines,\footnote{\scriptsize{\url{https://github.com/team-vigir/vigir_behaviors}}}
  which encode the logic of execution as well as the flow of data (Fig. \ref{Fig:FlexBESM}).
