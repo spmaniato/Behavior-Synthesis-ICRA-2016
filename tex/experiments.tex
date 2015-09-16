@@ -1,17 +1,8 @@
 % !TEX root = ../main.tex
 
-%\todo[inline, caption = {Synthesis time as a function to number of actions ?}]{Provide data on how computationally costly/cheap behavior synthesis is. Time vs number of actions?}
-
-\todo[inline, caption = {Start Experiments section positively}]{Start with positive statement! (HKG)}
-Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
-However, we later carried out experimental demonstrations on Atlas in the lab.
-Due to a hardware issue, Atlas could not locomote.
-Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
-We summarize these demonstrations below.
-Please also refer to the accompanying video.
-
-\subsection{Behavior Development using Synthesis}\label{S:SynthesisFromScratch}
-
+%Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
+We carried out experimental demonstrations on Atlas in the lab, where, due to a hardware issue, Atlas could not locomote.
+%Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
 In the first experimental demo, we show how a high-level behavior is specified and synthesized starting from scratch.
 %\footnote{The \textsc{ltl} specification and the synthesized automaton are available at: \scriptsize{\url{https://gist.github.com/spmaniato/c37fb12e874c73d986da}}}.
 Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}), it is ready for execution (Fig. \ref{Fig:stand_and_pick_gopro}).
@@ -36,13 +27,11 @@ Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}),
 	\label{Fig:stand_and_pick_gopro}
 	\end{subfigure}
 	\caption{
-	Snapshots from the demo in Section \ref{S:SynthesisFromScratch}.
+	Snapshots from the first experimental demonstration.
 	}
 	\label{Fig:stand_and_pick_demo}
 	\vspace{-10 pt}
 \end{figure}
-
-\subsection{Online Modifications using Synthesis}\label{S:RuntimeSynthesis}
 
 For the second experimental demonstration, consider a scenario where the operator has designed a state machine that addresses a high-level task (either manually or via synthesis).
 Atlas is then deployed and starts carrying out this task.
@@ -70,9 +59,9 @@ Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is con
 	\label{Fig:runtime2}
 	\end{subfigure}
 	\caption{
-	FlexBE Editor snapshots from the demo in Section \ref{S:RuntimeSynthesis}.
+	FlexBE Editor snapshots from the second experimental demonstration.
 %	During execution of the $\mathtt{stand\_and\_grasp}$ state machine, an unexpected situation arises.
-	In response to some unexpected event, the operator synthesized a state machine that has Atlas back away (\ref{Fig:runtime2}).
+	In response to some event, the operator synthesized a state machine that has Atlas back away (\ref{Fig:runtime2}).
 	}
 	\label{Fig:synthesis_runtime_demo}
 	\vspace{-10 pt}
