@@ -5,6 +5,8 @@
 \IEEEoverridecommandlockouts          	% This command is only needed if you want to use the \thanks command
 \overrideIEEEmargins                  	% Needed to meet printer requirements.
 %
+\pdfminorversion=4
+%
 \usepackage{graphics} 	% for pdf, bitmapped graphics files
 \usepackage{epsfig} 	% for postscript graphics files
 \usepackage{times}		% assumes new font selection scheme installed
@@ -20,8 +22,8 @@
 \usepackage{enumerate}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \let\chapter\section % Necessary for List of TODOs to work. algorithm2e messes up \chapter for some reason...
-\usepackage[colorinlistoftodos]{todonotes}
-%\usepackage[disable]{todonotes}
+%\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[disable]{todonotes}
 \usepackage{hyperref}
 %\usepackage{color}
 \usepackage{gensymb}
@@ -111,8 +113,8 @@ The proposed approach has been implemented and open-sourced as a collection of R
 \end{abstract}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\listoftodos[List of TODOs, Fixes, Open Issues]
-\newpage
+%\listoftodos[List of TODOs, Fixes, Open Issues]
+%\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % --- Main sections ----
