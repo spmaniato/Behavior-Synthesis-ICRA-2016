@@ -38,13 +38,14 @@ Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}),
 	Snapshots from the demo in Section \ref{S:SynthesisFromScratch}.
 	}
 	\label{Fig:stand_and_pick_demo}
+	\vspace{-10 pt}
 \end{figure}
 
 \subsection{Online Modifications using Synthesis}\label{S:RuntimeSynthesis}
 
 For the second experimental demonstration, consider a scenario where the operator has designed a state machine that addresses a high-level task (either manually or via synthesis).
 Atlas is then deployed and starts carrying out this task.
-If, during execution, an \emph{unexpected} situation arises, the operator can use FlexBE's runtime modification capability (Fig. \ref{Fig:synthesis_runtime_demo}).
+If, during execution, an \emph{unexpected} situation arises, the operator can use FlexBE's runtime modification capability \cite{Philipp2015MSc} (Fig. \ref{Fig:synthesis_runtime_demo}).
 In this case, behavior execution is ``locked" at some state, i.e., this state is prevented from returning an outcome (Fig. \ref{Fig:runtime1}). 
 Then, the operator specifies a new high-level behavior meant to address the unexpected situation.
 Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is connected to the previous one (Fig. \ref{Fig:runtime1}), and execution resumes.
@@ -73,10 +74,7 @@ Once this new state machine is instantiated (Fig. \ref{Fig:runtime2}), it is con
 	In response to some unexpected event, the operator synthesized a state machine that has Atlas back away (\ref{Fig:runtime2}).
 	}
 	\label{Fig:synthesis_runtime_demo}
+	\vspace{-10 pt}
 \end{figure}
-
-%\subsection{Infinite execution or Footstep stuff (simulation)}
-%
-%For example, ``From stand-prep, walk to object, pick it up, (go to stand-manipulate), carry object, release, and repeat"
 
 % END
