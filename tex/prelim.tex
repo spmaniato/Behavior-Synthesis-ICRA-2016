@@ -19,13 +19,13 @@ Some changes between modes (depicted as arrows) are unidirectional while others 
 After Team ViGIR's initial checkout, Atlas is in the \textsc{stand\_prep} control mode.
 }
 \label{Fig:ControlModeTS}
-%\vspace{-3 pt}
+\vspace{-10pt}
 \end{figure}
 
 \subsection{Team ViGIR's Approach to the DRC Finals}\label{S:TeamViGIR}
 
-Team ViGIR has based its software on the Robot Operating System (ROS).
-In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
+Team ViGIR has based its software on the ROS.
+In this section, we highlight some elements of the software's design that are relevant to high-level control and synthesis.
 For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
 From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
 \todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
@@ -74,6 +74,7 @@ Gray and purple states are state machines.
 In brief, the high-level behavior implemented by this state machine is one where the system first asks the human operator to identify the door handle and then Atlas approaches the door, turns the handle, and steps through the door.
 }
 \label{Fig:FlexBESM}
+\vspace{-10pt}
 \end{figure}
 
 \subsection{Linear Temporal Logic and Reactive LTL Synthesis}\label{S:GR1}
