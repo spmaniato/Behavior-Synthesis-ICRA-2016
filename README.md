@@ -1,1 +1,3 @@
-# High-level Behavior Synthesis for an ATLAS Humanoid Robot (ICRA 2016)
+# Reactive High-level Behavior Synthesis for an Atlas Humanoid Robot
+
+Spyros Maniatopoulos, Philipp Schillinger, Vitchyr Pong, David C. Conner, and Hadas Kress-Gazit
