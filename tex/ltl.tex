@@ -179,19 +179,18 @@ Finally, these auxiliary propositions (memory and outcomes of the run) are added
 
 \subsection{Specification of Initial Conditions}
 
-So far, we have handled the system-specific portion of $\mathcal{T_S}$ and the user-specified task goals, $\mathcal{G}$.
-All that is left is the automatic generation of formulas for the task's initial conditions, $\mathcal{I}$.
-For each action, $a$, and control mode, $m$, in $\mathcal{I}$, the completion proposition should be $\True$ in the environment initial conditions \eqref{EnvironmentInitialConditions}.
-All other outcome propositions corresponding to those actions and control modes, as well as all outcome propositions corresponding to any other actions and control modes, should be $\False$.
+%So far, we have handled the system-specific portion of $\mathcal{T_S}$ and the user-specified task goals, $\mathcal{G}$.
+%All that is left is the automatic generation of formulas for the task's initial conditions, $\mathcal{I}$.
+For each action $a$ and control mode $m$ in the initial conditions $\mathcal{I}$, the completion proposition should be $\True$ in the environment initial conditions \eqref{EnvironmentInitialConditions}.
+All other outcome propositions should be $\False$.
 
 \begin{equation}\label{EnvironmentInitialConditions}
 	\varphi_i^e = \bigwedge \limits_{i \in \mathcal{I}} \Big( \pi_i^c \bigwedge \limits_{o \in Out(i)\backslash \{c\}} \lnot \pi_i^o \Big) \wedge \bigwedge \limits_{j \not\in \mathcal{I}} \bigwedge \limits_{o \in Out(j)} \lnot \pi_j^o
 \end{equation}
 
-Activation propositions are $\False$ regardless of whether that action or control mode is in the initial conditions or not \eqref{SystemInitialConditions}.
-The intuitive reason is that if we want something to be an initial condition, then the resulting plan should not activate it at the beginning of execution.
+Activation propositions are $\False$ regardless of whether that capability is in $\mathcal{I}$ or not because, if something is already an initial condition, then the resulting plan should not activate it at the beginning of execution.
 The auxiliary propositions are also $\False$.
-Essentially, all $\pi \in \mathcal{Y}$ are initially $\False$.
+Essentially, all $\pi \in \mathcal{Y}$ are initially $\False$:
 
 \begin{equation}\label{SystemInitialConditions}
 	\varphi_i^s = \bigwedge \limits_{i \in \mathcal{I}} \lnot \pi_i \wedge \bigwedge \limits_{j \not \in \mathcal{I}} \lnot \pi_j \bigwedge \limits_{g \in \mathcal{G}} \lnot \mu_g \bigwedge \limits_{o \in Out(Exec)} \lnot \pi_{Exec}^{o}
