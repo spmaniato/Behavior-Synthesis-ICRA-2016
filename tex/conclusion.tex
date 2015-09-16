@@ -1,5 +1,12 @@
 % !TEX root = ../main.tex
 
+\addtolength{\textheight}{-13 pt}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
 We presented an end-to-end approach to mission planning for complex robotic systems.
 We combined a task, specified by a non-expert user, with a discrete abstraction of the system, defined \emph{a priori}, to automatically generate a formal specification.
 We then synthesized a provably correct mission plan that achieves the task's goals or reacts to any failures in the low-level system components.
