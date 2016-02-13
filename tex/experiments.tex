@@ -1,9 +1,9 @@
 % !TEX root = ../main.tex
 
-%Team ViGIR did not employ high-level behavior synthesis during the DRC Finals.
 We experimentally validated our end-to-end approach in the lab, using Atlas and the software that Team ViGIR developed for the DRC.
 Due to a hardware issue, Atlas could not locomote.
-%Thus, in addition to two experimental demonstrations, we present a simulation run carried out in Gazebo, using the same operator and onboard software.
+Our two demonstrations are presented in the video that accompanies this paper and summarized here.
+
 In the first experimental demonstration, we show how a high-level behavior is specified and synthesized starting from scratch.\footnote{The automatically generated \textsc{ltl} specification for this demo is available at: \scriptsize{\url{https://gist.github.com/spmaniato/a2698db2dee1e11d9b0c}}}
 Once the state machine has been instantiated (Fig. \ref{Fig:stand_and_pick_sm}), it is ready for execution (Fig. \ref{Fig:stand_and_pick_gopro}).
 
@@ -62,7 +62,6 @@ The synthesis process is much faster, compared to manually designing a state mac
 	\end{subfigure}
 	\caption{
 	FlexBE Editor snapshots from the second experimental demonstration.
-%	During execution of the $\mathtt{stand\_and\_grasp}$ state machine, an unexpected situation arises.
 	In response to some event, the operator synthesized a state machine that has Atlas back away (\ref{Fig:runtime2}).
 	}
 	\label{Fig:synthesis_runtime_demo}
