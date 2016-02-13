@@ -26,7 +26,6 @@ Team ViGIR has based its software on ROS.
 In this section, we highlight some elements of the software's design that are relevant to high-level control and behavior synthesis.
 For a complete overview of Team ViGIR's approach, we refer the interested reader to \cite{TeamViGIR2014JFR}.
 From this point on, we will refer to Atlas running Team ViGIR's software as the \emph{system}, $\mathcal{S}$.
-\todo[inline, caption = {Replace 2014 JFR with new JFR paper}]{If the new JFR paper is accepted by February, replace this old reference, \cite{TeamViGIR2014JFR}, in the final submission.}
 
 Since Team ViGIR uses BDI's control mode interface, some system capabilities are preconditioned on a certain control mode being active.
 For example, in order to execute an arm trajectory, the system must be in the \textsc{manipulate} mode.
@@ -37,9 +36,6 @@ In terms of manipulation, Team ViGIR employs the concept of object templates \ci
 In brief, the system presents the human operator with perception data, e.g., a point cloud.
 The operator then detects objects of interest and overlays templates on top of them.
 These templates contain metadata, such as relative robot poses from which the object is reachable, relative pre-grasp and grasp end-effector poses, as well as finger configurations corresponding to different grasps.
-%In addition, object templates provide manipulation affordances.
-%For instance, the ``door" template provides affordances such as ``turn (handle) clockwise" and ``push".
-\todo[inline, caption = {Improve description of object templates}]{Skim Albert's paper and improve this description of OT.}
 
 \subsubsection*{High-level Control}\label{S:FlexBE}
 Team ViGIR's approach to high-level control is especially relevant to this paper.
@@ -98,6 +94,5 @@ where the superscript $i$ denotes initial conditions, $t$ safety assumptions/req
 \textsc{GR(1)} synthesis involves setting up a two-player game between $e$ and $s$ \cite{Bloem2012GR1}.
 If a \textsc{gr(1)} specification $\varphi$ is realizable for $s$, we can extract a finite-state automaton; specifically, a Mealy machine. 
 This automaton encodes a strategy for $s$ that guarantees $\varphi_s$ for any evolution of $e$ that satisfies $\varphi_e$.
-\todo[inline, caption = {If enough space, define Mealy machine}]{If there's any space left, define the FSA/Mealy machine mathematically. Possibly connect to FlexBE SMs later.}
 
 % END

@@ -28,8 +28,6 @@ We say that an activation proposition $\pi_y$, $y \in \{a, m\}$, is $\True$ when
 Therefore, the system safety requirement \eqref{PropositionDeactivationFormula} dictates that all activation propositions $\pi_y \in \mathcal{Y}$ should turn $\False$ once an outcome has been returned.
 Note that the left-hand side of formula \eqref{PropositionDeactivationFormula} is only $\True$ at those distinct time steps where an outcome was just returned.
 
-\todo[inline, caption = {Remove proposition ``deactivation" formula ?}]{Look like I might be able to remove this formula.}
-
 \begin{equation}\label{PropositionDeactivationFormula}
 	\LTLG \Big( \pi_y \wedge \bigvee \limits_{o \in Out(y)} \LTLX \pi_y^o \Rightarrow \LTLX \lnot \pi_y \Big)
 \end{equation}
