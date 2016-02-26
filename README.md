@@ -6,5 +6,5 @@ Spyros Maniatopoulos, Philipp Schillinger, Vitchyr Pong, David C. Conner, and Ha
 
 IEEE International Conference on Robotics and Automation (ICRA 2016), Stockholm, Sweden, May 2016
 
-[![Experimental demo: Atlas picking up a cutting tool](./img/stand_and_pick_gopro.png)]()
+[![Experimental demo: Atlas picking up a cutting tool](./img/stand_and_pick_gopro.png)](http://www.youtube.com/watch?v=mez-7pegxuE)
 Click on the image above to watch the video accompanying this paper.
